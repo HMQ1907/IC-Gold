@@ -20,13 +20,13 @@ export const useUser = () => {
       await refreshUser()
       toast.add({
         title: 'Profile updated',
-        color: 'green'
+        color: 'success'
       })
     } catch (error: any) {
       toast.add({
         title: 'Update failed',
         description: error.message,
-        color: 'red'
+        color: 'error'
       })
       throw error
     }
@@ -46,13 +46,13 @@ export const useUser = () => {
 
       toast.add({
         title: 'Password changed successfully',
-        color: 'green'
+        color: 'success'
       })
     } catch (error: any) {
       toast.add({
         title: 'Password change failed',
         description: error.message,
-        color: 'red'
+        color: 'error'
       })
       throw error
     }
@@ -73,13 +73,13 @@ export const useUser = () => {
       toast.add({
         title: '2FA enabled',
         description: 'You will need to enter OTP when logging in',
-        color: 'green'
+        color: 'success'
       })
     } catch (error: any) {
       toast.add({
         title: 'Error',
         description: error.message,
-        color: 'red'
+        color: 'error'
       })
       throw error
     }
@@ -100,13 +100,13 @@ export const useUser = () => {
       await refreshUser()
       toast.add({
         title: '2FA disabled',
-        color: 'green'
+        color: 'success'
       })
     } catch (error: any) {
       toast.add({
         title: 'Error',
         description: error.message,
-        color: 'red'
+        color: 'error'
       })
       throw error
     }

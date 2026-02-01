@@ -74,6 +74,7 @@ const navItems = computed(() => {
   if (!user.value) {
     return [
       { to: '/', label: 'Home' },
+      { to: '/trade', label: 'Trade' },
       { to: '/support/faq', label: 'FAQ' },
       { to: '/support/terms', label: 'Terms' },
     ]

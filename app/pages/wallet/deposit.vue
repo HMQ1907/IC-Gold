@@ -93,14 +93,14 @@ const state = reactive({ amount: null as number | null, txHash: '' })
 
 onMounted(async () => {
   try { depositAddress.value = await getDepositAddress() } 
-  catch { toast.add({ title: 'Error', description: 'Failed to load deposit address', color: 'red' }) } 
+  catch { toast.add({ title: 'Error', description: 'Failed to load deposit address', color: 'error' }) } 
   finally { loadingAddress.value = false }
 })
 
 async function copyAddress() {
   if (!depositAddress.value) return
   await navigator.clipboard.writeText(depositAddress.value.address)
-  toast.add({ title: 'Address copied', color: 'green' })
+  toast.add({ title: 'Address copied', color: 'success' })
 }
 
 async function onSubmit() {

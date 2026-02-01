@@ -27,9 +27,11 @@
           </button>
           <div
             v-show="openItems.includes(index)"
-            class="px-6 pb-4"
+            class="px-6 pb-5 pt-2"
           >
-            <p class="text-gray-400 leading-relaxed">{{ item.content }}</p>
+            <div class="bg-gray-900/50 rounded-lg p-4">
+              <p class="text-gray-300 leading-relaxed">{{ item.content }}</p>
+            </div>
           </div>
         </div>
       </div>

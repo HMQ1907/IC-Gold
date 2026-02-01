@@ -56,7 +56,7 @@ export const useAuth = () => {
         toast.add({
           title: 'Login successful',
           description: 'Welcome back!',
-          color: 'green'
+          color: 'success'
         })
         await router.push('/dashboard')
         return { success: true }
@@ -65,7 +65,7 @@ export const useAuth = () => {
       toast.add({
         title: 'Login failed',
         description: error.message,
-        color: 'red'
+        color: 'error'
       })
       throw error
     } finally {
@@ -95,7 +95,7 @@ export const useAuth = () => {
       toast.add({
         title: 'Registration successful',
         description: 'Please check your email to verify your account',
-        color: 'green'
+        color: 'success'
       })
 
       return { success: true, email: data.email, phone: data.phone }
@@ -103,7 +103,7 @@ export const useAuth = () => {
       toast.add({
         title: 'Registration failed',
         description: error.message,
-        color: 'red'
+        color: 'error'
       })
       throw error
     } finally {
@@ -129,7 +129,7 @@ export const useAuth = () => {
         toast.add({
           title: 'Verification successful',
           description: 'Your account has been activated',
-          color: 'green'
+          color: 'success'
         })
         await router.push('/dashboard')
         return { success: true }
@@ -138,7 +138,7 @@ export const useAuth = () => {
       toast.add({
         title: 'Verification failed',
         description: error.message,
-        color: 'red'
+        color: 'error'
       })
       throw error
     } finally {
@@ -161,13 +161,13 @@ export const useAuth = () => {
       toast.add({
         title: 'OTP code sent',
         description: 'Please check your email',
-        color: 'green'
+        color: 'success'
       })
     } catch (error: any) {
       toast.add({
         title: 'Error',
         description: error.message,
-        color: 'red'
+        color: 'error'
       })
       throw error
     }
@@ -183,7 +183,7 @@ export const useAuth = () => {
       authState.user = null
       toast.add({
         title: 'Logged out',
-        color: 'gray'
+        color: 'neutral'
       })
       await router.push('/')
     }

@@ -64,10 +64,10 @@ watch(user, (newUser) => { if (newUser) { profile.fullName = newUser.full_name |
 
 async function saveProfile() { savingProfile.value = true; try { await updateProfile({ fullName: profile.fullName, phone: profile.phone }) } catch {} finally { savingProfile.value = false } }
 async function handleChangePassword() {
-  if (password.new !== password.confirm) { toast.add({ title: 'Error', description: 'Passwords do not match', color: 'red' }); return }
+  if (password.new !== password.confirm) { toast.add({ title: 'Error', description: 'Passwords do not match', color: 'error' }); return }
   changingPassword.value = true; try { await changePassword(password.current, password.new); password.current = ''; password.new = ''; password.confirm = '' } catch {} finally { changingPassword.value = false }
 }
 async function toggle2FA(enabled: boolean) { try { if (enabled) { await enable2FA() } else { await disable2FA('') } await refreshUser() } catch {} }
-async function copyReferralCode() { if (user.value?.referral_code) { await navigator.clipboard.writeText(user.value.referral_code); toast.add({ title: 'Referral code copied', color: 'green' }) } }
+async function copyReferralCode() { if (user.value?.referral_code) { await navigator.clipboard.writeText(user.value.referral_code); toast.add({ title: 'Referral code copied', color: 'success' }) } }
 function formatDate(date: string) { return date ? new Intl.DateTimeFormat('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(new Date(date)) : '' }
 </script>

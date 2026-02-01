@@ -50,13 +50,13 @@ export const useAdmin = () => {
 
       toast.add({
         title: 'Balance adjusted successfully',
-        color: 'green'
+        color: 'success'
       })
     } catch (error: any) {
       toast.add({
         title: 'Error',
         description: error.message,
-        color: 'red'
+        color: 'error'
       })
       throw error
     }
@@ -104,13 +104,13 @@ export const useAdmin = () => {
 
       toast.add({
         title: action === 'approve' ? 'Transaction approved' : 'Transaction rejected',
-        color: action === 'approve' ? 'green' : 'orange'
+        color: action === 'approve' ? 'success' : 'warning'
       })
     } catch (error: any) {
       toast.add({
         title: 'Error',
         description: error.message,
-        color: 'red'
+        color: 'error'
       })
       throw error
     }
@@ -130,13 +130,13 @@ export const useAdmin = () => {
 
       toast.add({
         title: 'Settings updated successfully',
-        color: 'green'
+        color: 'success'
       })
     } catch (error: any) {
       toast.add({
         title: 'Error',
         description: error.message,
-        color: 'red'
+        color: 'error'
       })
       throw error
     }

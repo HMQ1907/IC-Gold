@@ -1,21 +1,25 @@
 <template>
-  <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
-    <div class="p-4 border-b border-gray-800">
+  <div class="bg-gray-800/50 border border-gray-700 rounded-xl overflow-hidden">
+    <div class="p-4 border-b border-gray-700">
       <div class="flex items-center justify-between flex-wrap gap-4">
-        <h3 class="text-white font-semibold">Biểu đồ giao dịch</h3>
+        <h3 class="text-white font-semibold">Trading Chart</h3>
         <div class="flex items-center gap-2">
-          <USelect
+          <select
             v-model="selectedSymbol"
-            :options="symbols"
-            placeholder="Chọn cặp giao dịch"
-            class="w-40"
-          />
-          <USelect
+            class="px-3 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white text-sm focus:outline-none focus:border-amber-500"
+          >
+            <option v-for="symbol in symbols" :key="symbol.value" :value="symbol.value">
+              {{ symbol.label }}
+            </option>
+          </select>
+          <select
             v-model="selectedInterval"
-            :options="intervals"
-            placeholder="Timeframe"
-            class="w-24"
-          />
+            class="px-3 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white text-sm focus:outline-none focus:border-amber-500"
+          >
+            <option v-for="interval in intervals" :key="interval.value" :value="interval.value">
+              {{ interval.label }}
+            </option>
+          </select>
         </div>
       </div>
     </div>
@@ -56,8 +60,8 @@ const intervals = [
   { label: '1W', value: 'W' }
 ]
 
-const selectedSymbol = ref(symbols[0])
-const selectedInterval = ref(intervals[5])
+const selectedSymbol = ref(symbols[0].value)
+const selectedInterval = ref(intervals[5].value)
 
 function loadWidget() {
   if (!chartContainer.value) return
@@ -83,12 +87,12 @@ function loadWidget() {
   script.async = true
   script.innerHTML = JSON.stringify({
     autosize: true,
-    symbol: selectedSymbol.value.value,
-    interval: selectedInterval.value.value,
-    timezone: 'Asia/Ho_Chi_Minh',
+    symbol: selectedSymbol.value,
+    interval: selectedInterval.value,
+    timezone: 'Etc/UTC',
     theme: 'dark',
     style: '1',
-    locale: 'vi_VN',
+    locale: 'en',
     enable_publishing: false,
     allow_symbol_change: true,
     calendar: false,

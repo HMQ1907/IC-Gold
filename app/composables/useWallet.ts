@@ -48,13 +48,13 @@ export const useWallet = () => {
       toast.add({
         title: 'Deposit request submitted',
         description: 'Please wait for admin confirmation',
-        color: 'green'
+        color: 'success'
       })
     } catch (error: any) {
       toast.add({
         title: 'Error',
         description: error.message,
-        color: 'red'
+        color: 'error'
       })
       throw error
     }
@@ -76,13 +76,13 @@ export const useWallet = () => {
       toast.add({
         title: 'Withdrawal request submitted',
         description: 'Please wait for processing',
-        color: 'green'
+        color: 'success'
       })
     } catch (error: any) {
       toast.add({
         title: 'Error',
         description: error.message,
-        color: 'red'
+        color: 'error'
       })
       throw error
     }
