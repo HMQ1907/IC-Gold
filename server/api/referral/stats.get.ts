@@ -1,0 +1,59 @@
+import { requireAuth, getSupabaseAdmin } from '~~/server/utils/supabase'
+
+export default defineEventHandler(async (event) => {
+  const user = await requireAuth(event)
+  const supabase = getSupabaseAdmin()
+
+  // Get referral stats
+  const { data: referrals, error } = await supabase
+    .from('referrals')
+    .select(`
+      id,
+      bonus_amount,
+      bonus_paid,
+      created_at,
+      referred:referred_id (
+        id,
+        email,
+        full_name,
+        created_at
+      )
+    `)
+    .eq('referrer_id', user.id)
+    .order('created_at', { ascending: false })
+
+  if (error) {
+    throw createError({
+      statusCode: 500,
+      message: 'Không thể tải thông tin giới thiệu'
+    })
+  }
+
+  // Calculate stats
+  const totalReferrals = referrals?.length || 0
+  const paidReferrals = referrals?.filter(r => r.bonus_paid).length || 0
+  const totalBonus = referrals?.reduce((sum, r) => sum + (r.bonus_paid ? r.bonus_amount : 0), 0) || 0
+  const pendingBonus = referrals?.reduce((sum, r) => sum + (!r.bonus_paid ? r.bonus_amount : 0), 0) || 0
+
+  return {
+    referralCode: user.referral_code,
+    usesRemaining: user.max_referral_uses - user.referral_uses,
+    maxUses: user.max_referral_uses,
+    currentUses: user.referral_uses,
+    totalReferrals,
+    paidReferrals,
+    totalBonus,
+    pendingBonus,
+    referrals: referrals?.map(r => ({
+      id: r.id,
+      bonusAmount: r.bonus_amount,
+      bonusPaid: r.bonus_paid,
+      createdAt: r.created_at,
+      referred: r.referred ? {
+        email: (r.referred as any).email,
+        fullName: (r.referred as any).full_name,
+        createdAt: (r.referred as any).created_at
+      } : null
+    })) || []
+  }
+})
