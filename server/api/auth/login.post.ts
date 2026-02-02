@@ -15,14 +15,14 @@ export default defineEventHandler(async (event) => {
   if (!email && !phone) {
     throw createError({
       statusCode: 400,
-      message: 'Email hoặc số điện thoại là bắt buộc'
+      message: 'Email or phone number is required'
     })
   }
 
   if (!password) {
     throw createError({
       statusCode: 400,
-      message: 'Mật khẩu là bắt buộc'
+      message: 'Password is required'
     })
   }
 
@@ -38,11 +38,11 @@ export default defineEventHandler(async (event) => {
   }
 
   const { data: user, error } = await query.single()
-
+  console.log(user);
   if (error || !user) {
     throw createError({
       statusCode: 401,
-      message: 'Email/số điện thoại hoặc mật khẩu không đúng'
+      message: 'Invalid email/phone or password'
     })
   }
 
@@ -50,15 +50,16 @@ export default defineEventHandler(async (event) => {
   if (!user.is_active) {
     throw createError({
       statusCode: 403,
-      message: 'Tài khoản đã bị khóa'
+      message: 'Account has been deactivated'
     })
   }
 
   // Verify password
-  if (!verifyPassword(password, user.password_hash)) {
+  const isValidPassword = await verifyPassword(password, user.password_hash)
+  if (!isValidPassword) {
     throw createError({
       statusCode: 401,
-      message: 'Email/số điện thoại hoặc mật khẩu không đúng'
+      message: 'Invalid email/phone or password'
     })
   }
 
@@ -82,7 +83,7 @@ export default defineEventHandler(async (event) => {
       requireOtp: true,
       type: 'verify_email',
       email,
-      message: 'Vui lòng xác thực email. Mã OTP đã được gửi.'
+      message: 'Please verify your email. OTP code has been sent.'
     }
   }
 
@@ -107,7 +108,7 @@ export default defineEventHandler(async (event) => {
       requireOtp: true,
       type: '2fa',
       email: user.email,
-      message: 'Vui lòng nhập mã OTP từ email của bạn'
+      message: 'Please enter the OTP code from your email'
     }
   }
 
@@ -143,6 +144,6 @@ export default defineEventHandler(async (event) => {
 
   return {
     user: safeUser,
-    message: 'Đăng nhập thành công'
+    message: 'Login successful'
   }
 })

@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
   if (!userId || amount === undefined || amount === 0) {
     throw createError({
       statusCode: 400,
-      message: 'User ID và số tiền là bắt buộc'
+      message: 'User ID and amount are required'
     })
   }
 
@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
   if (userError || !user) {
     throw createError({
       statusCode: 404,
-      message: 'Không tìm thấy user'
+      message: 'User not found'
     })
   }
 
@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
   if (newBalance < 0) {
     throw createError({
       statusCode: 400,
-      message: 'Số dư không thể âm'
+      message: 'Balance cannot be negative'
     })
   }
 
@@ -46,7 +46,7 @@ export default defineEventHandler(async (event) => {
   if (updateError) {
     throw createError({
       statusCode: 500,
-      message: 'Không thể cập nhật số dư'
+      message: 'Failed to update balance'
     })
   }
 
@@ -75,13 +75,13 @@ export default defineEventHandler(async (event) => {
   // Notify user
   await createNotification(
     userId,
-    amount > 0 ? 'Số dư đã được cộng' : 'Số dư đã được trừ',
-    `Tài khoản của bạn đã ${amount > 0 ? 'được cộng' : 'bị trừ'} $${Math.abs(amount)}${note ? `. Lý do: ${note}` : ''}`,
+    amount > 0 ? 'Balance increased' : 'Balance decreased',
+    `Your account has been ${amount > 0 ? 'credited' : 'debited'} $${Math.abs(amount)}${note ? `. Reason: ${note}` : ''}`,
     amount > 0 ? 'success' : 'warning'
   )
 
   return {
-    message: 'Điều chỉnh số dư thành công',
+    message: 'Balance adjusted successfully',
     oldBalance: user.balance,
     newBalance,
     change: amount

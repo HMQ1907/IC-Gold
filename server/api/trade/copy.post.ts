@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
     if (user.balance < 1000) {
       throw createError({
         statusCode: 400,
-        message: 'Số dư tối thiểu để sử dụng Copy Trade là $1,000'
+        message: 'Minimum balance for Copy Trade is $1,000'
       })
     }
 
@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
     if (user.copy_trade_active) {
       throw createError({
         statusCode: 400,
-        message: 'Copy Trade đang hoạt động'
+        message: 'Copy Trade is already active'
       })
     }
 
@@ -39,7 +39,7 @@ export default defineEventHandler(async (event) => {
     if (updateError) {
       throw createError({
         statusCode: 500,
-        message: 'Không thể bắt đầu Copy Trade'
+        message: 'Failed to start Copy Trade'
       })
     }
 
@@ -56,13 +56,13 @@ export default defineEventHandler(async (event) => {
     // Create notification
     await createNotification(
       user.id,
-      'Copy Trade đã bắt đầu',
-      `Đang sao chép ${percentage}% tài sản ($${amount.toFixed(2)})`,
+      'Copy Trade started',
+      `Copying ${percentage}% of assets ($${amount.toFixed(2)})`,
       'success'
     )
 
     return {
-      message: 'Copy Trade đã bắt đầu',
+      message: 'Copy Trade started',
       percentage,
       amount
     }
@@ -73,7 +73,7 @@ export default defineEventHandler(async (event) => {
     if (!user.copy_trade_active) {
       throw createError({
         statusCode: 400,
-        message: 'Copy Trade không hoạt động'
+        message: 'Copy Trade is not active'
       })
     }
 
@@ -88,7 +88,7 @@ export default defineEventHandler(async (event) => {
     if (updateError) {
       throw createError({
         statusCode: 500,
-        message: 'Không thể dừng Copy Trade'
+        message: 'Failed to stop Copy Trade'
       })
     }
 
@@ -105,18 +105,18 @@ export default defineEventHandler(async (event) => {
     // Create notification
     await createNotification(
       user.id,
-      'Copy Trade đã dừng',
-      'Bạn đã dừng Copy Trade thành công',
+      'Copy Trade stopped',
+      'You have successfully stopped Copy Trade',
       'info'
     )
 
     return {
-      message: 'Copy Trade đã dừng'
+      message: 'Copy Trade stopped'
     }
   }
 
   throw createError({
     statusCode: 400,
-    message: 'Action không hợp lệ'
+    message: 'Invalid action'
   })
 })

@@ -29,6 +29,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, watch } from 'vue'
+
 interface Props {
   height?: number
 }
@@ -60,8 +62,8 @@ const intervals = [
   { label: '1W', value: 'W' }
 ]
 
-const selectedSymbol = ref(symbols[0].value)
-const selectedInterval = ref(intervals[5].value)
+const selectedSymbol = ref('BINANCE:BTCUSDT')
+const selectedInterval = ref('D')
 
 function loadWidget() {
   if (!chartContainer.value) return

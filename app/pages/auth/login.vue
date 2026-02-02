@@ -129,8 +129,9 @@ async function onSubmit() {
         }
       })
     }
-  } catch (error) {
-    // Error handled by composable
+  } catch (error: any) {
+    // Error toast already handled in useAuth
+    console.error('Login error:', error)
   } finally {
     loading.value = false
   }

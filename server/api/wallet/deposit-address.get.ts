@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
   if (!address) {
     throw createError({
       statusCode: 500,
-      message: 'Địa chỉ ví chưa được cấu hình'
+      message: 'Wallet address has not been configured'
     })
   }
 

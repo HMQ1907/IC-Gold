@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
   if (error) {
     throw createError({
       statusCode: 500,
-      message: 'Không thể tải thông tin giới thiệu'
+      message: 'Failed to load referral information'
     })
   }
 

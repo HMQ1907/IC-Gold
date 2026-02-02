@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
     if (error) {
       throw createError({
         statusCode: 500,
-        message: 'Không thể tải cài đặt'
+        message: 'Failed to load settings'
       })
     }
 
@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
     if (!settings || typeof settings !== 'object') {
       throw createError({
         statusCode: 400,
-        message: 'Settings là bắt buộc'
+        message: 'Settings is required'
       })
     }
 
@@ -59,7 +59,7 @@ export default defineEventHandler(async (event) => {
       userAgent: getHeader(event, 'user-agent') || undefined
     })
 
-    return { message: 'Cập nhật cài đặt thành công' }
+    return { message: 'Settings updated successfully' }
   }
 
   throw createError({

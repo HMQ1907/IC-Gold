@@ -9,14 +9,14 @@ export default defineEventHandler(async (event) => {
   if (!code) {
     throw createError({
       statusCode: 400,
-      message: 'Mã OTP là bắt buộc'
+      message: 'OTP code is required'
     })
   }
 
   if (!email && !phone) {
     throw createError({
       statusCode: 400,
-      message: 'Email hoặc số điện thoại là bắt buộc'
+      message: 'Email or phone number is required'
     })
   }
 
@@ -42,7 +42,7 @@ export default defineEventHandler(async (event) => {
   if (otpError || !otp) {
     throw createError({
       statusCode: 400,
-      message: 'Mã OTP không hợp lệ hoặc đã hết hạn'
+      message: 'Invalid or expired OTP code'
     })
   }
 
@@ -62,7 +62,7 @@ export default defineEventHandler(async (event) => {
   if (userError || !user) {
     throw createError({
       statusCode: 404,
-      message: 'Không tìm thấy người dùng'
+      message: 'User not found'
     })
   }
 
@@ -112,6 +112,6 @@ export default defineEventHandler(async (event) => {
 
   return {
     user: { ...safeUser, ...updateData },
-    message: 'Xác thực thành công'
+    message: 'Verification successful'
   }
 })

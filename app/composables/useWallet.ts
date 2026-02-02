@@ -2,7 +2,7 @@ import type { Transaction } from '~~/server/utils/supabase'
 
 export const useWallet = () => {
   const { user, refreshUser } = useAuth()
-  const toast = useToast()
+  const toast = useToastCustom()
 
   // Get balance
   const balance = computed(() => user.value?.balance || 0)
@@ -45,17 +45,9 @@ export const useWallet = () => {
         throw new Error(error.value.data?.message || 'Deposit request failed')
       }
 
-      toast.add({
-        title: 'Deposit request submitted',
-        description: 'Please wait for admin confirmation',
-        color: 'success'
-      })
+      toast.success('Deposit request submitted', 'Please wait for admin confirmation')
     } catch (error: any) {
-      toast.add({
-        title: 'Error',
-        description: error.message,
-        color: 'error'
-      })
+      toast.error('Error', error.message)
       throw error
     }
   }
@@ -73,17 +65,9 @@ export const useWallet = () => {
       }
 
       await refreshUser()
-      toast.add({
-        title: 'Withdrawal request submitted',
-        description: 'Please wait for processing',
-        color: 'success'
-      })
+      toast.success('Withdrawal request submitted', 'Please wait for processing')
     } catch (error: any) {
-      toast.add({
-        title: 'Error',
-        description: error.message,
-        color: 'error'
-      })
+      toast.error('Error', error.message)
       throw error
     }
   }

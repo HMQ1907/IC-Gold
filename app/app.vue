@@ -1,9 +1,10 @@
 <template>
   <UApp>
     <NuxtLayout>
-      <NuxtPage />
+      <NuxtPage :transition="{ name: 'page', mode: 'out-in' }" />
     </NuxtLayout>
-    <UToaster />
+    <LayoutPageLoading />
+    <LayoutToast />
   </UApp>
 </template>
 
@@ -19,3 +20,21 @@ onMounted(async () => {
   }
 })
 </script>
+
+<style>
+/* Page transition animations */
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+</style>

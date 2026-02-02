@@ -44,14 +44,14 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
 
 export async function sendOtpEmail(email: string, code: string, type: string): Promise<boolean> {
   const typeLabels: Record<string, string> = {
-    register: 'đăng ký tài khoản',
-    login: 'đăng nhập',
-    withdraw: 'rút tiền',
-    '2fa': 'xác thực 2 bước',
-    reset_password: 'đặt lại mật khẩu'
+    register: 'account registration',
+    login: 'login',
+    withdraw: 'withdrawal',
+    '2fa': 'two-factor authentication',
+    reset_password: 'password reset'
   }
 
-  const typeLabel = typeLabels[type] || 'xác thực'
+  const typeLabel = typeLabels[type] || 'verification'
 
   const html = `
     <!DOCTYPE html>
@@ -76,15 +76,15 @@ export async function sendOtpEmail(email: string, code: string, type: string): P
           <h1>🪙 IC-Gold</h1>
         </div>
         <div class="content">
-          <p class="text">Xin chào,</p>
-          <p class="text">Mã OTP của bạn để ${typeLabel} là:</p>
+          <p class="text">Hello,</p>
+          <p class="text">Your OTP code for ${typeLabel} is:</p>
           <div class="code">${code}</div>
-          <p class="text">Mã này sẽ hết hạn sau <strong style="color: #f59e0b;">10 phút</strong>.</p>
-          <p class="warning">⚠️ Không chia sẻ mã này với bất kỳ ai. IC-Gold sẽ không bao giờ hỏi mã OTP của bạn.</p>
+          <p class="text">This code will expire in <strong style="color: #f59e0b;">10 minutes</strong>.</p>
+          <p class="warning">⚠️ Do not share this code with anyone. IC-Gold will never ask for your OTP code.</p>
         </div>
         <div class="footer">
           <p>© 2024 IC-Gold. All rights reserved.</p>
-          <p>Nếu bạn không yêu cầu mã này, vui lòng bỏ qua email này.</p>
+          <p>If you did not request this code, please ignore this email.</p>
         </div>
       </div>
     </body>
@@ -93,14 +93,14 @@ export async function sendOtpEmail(email: string, code: string, type: string): P
 
   return sendEmail({
     to: email,
-    subject: `[IC-Gold] Mã xác thực ${typeLabel}: ${code}`,
+    subject: `[IC-Gold] Verification code for ${typeLabel}: ${code}`,
     html,
-    text: `Mã OTP của bạn để ${typeLabel} là: ${code}. Mã này sẽ hết hạn sau 10 phút.`
+    text: `Your OTP code for ${typeLabel} is: ${code}. This code will expire in 10 minutes.`
   })
 }
 
 export async function sendWelcomeEmail(email: string, fullName?: string): Promise<boolean> {
-  const name = fullName || 'bạn'
+  const name = fullName || 'there'
 
   const html = `
     <!DOCTYPE html>
@@ -128,19 +128,19 @@ export async function sendWelcomeEmail(email: string, fullName?: string): Promis
           <h1>🪙 IC-Gold</h1>
         </div>
         <div class="content">
-          <h2 style="color: white;">Chào mừng ${name} đến với IC-Gold! 🎉</h2>
-          <p class="text">Cảm ơn bạn đã đăng ký tài khoản. Bạn đã sẵn sàng để bắt đầu hành trình đầu tư của mình.</p>
+          <h2 style="color: white;">Welcome ${name} to IC-Gold! 🎉</h2>
+          <p class="text">Thank you for registering. You are ready to start your investment journey.</p>
           
           <div class="features">
-            <div class="feature"><span>✓</span> Theo dõi biểu đồ crypto real-time</div>
-            <div class="feature"><span>✓</span> Copy Trade từ các chuyên gia</div>
-            <div class="feature"><span>✓</span> Nạp/Rút tiền nhanh chóng qua TRC20</div>
-            <div class="feature"><span>✓</span> Nhận $10 cho mỗi lượt giới thiệu thành công</div>
+            <div class="feature"><span>✓</span> Track real-time crypto charts</div>
+            <div class="feature"><span>✓</span> Copy Trade from experts</div>
+            <div class="feature"><span>✓</span> Fast deposits/withdrawals via TRC20</div>
+            <div class="feature"><span>✓</span> Earn $10 for each successful referral</div>
           </div>
           
-          <p class="text">Bắt đầu ngay bằng cách nạp tiền vào tài khoản của bạn!</p>
+          <p class="text">Get started by depositing funds into your account!</p>
           
-          <center><a href="${process.env.SITE_URL || 'http://localhost:3000'}/dashboard" class="button">Vào Dashboard</a></center>
+          <center><a href="${process.env.SITE_URL || 'http://localhost:3000'}/dashboard" class="button">Go to Dashboard</a></center>
         </div>
         <div class="footer">
           <p>© 2024 IC-Gold. All rights reserved.</p>
@@ -152,9 +152,9 @@ export async function sendWelcomeEmail(email: string, fullName?: string): Promis
 
   return sendEmail({
     to: email,
-    subject: '🎉 Chào mừng đến với IC-Gold!',
+    subject: '🎉 Welcome to IC-Gold!',
     html,
-    text: `Chào mừng ${name} đến với IC-Gold! Cảm ơn bạn đã đăng ký tài khoản.`
+    text: `Welcome ${name} to IC-Gold! Thank you for registering.`
   })
 }
 
@@ -165,14 +165,14 @@ export async function sendTransactionEmail(
   status: 'pending' | 'completed' | 'rejected'
 ): Promise<boolean> {
   const typeLabels = {
-    deposit: 'Nạp tiền',
-    withdraw: 'Rút tiền'
+    deposit: 'Deposit',
+    withdraw: 'Withdrawal'
   }
 
   const statusLabels = {
-    pending: 'Đang chờ xử lý',
-    completed: 'Thành công',
-    rejected: 'Bị từ chối'
+    pending: 'Pending',
+    completed: 'Completed',
+    rejected: 'Rejected'
   }
 
   const statusColors = {
@@ -205,14 +205,14 @@ export async function sendTransactionEmail(
         </div>
         <div class="content">
           <h2 style="color: white;">${typeLabels[type]}</h2>
-          <p class="text">Giao dịch ${typeLabels[type].toLowerCase()} của bạn:</p>
+          <p class="text">Your ${typeLabels[type].toLowerCase()} transaction:</p>
           <div class="amount">$${amount.toLocaleString()}</div>
           <center>
             <span class="status" style="background: ${statusColors[status]}20; color: ${statusColors[status]};">
               ${statusLabels[status]}
             </span>
           </center>
-          <p class="text" style="margin-top: 20px;">Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ bộ phận hỗ trợ.</p>
+          <p class="text" style="margin-top: 20px;">If you have any questions, please contact support.</p>
         </div>
         <div class="footer">
           <p>© 2024 IC-Gold. All rights reserved.</p>

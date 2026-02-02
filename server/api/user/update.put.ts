@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
       if (existingPhone) {
         throw createError({
           statusCode: 400,
-          message: 'Số điện thoại đã được sử dụng'
+          message: 'Phone number is already in use'
         })
       }
     }
@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) => {
   if (Object.keys(updateData).length === 0) {
     throw createError({
       statusCode: 400,
-      message: 'Không có dữ liệu để cập nhật'
+      message: 'No data to update'
     })
   }
 
@@ -47,11 +47,11 @@ export default defineEventHandler(async (event) => {
   if (error) {
     throw createError({
       statusCode: 500,
-      message: 'Không thể cập nhật thông tin'
+      message: 'Failed to update profile'
     })
   }
 
   return {
-    message: 'Cập nhật thành công'
+    message: 'Profile updated successfully'
   }
 })

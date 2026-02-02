@@ -43,7 +43,7 @@ export default defineEventHandler(async (event) => {
   if (error) {
     throw createError({
       statusCode: 500,
-      message: 'Không thể tải giao dịch'
+      message: 'Failed to load transactions'
     })
   }
 

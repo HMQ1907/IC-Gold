@@ -100,7 +100,7 @@
 
 <script setup lang="ts">
 definePageMeta({ middleware: 'auth' })
-const toast = useToast()
+const toast = useToastCustom()
 
 interface ReferralStats {
   referralCode: string; usesRemaining: number; maxUses: number; currentUses: number; totalReferrals: number
@@ -114,8 +114,8 @@ const referralLink = computed(() => { const baseUrl = typeof window !== 'undefin
 
 onMounted(async () => { try { const { data } = await useFetch<ReferralStats>('/api/referral/stats'); if (data.value) stats.value = data.value } catch {} finally { loading.value = false } })
 
-async function copyCode() { if (!stats.value?.referralCode) return; await navigator.clipboard.writeText(stats.value.referralCode); toast.add({ title: 'Referral code copied', color: 'success' }) }
-async function copyLink() { await navigator.clipboard.writeText(referralLink.value); toast.add({ title: 'Referral link copied', color: 'success' }) }
+async function copyCode() { if (!stats.value?.referralCode) return; await navigator.clipboard.writeText(stats.value.referralCode); toast.success('Referral code copied') }
+async function copyLink() { await navigator.clipboard.writeText(referralLink.value); toast.success('Referral link copied') }
 async function shareLink() { if (navigator.share) { try { await navigator.share({ title: 'Join IC-Gold', text: `Sign up for IC-Gold with referral code ${stats.value?.referralCode}!`, url: referralLink.value }) } catch {} } else { copyLink() } }
 function maskEmail(email: string): string { if (!email) return ''; const [local, domain] = email.split('@'); return local.length <= 2 ? `${local[0]}***@${domain}` : `${local[0]}${local[1]}***@${domain}` }
 function formatDate(date: string): string { return new Intl.DateTimeFormat('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(new Date(date)) }

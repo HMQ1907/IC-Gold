@@ -194,7 +194,7 @@ export async function requireAuth(event: H3Event): Promise<User> {
     throw createError({
       statusCode: 401,
       statusMessage: 'Unauthorized',
-      message: 'Vui lòng đăng nhập để tiếp tục'
+      message: 'Please login to continue'
     })
   }
 
@@ -209,7 +209,7 @@ export async function requireAdmin(event: H3Event): Promise<User> {
     throw createError({
       statusCode: 403,
       statusMessage: 'Forbidden',
-      message: 'Bạn không có quyền truy cập'
+      message: 'You do not have access permission'
     })
   }
 

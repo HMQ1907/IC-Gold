@@ -102,7 +102,7 @@
 
 <script setup lang="ts">
 const { user, refreshUser } = useAuth()
-const toast = useToast()
+const toast = useToastCustom()
 
 const balance = computed(() => user.value?.balance || 0)
 const canCopyTrade = computed(() => balance.value >= 1000)
@@ -135,13 +135,9 @@ async function startCopyTrade() {
     if (error.value) throw new Error(error.value.data?.message || 'Failed to start Copy Trade')
     isCopying.value = true
     await refreshUser()
-    toast.add({ 
-      title: 'Copy Trade started!', 
-      description: `Copying ${copyPercentage.value}% of assets ($${formatNumber(balance.value * copyPercentage.value / 100)})`, 
-      color: 'success' 
-    })
+    toast.success('Copy Trade started!', `Copying ${copyPercentage.value}% of assets ($${formatNumber(balance.value * copyPercentage.value / 100)})`)
   } catch (error: any) {
-    toast.add({ title: 'Error', description: error.message, color: 'error' })
+    toast.error('Error', error.message)
   } finally { 
     loading.value = false 
   }
@@ -157,9 +153,9 @@ async function stopCopyTrade() {
     if (error.value) throw new Error(error.value.data?.message || 'Failed to stop Copy Trade')
     isCopying.value = false
     await refreshUser()
-    toast.add({ title: 'Copy Trade stopped', color: 'neutral' })
+    toast.info('Copy Trade stopped')
   } catch (error: any) {
-    toast.add({ title: 'Error', description: error.message, color: 'error' })
+    toast.error('Error', error.message)
   } finally { 
     loading.value = false 
   }

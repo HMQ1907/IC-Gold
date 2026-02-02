@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
   if (!email && !phone) {
     throw createError({
       statusCode: 400,
-      message: 'Email hoặc số điện thoại là bắt buộc'
+      message: 'Email or phone number is required'
     })
   }
 
@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
   if (error || !user) {
     throw createError({
       statusCode: 404,
-      message: 'Không tìm thấy tài khoản'
+      message: 'Account not found'
     })
   }
 
@@ -48,7 +48,7 @@ export default defineEventHandler(async (event) => {
   if (recentOtp) {
     throw createError({
       statusCode: 429,
-      message: 'Vui lòng đợi 1 phút trước khi gửi lại mã'
+      message: 'Please wait 1 minute before resending'
     })
   }
 
@@ -71,6 +71,6 @@ export default defineEventHandler(async (event) => {
   }
 
   return {
-    message: 'Mã OTP đã được gửi lại'
+    message: 'OTP code has been resent'
   }
 })

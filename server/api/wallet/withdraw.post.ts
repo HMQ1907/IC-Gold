@@ -10,14 +10,14 @@ export default defineEventHandler(async (event) => {
   if (!amount || amount <= 0) {
     throw createError({
       statusCode: 400,
-      message: 'Số tiền không hợp lệ'
+      message: 'Invalid amount'
     })
   }
 
   if (!walletAddress) {
     throw createError({
       statusCode: 400,
-      message: 'Địa chỉ ví là bắt buộc'
+      message: 'Wallet address is required'
     })
   }
 
@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
   if (!isValidTrc20Address(walletAddress)) {
     throw createError({
       statusCode: 400,
-      message: 'Địa chỉ ví TRC20 không hợp lệ'
+      message: 'Invalid TRC20 wallet address'
     })
   }
 
@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
   if (amount < minWithdraw) {
     throw createError({
       statusCode: 400,
-      message: `Số tiền rút tối thiểu là $${minWithdraw}`
+      message: `Minimum withdrawal amount is $${minWithdraw}`
     })
   }
 
@@ -42,7 +42,7 @@ export default defineEventHandler(async (event) => {
   if (amount > user.balance) {
     throw createError({
       statusCode: 400,
-      message: 'Số dư không đủ'
+      message: 'Insufficient balance'
     })
   }
 
@@ -57,7 +57,7 @@ export default defineEventHandler(async (event) => {
   if (balanceError) {
     throw createError({
       statusCode: 500,
-      message: 'Không thể trừ số dư'
+      message: 'Failed to deduct balance'
     })
   }
 
@@ -85,20 +85,20 @@ export default defineEventHandler(async (event) => {
     console.error('Create withdraw error:', error)
     throw createError({
       statusCode: 500,
-      message: 'Không thể tạo yêu cầu rút tiền'
+      message: 'Failed to create withdrawal request'
     })
   }
 
   // Create notification
   await createNotification(
     user.id,
-    'Yêu cầu rút tiền đã được gửi',
-    `Yêu cầu rút $${amount} về địa chỉ ${walletAddress.slice(0, 8)}...${walletAddress.slice(-6)} đang chờ xử lý.`,
+    'Withdrawal request submitted',
+    `Your withdrawal request of $${amount} to ${walletAddress.slice(0, 8)}...${walletAddress.slice(-6)} is pending.`,
     'info'
   )
 
   return {
-    message: 'Yêu cầu rút tiền đã được gửi',
+    message: 'Withdrawal request submitted',
     transaction
   }
 })

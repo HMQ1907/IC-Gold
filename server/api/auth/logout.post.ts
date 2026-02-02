@@ -16,6 +16,6 @@ export default defineEventHandler(async (event) => {
   })
 
   return {
-    message: 'Đăng xuất thành công'
+    message: 'Logged out successfully'
   }
 })

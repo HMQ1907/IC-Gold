@@ -1,5 +1,6 @@
 import { createHash, randomBytes } from 'crypto'
 import { customAlphabet } from 'nanoid'
+import bcrypt from 'bcrypt'
 
 // Generate OTP code (6 digits)
 export function generateOtp(): string {
@@ -17,23 +18,15 @@ export function generateReferralCode(): string {
   return nanoidReferral()
 }
 
-// Hash password using crypto (simple implementation)
-// In production, use bcrypt or argon2
-export function hashPassword(password: string): string {
-  const salt = randomBytes(16).toString('hex')
-  const hash = createHash('sha256')
-    .update(password + salt)
-    .digest('hex')
-  return `${salt}:${hash}`
+// Hash password using bcrypt
+export async function hashPassword(password: string): Promise<string> {
+  const saltRounds = 10
+  return bcrypt.hash(password, saltRounds)
 }
 
-// Verify password
-export function verifyPassword(password: string, storedHash: string): boolean {
-  const [salt, hash] = storedHash.split(':')
-  const verifyHash = createHash('sha256')
-    .update(password + salt)
-    .digest('hex')
-  return hash === verifyHash
+// Verify password using bcrypt
+export async function verifyPassword(password: string, storedHash: string): Promise<boolean> {
+  return bcrypt.compare(password, storedHash)
 }
 
 // Validate email format
@@ -51,16 +44,16 @@ export function isValidPhone(phone: string): boolean {
 // Validate password strength
 export function validatePassword(password: string): { valid: boolean; message: string } {
   if (password.length < 8) {
-    return { valid: false, message: 'Mật khẩu phải có ít nhất 8 ký tự' }
+    return { valid: false, message: 'Password must be at least 8 characters' }
   }
   if (!/[A-Z]/.test(password)) {
-    return { valid: false, message: 'Mật khẩu phải có ít nhất 1 chữ hoa' }
+    return { valid: false, message: 'Password must contain at least 1 uppercase letter' }
   }
   if (!/[a-z]/.test(password)) {
-    return { valid: false, message: 'Mật khẩu phải có ít nhất 1 chữ thường' }
+    return { valid: false, message: 'Password must contain at least 1 lowercase letter' }
   }
   if (!/[0-9]/.test(password)) {
-    return { valid: false, message: 'Mật khẩu phải có ít nhất 1 số' }
+    return { valid: false, message: 'Password must contain at least 1 number' }
   }
   return { valid: true, message: '' }
 }

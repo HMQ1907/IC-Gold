@@ -83,7 +83,7 @@
 <script setup lang="ts">
 import { z } from 'zod'
 definePageMeta({ middleware: 'auth' })
-const toast = useToast()
+const toast = useToastCustom()
 const { getDepositAddress, requestDeposit } = useWallet()
 const loadingAddress = ref(true)
 const submitting = ref(false)
@@ -93,14 +93,14 @@ const state = reactive({ amount: null as number | null, txHash: '' })
 
 onMounted(async () => {
   try { depositAddress.value = await getDepositAddress() } 
-  catch { toast.add({ title: 'Error', description: 'Failed to load deposit address', color: 'error' }) } 
+  catch { toast.error('Error', 'Failed to load deposit address') } 
   finally { loadingAddress.value = false }
 })
 
 async function copyAddress() {
   if (!depositAddress.value) return
   await navigator.clipboard.writeText(depositAddress.value.address)
-  toast.add({ title: 'Address copied', color: 'success' })
+  toast.success('Address copied')
 }
 
 async function onSubmit() {

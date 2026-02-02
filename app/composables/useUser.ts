@@ -1,6 +1,6 @@
 export const useUser = () => {
   const { user, refreshUser } = useAuth()
-  const toast = useToast()
+  const toast = useToastCustom()
 
   // Update profile
   async function updateProfile(data: {
@@ -18,16 +18,9 @@ export const useUser = () => {
       }
 
       await refreshUser()
-      toast.add({
-        title: 'Profile updated',
-        color: 'success'
-      })
+      toast.success('Profile updated')
     } catch (error: any) {
-      toast.add({
-        title: 'Update failed',
-        description: error.message,
-        color: 'error'
-      })
+      toast.error('Update failed', error.message)
       throw error
     }
   }
@@ -44,16 +37,9 @@ export const useUser = () => {
         throw new Error(error.value.data?.message || 'Password change failed')
       }
 
-      toast.add({
-        title: 'Password changed successfully',
-        color: 'success'
-      })
+      toast.success('Password changed successfully')
     } catch (error: any) {
-      toast.add({
-        title: 'Password change failed',
-        description: error.message,
-        color: 'error'
-      })
+      toast.error('Password change failed', error.message)
       throw error
     }
   }
@@ -70,17 +56,9 @@ export const useUser = () => {
       }
 
       await refreshUser()
-      toast.add({
-        title: '2FA enabled',
-        description: 'You will need to enter OTP when logging in',
-        color: 'success'
-      })
+      toast.success('2FA enabled', 'You will need to enter OTP when logging in')
     } catch (error: any) {
-      toast.add({
-        title: 'Error',
-        description: error.message,
-        color: 'error'
-      })
+      toast.error('Error', error.message)
       throw error
     }
   }
@@ -98,16 +76,9 @@ export const useUser = () => {
       }
 
       await refreshUser()
-      toast.add({
-        title: '2FA disabled',
-        color: 'success'
-      })
+      toast.success('2FA disabled')
     } catch (error: any) {
-      toast.add({
-        title: 'Error',
-        description: error.message,
-        color: 'error'
-      })
+      toast.error('Error', error.message)
       throw error
     }
   }

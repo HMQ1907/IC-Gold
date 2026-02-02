@@ -114,7 +114,7 @@ export default defineEventHandler(async (event) => {
   }
 
   // Create user
-  const passwordHash = hashPassword(password)
+  const passwordHash = await hashPassword(password)
 
   const { data: newUser, error: userError } = await supabase
     .from('users')

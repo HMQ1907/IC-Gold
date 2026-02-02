@@ -1,7 +1,7 @@
 import type { User, Transaction } from '~~/server/utils/supabase'
 
 export const useAdmin = () => {
-  const toast = useToast()
+  const toast = useToastCustom()
 
   // Get all users
   async function getUsers(params?: {
@@ -48,16 +48,9 @@ export const useAdmin = () => {
         throw new Error(error.value.data?.message || 'Balance adjustment failed')
       }
 
-      toast.add({
-        title: 'Balance adjusted successfully',
-        color: 'success'
-      })
+      toast.success('Balance adjusted successfully')
     } catch (error: any) {
-      toast.add({
-        title: 'Error',
-        description: error.message,
-        color: 'error'
-      })
+      toast.error('Error', error.message)
       throw error
     }
   }
@@ -102,16 +95,13 @@ export const useAdmin = () => {
         throw new Error(error.value.data?.message || 'Transaction processing failed')
       }
 
-      toast.add({
-        title: action === 'approve' ? 'Transaction approved' : 'Transaction rejected',
-        color: action === 'approve' ? 'success' : 'warning'
-      })
+      if (action === 'approve') {
+        toast.success('Transaction approved')
+      } else {
+        toast.warning('Transaction rejected')
+      }
     } catch (error: any) {
-      toast.add({
-        title: 'Error',
-        description: error.message,
-        color: 'error'
-      })
+      toast.error('Error', error.message)
       throw error
     }
   }
@@ -128,16 +118,9 @@ export const useAdmin = () => {
         throw new Error(error.value.data?.message || 'Settings update failed')
       }
 
-      toast.add({
-        title: 'Settings updated successfully',
-        color: 'success'
-      })
+      toast.success('Settings updated successfully')
     } catch (error: any) {
-      toast.add({
-        title: 'Error',
-        description: error.message,
-        color: 'error'
-      })
+      toast.error('Error', error.message)
       throw error
     }
   }

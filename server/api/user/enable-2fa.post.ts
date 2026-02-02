@@ -7,14 +7,14 @@ export default defineEventHandler(async (event) => {
   if (!user.email) {
     throw createError({
       statusCode: 400,
-      message: 'Cần có email để bật 2FA'
+      message: 'Email is required to enable 2FA'
     })
   }
 
   if (user.is_2fa_enabled) {
     throw createError({
       statusCode: 400,
-      message: '2FA đã được bật'
+      message: '2FA is already enabled'
     })
   }
 
@@ -26,11 +26,11 @@ export default defineEventHandler(async (event) => {
   if (error) {
     throw createError({
       statusCode: 500,
-      message: 'Không thể bật 2FA'
+      message: 'Failed to enable 2FA'
     })
   }
 
   return {
-    message: '2FA đã được bật thành công'
+    message: '2FA enabled successfully'
   }
 })

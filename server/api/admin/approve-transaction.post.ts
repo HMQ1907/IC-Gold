@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
   if (!transactionId || !['approve', 'reject'].includes(action)) {
     throw createError({
       statusCode: 400,
-      message: 'Transaction ID và action là bắt buộc'
+      message: 'Transaction ID and action are required'
     })
   }
 
@@ -25,14 +25,14 @@ export default defineEventHandler(async (event) => {
   if (txError || !tx) {
     throw createError({
       statusCode: 404,
-      message: 'Không tìm thấy giao dịch'
+      message: 'Transaction not found'
     })
   }
 
   if (tx.status !== 'pending') {
     throw createError({
       statusCode: 400,
-      message: 'Giao dịch đã được xử lý'
+      message: 'Transaction has already been processed'
     })
   }
 
@@ -52,7 +52,7 @@ export default defineEventHandler(async (event) => {
   if (updateError) {
     throw createError({
       statusCode: 500,
-      message: 'Không thể cập nhật giao dịch'
+      message: 'Failed to update transaction'
     })
   }
 
@@ -84,13 +84,13 @@ export default defineEventHandler(async (event) => {
   })
 
   // Notify user
-  const actionText = action === 'approve' ? 'đã được duyệt' : 'đã bị từ chối'
-  const typeText = tx.type === 'deposit' ? 'Nạp tiền' : 'Rút tiền'
+  const actionText = action === 'approve' ? 'approved' : 'rejected'
+  const typeText = tx.type === 'deposit' ? 'Deposit' : 'Withdrawal'
   
   await createNotification(
     tx.user_id,
     `${typeText} ${actionText}`,
-    `Yêu cầu ${typeText.toLowerCase()} $${tx.amount} ${actionText}${note ? `. Ghi chú: ${note}` : ''}`,
+    `Your ${typeText.toLowerCase()} request of $${tx.amount} has been ${actionText}${note ? `. Note: ${note}` : ''}`,
     action === 'approve' ? 'success' : 'error'
   )
 
@@ -105,7 +105,7 @@ export default defineEventHandler(async (event) => {
   }
 
   return {
-    message: `Giao dịch đã ${action === 'approve' ? 'được duyệt' : 'bị từ chối'}`,
+    message: `Transaction has been ${action === 'approve' ? 'approved' : 'rejected'}`,
     status: newStatus
   }
 })

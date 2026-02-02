@@ -9,14 +9,14 @@ export default defineEventHandler(async (event) => {
   if (!amount || amount <= 0) {
     throw createError({
       statusCode: 400,
-      message: 'Số tiền không hợp lệ'
+      message: 'Invalid amount'
     })
   }
 
   if (!txHash) {
     throw createError({
       statusCode: 400,
-      message: 'Transaction hash là bắt buộc'
+      message: 'Transaction hash is required'
     })
   }
 
@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
   if (amount < minDeposit) {
     throw createError({
       statusCode: 400,
-      message: `Số tiền nạp tối thiểu là $${minDeposit}`
+      message: `Minimum deposit amount is $${minDeposit}`
     })
   }
 
@@ -41,7 +41,7 @@ export default defineEventHandler(async (event) => {
   if (existingTx) {
     throw createError({
       statusCode: 400,
-      message: 'Transaction hash đã được sử dụng'
+      message: 'Transaction hash has already been used'
     })
   }
 
@@ -67,20 +67,20 @@ export default defineEventHandler(async (event) => {
     console.error('Create deposit error:', error)
     throw createError({
       statusCode: 500,
-      message: 'Không thể tạo yêu cầu nạp tiền'
+      message: 'Failed to create deposit request'
     })
   }
 
   // Create notification
   await createNotification(
     user.id,
-    'Yêu cầu nạp tiền đã được gửi',
-    `Yêu cầu nạp $${amount} đang chờ xác nhận. Vui lòng đợi admin xử lý.`,
+    'Deposit request submitted',
+    `Your deposit request of $${amount} is pending confirmation. Please wait for admin processing.`,
     'info'
   )
 
   return {
-    message: 'Yêu cầu nạp tiền đã được gửi',
+    message: 'Deposit request submitted',
     transaction
   }
 })
