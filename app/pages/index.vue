@@ -62,7 +62,7 @@
                   <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=029" class="w-8 h-8" alt="BTC" />
                   <span class="text-white font-bold">BTC/USDT</span>
                 </div>
-                <UBadge color="green" variant="subtle">+2.34%</UBadge>
+                <span class="text-white text-sm font-medium">+2.34%</span>
               </div>
               
               <!-- Mini chart placeholder -->
@@ -88,9 +88,9 @@
                   <p class="text-gray-400 text-sm">Current Price</p>
                   <p class="text-2xl font-bold text-white">$67,432.50</p>
                 </div>
-                <UButton to="/auth/register" color="primary" size="sm">
+                <NuxtLink to="/auth/register" class="text-white hover:text-amber-500 text-sm font-medium transition-colors">
                   Trade Now
-                </UButton>
+                </NuxtLink>
               </div>
             </div>
 
@@ -202,7 +202,7 @@
 
         <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
           <div class="text-center">
-            <div class="w-20 h-20 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-gray-900">
+            <div class="w-20 h-20 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white">
               1
             </div>
             <h3 class="text-xl font-bold text-white mb-3">Create Account</h3>
@@ -212,7 +212,7 @@
           </div>
 
           <div class="text-center">
-            <div class="w-20 h-20 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-gray-900">
+            <div class="w-20 h-20 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white">
               2
             </div>
             <h3 class="text-xl font-bold text-white mb-3">Deposit Funds</h3>
@@ -222,7 +222,7 @@
           </div>
 
           <div class="text-center">
-            <div class="w-20 h-20 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-gray-900">
+            <div class="w-20 h-20 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white">
               3
             </div>
             <h3 class="text-xl font-bold text-white mb-3">Start Investing</h3>
@@ -245,7 +245,7 @@
           Sign up now and get special offers!
         </p>
         <div class="flex flex-wrap justify-center gap-4">
-          <UButton to="/auth/register" color="white" size="xl" class="font-semibold text-amber-600">
+          <UButton to="/auth/register" color="primary" size="xl" class="font-semibold">
             Sign Up Free
           </UButton>
           <UButton to="/auth/login" variant="outline" size="xl" class="!text-white !border-white">

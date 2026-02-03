@@ -45,7 +45,7 @@
           <a 
             href="https://t.me/icgold_support" 
             target="_blank"
-            class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-amber-500 hover:bg-amber-600 text-gray-900 font-semibold rounded-xl transition-colors"
+            class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-xl transition-colors cursor-pointer"
           >
             <UIcon name="i-simple-icons-telegram" class="w-5 h-5" />
             Telegram

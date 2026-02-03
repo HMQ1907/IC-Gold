@@ -50,7 +50,12 @@ export const useAuth = () => {
       if (response.user) {
         authState.user = response.user
         toast.success('Login successful', 'Welcome back!')
-        await router.push('/dashboard')
+        // Admin goes to admin panel, regular user goes to dashboard
+        if (response.user.is_admin) {
+          await router.push('/admin')
+        } else {
+          await router.push('/dashboard')
+        }
         return { success: true }
       }
     } catch (error: any) {
@@ -101,7 +106,12 @@ export const useAuth = () => {
       if (response.user) {
         authState.user = response.user
         toast.success('Verification successful', 'Your account has been activated')
-        await router.push('/dashboard')
+        // Admin goes to admin panel, regular user goes to dashboard
+        if (response.user.is_admin) {
+          await router.push('/admin')
+        } else {
+          await router.push('/dashboard')
+        }
         return { success: true }
       }
     } catch (error: any) {

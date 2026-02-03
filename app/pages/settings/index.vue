@@ -1,51 +1,199 @@
 <template>
   <div class="container mx-auto px-4 py-8">
-    <div class="max-w-2xl mx-auto">
+    <div class="max-w-3xl mx-auto">
+      <!-- Header -->
       <div class="mb-8">
-        <h1 class="text-2xl font-bold text-white mb-2">Account Settings</h1>
+        <h1 class="text-3xl font-bold text-white mb-2">Account Settings</h1>
         <p class="text-gray-400">Manage your account information and security</p>
       </div>
 
-      <UCard class="bg-gray-900 border-gray-800 mb-6">
-        <template #header><h3 class="text-white font-semibold">Personal Information</h3></template>
-        <div class="space-y-4">
-          <UFormField label="Full Name"><UInput v-model="profile.fullName" placeholder="Enter your name" size="lg" /></UFormField>
-          <UFormField label="Email"><UInput :model-value="user?.email || ''" disabled size="lg" /></UFormField>
-          <UFormField label="Phone"><UInput v-model="profile.phone" placeholder="Enter phone number" size="lg" /></UFormField>
-          <UButton color="primary" :loading="savingProfile" @click="saveProfile">Save Changes</UButton>
-        </div>
-      </UCard>
-
-      <UCard class="bg-gray-900 border-gray-800 mb-6">
-        <template #header><h3 class="text-white font-semibold">Security</h3></template>
-        <div class="space-y-6">
-          <div class="flex items-center justify-between p-4 bg-gray-800 rounded-lg">
-            <div>
-              <p class="text-white font-medium">Two-Factor Authentication (2FA)</p>
-              <p class="text-gray-400 text-sm">Secure your account with OTP via email</p>
+      <div class="grid gap-6">
+        <!-- Personal Information -->
+        <div class="bg-gray-900/80 backdrop-blur border border-gray-800 rounded-2xl overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-800 bg-gray-800/50">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-amber-500/20 rounded-xl flex items-center justify-center">
+                <UIcon name="i-heroicons-user-circle" class="w-5 h-5 text-amber-500" />
+              </div>
+              <div>
+                <h3 class="text-white font-semibold">Personal Information</h3>
+                <p class="text-gray-500 text-sm">Update your profile details</p>
+              </div>
             </div>
-            <USwitch :model-value="user?.is_2fa_enabled || false" @update:model-value="toggle2FA" />
           </div>
-          <USeparator />
-          <h4 class="text-white font-medium">Change Password</h4>
-          <UFormField label="Current Password"><UInput v-model="password.current" type="password" placeholder="Enter current password" size="lg" /></UFormField>
-          <UFormField label="New Password"><UInput v-model="password.new" type="password" placeholder="Enter new password" size="lg" /></UFormField>
-          <UFormField label="Confirm New Password"><UInput v-model="password.confirm" type="password" placeholder="Re-enter new password" size="lg" /></UFormField>
-          <UButton color="primary" :loading="changingPassword" @click="handleChangePassword">Change Password</UButton>
+          <div class="p-6">
+            <div class="grid md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Full Name</label>
+                <input 
+                  v-model="profile.fullName" 
+                  placeholder="Enter your name" 
+                  class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Phone Number</label>
+                <input 
+                  v-model="profile.phone" 
+                  placeholder="Enter phone number" 
+                  class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors"
+                />
+              </div>
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
+                <input 
+                  :value="user?.email || ''" 
+                  disabled 
+                  class="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-xl text-gray-300 cursor-not-allowed"
+                />
+                <p class="text-gray-500 text-xs mt-1">Email cannot be changed</p>
+              </div>
+            </div>
+            <div class="mt-6 flex justify-end">
+              <button 
+                :disabled="savingProfile" 
+                @click="saveProfile" 
+                class="px-6 py-3 bg-amber-500 hover:bg-amber-600 disabled:bg-amber-500/50 text-white font-semibold rounded-xl transition-colors flex items-center gap-2 cursor-pointer"
+              >
+                <UIcon v-if="savingProfile" name="i-heroicons-arrow-path" class="w-5 h-5 animate-spin" />
+                <UIcon v-else name="i-heroicons-check" class="w-5 h-5" />
+                Save Changes
+              </button>
+            </div>
+          </div>
         </div>
-      </UCard>
 
-      <UCard class="bg-gray-900 border-gray-800">
-        <template #header><h3 class="text-white font-semibold">Account Information</h3></template>
-        <div class="space-y-4">
-          <div class="flex items-center justify-between p-4 bg-gray-800 rounded-lg"><span class="text-gray-400">Account ID</span><span class="text-white font-mono">#{{ user?.id }}</span></div>
-          <div class="flex items-center justify-between p-4 bg-gray-800 rounded-lg">
-            <span class="text-gray-400">Referral Code</span>
-            <div class="flex items-center gap-2"><code class="text-amber-500">{{ user?.referral_code }}</code><UButton color="neutral" variant="ghost" icon="i-heroicons-clipboard-document" size="xs" @click="copyReferralCode" /></div>
+        <!-- Security Section -->
+        <div class="bg-gray-900/80 backdrop-blur border border-gray-800 rounded-2xl overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-800 bg-gray-800/50">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-green-500/20 rounded-xl flex items-center justify-center">
+                <UIcon name="i-heroicons-shield-check" class="w-5 h-5 text-green-500" />
+              </div>
+              <div>
+                <h3 class="text-white font-semibold">Security</h3>
+                <p class="text-gray-500 text-sm">Manage your security preferences</p>
+              </div>
+            </div>
           </div>
-          <div class="flex items-center justify-between p-4 bg-gray-800 rounded-lg"><span class="text-gray-400">Account Created</span><span class="text-white">{{ formatDate(user?.created_at || '') }}</span></div>
+          <div class="p-6 space-y-6">
+            <!-- 2FA Toggle -->
+            <div class="flex items-center justify-between p-4 bg-gray-800/50 border border-gray-700 rounded-xl">
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
+                  <UIcon name="i-heroicons-device-phone-mobile" class="w-6 h-6 text-blue-500" />
+                </div>
+                <div>
+                  <p class="text-white font-medium">Two-Factor Authentication (2FA)</p>
+                  <p class="text-gray-400 text-sm">Secure your account with OTP via email</p>
+                </div>
+              </div>
+              <USwitch :model-value="user?.is_2fa_enabled || false" @update:model-value="toggle2FA" />
+            </div>
+
+            <!-- Change Password -->
+            <div class="border-t border-gray-800 pt-6">
+              <h4 class="text-white font-semibold mb-4 flex items-center gap-2">
+                <UIcon name="i-heroicons-key" class="w-5 h-5 text-amber-500" />
+                Change Password
+              </h4>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-300 mb-2">Current Password</label>
+                  <input 
+                    v-model="password.current" 
+                    type="password" 
+                    placeholder="Enter current password" 
+                    class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors"
+                  />
+                </div>
+                <div class="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">New Password</label>
+                    <input 
+                      v-model="password.new" 
+                      type="password" 
+                      placeholder="Enter new password" 
+                      class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Confirm New Password</label>
+                    <input 
+                      v-model="password.confirm" 
+                      type="password" 
+                      placeholder="Re-enter new password" 
+                      class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="mt-6 flex justify-end">
+                <button 
+                  :disabled="changingPassword" 
+                  @click="handleChangePassword" 
+                  class="px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600/50 text-white font-semibold rounded-xl transition-colors flex items-center gap-2 cursor-pointer"
+                >
+                  <UIcon v-if="changingPassword" name="i-heroicons-arrow-path" class="w-5 h-5 animate-spin" />
+                  <UIcon v-else name="i-heroicons-arrow-path" class="w-5 h-5" />
+                  Change Password
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-      </UCard>
+
+        <!-- Account Information -->
+        <div class="bg-gray-900/80 backdrop-blur border border-gray-800 rounded-2xl overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-800 bg-gray-800/50">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-purple-500/20 rounded-xl flex items-center justify-center">
+                <UIcon name="i-heroicons-identification" class="w-5 h-5 text-purple-500" />
+              </div>
+              <div>
+                <h3 class="text-white font-semibold">Account Information</h3>
+                <p class="text-gray-500 text-sm">Your account details</p>
+              </div>
+            </div>
+          </div>
+          <div class="p-6">
+            <div class="grid gap-3">
+              <div class="flex items-center justify-between p-4 bg-gray-800/30 border border-gray-800 rounded-xl hover:bg-gray-800/50 transition-colors">
+                <div class="flex items-center gap-3">
+                  <UIcon name="i-heroicons-hashtag" class="w-5 h-5 text-gray-500" />
+                  <span class="text-gray-400">Account ID</span>
+                </div>
+                <span class="text-white font-mono font-medium">#{{ user?.id }}</span>
+              </div>
+              
+              <div class="flex items-center justify-between p-4 bg-gray-800/30 border border-gray-800 rounded-xl hover:bg-gray-800/50 transition-colors">
+                <div class="flex items-center gap-3">
+                  <UIcon name="i-heroicons-gift" class="w-5 h-5 text-gray-500" />
+                  <span class="text-gray-400">Referral Code</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <code class="text-amber-500 font-bold text-lg">{{ user?.referral_code }}</code>
+                  <button 
+                    @click="copyReferralCode" 
+                    class="p-2 hover:bg-gray-700 rounded-lg transition-colors cursor-pointer"
+                    title="Copy referral code"
+                  >
+                    <UIcon name="i-heroicons-clipboard-document" class="w-5 h-5 text-gray-400 hover:text-white" />
+                  </button>
+                </div>
+              </div>
+              
+              <div class="flex items-center justify-between p-4 bg-gray-800/30 border border-gray-800 rounded-xl hover:bg-gray-800/50 transition-colors">
+                <div class="flex items-center gap-3">
+                  <UIcon name="i-heroicons-calendar-days" class="w-5 h-5 text-gray-500" />
+                  <span class="text-gray-400">Account Created</span>
+                </div>
+                <span class="text-white font-medium">{{ formatDate(user?.created_at || '') }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>

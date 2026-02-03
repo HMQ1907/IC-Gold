@@ -10,9 +10,7 @@
     <header class="relative py-6 px-4">
       <div class="container mx-auto">
         <NuxtLink to="/" class="inline-flex items-center gap-2 hover:opacity-80 transition-opacity">
-          <div class="w-10 h-10 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg flex items-center justify-center">
-            <span class="text-xl font-bold text-gray-900">IC</span>
-          </div>
+          <img src="/IC-Gold-TRC20/logo.png" alt="IC-Gold" class="w-10 h-10 rounded-lg object-cover" />
           <span class="text-xl font-bold text-white">IC-Gold</span>
         </NuxtLink>
       </div>

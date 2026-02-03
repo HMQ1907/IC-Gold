@@ -33,7 +33,7 @@
       <p class="text-gray-400 mb-4">{{ error }}</p>
       <button 
         @click="fetchPrices"
-        class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-gray-900 font-medium rounded-lg transition-colors"
+        class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg transition-colors cursor-pointer"
       >
         Try Again
       </button>

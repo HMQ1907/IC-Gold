@@ -31,7 +31,7 @@
             <div class="flex gap-2">
               <NuxtLink 
                 to="/wallet/deposit" 
-                class="flex-1 py-2 px-4 bg-amber-500 hover:bg-amber-600 text-gray-900 font-semibold rounded-lg text-center text-sm transition-colors"
+                class="flex-1 py-2 px-4 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-lg text-center text-sm transition-colors cursor-pointer"
               >
                 Deposit More
               </NuxtLink>
@@ -57,7 +57,7 @@
               <div class="space-y-3">
                 <NuxtLink 
                   to="/auth/register" 
-                  class="block w-full py-3 px-4 bg-amber-500 hover:bg-amber-600 text-gray-900 font-semibold rounded-xl text-center transition-colors"
+                  class="block w-full py-3 px-4 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-xl text-center transition-colors cursor-pointer"
                 >
                   Create Free Account
                 </NuxtLink>

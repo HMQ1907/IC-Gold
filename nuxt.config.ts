@@ -31,7 +31,8 @@ export default defineNuxtConfig({
       supabaseUrl: process.env.SUPABASE_URL,
       supabaseKey: process.env.SUPABASE_KEY,
       siteName: 'IC-Gold',
-      siteDescription: 'Leading crypto investment platform'
+      siteDescription: 'Leading crypto investment platform',
+      telegramSupportLink: process.env.TELEGRAM_SUPPORT_LINK || 'https://t.me/ic_gold_support'
     }
   },
 

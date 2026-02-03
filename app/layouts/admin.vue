@@ -5,9 +5,7 @@
       <!-- Logo -->
       <div class="p-6 border-b border-gray-800">
         <NuxtLink to="/admin" class="flex items-center gap-2">
-          <div class="w-10 h-10 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg flex items-center justify-center">
-            <span class="text-xl font-bold text-gray-900">IC</span>
-          </div>
+          <img src="/IC-Gold-TRC20/logo.png" alt="IC-Gold" class="w-10 h-10 rounded-lg object-cover" />
           <div>
             <span class="text-xl font-bold text-white">IC-Gold</span>
             <span class="block text-xs text-amber-500">Admin Panel</span>
@@ -39,19 +37,16 @@
           />
           <div class="flex-1 min-w-0">
             <p class="text-sm font-medium text-white truncate">{{ user?.full_name || 'Admin' }}</p>
-            <p class="text-xs text-gray-500 truncate">{{ user?.email }}</p>
+            <p class="text-xs text-gray-400 truncate">{{ user?.email }}</p>
           </div>
         </div>
-        <UButton
-          color="neutral"
-          variant="ghost"
-          block
-          class="mt-2"
+        <button
           @click="logout"
+          class="mt-2 w-full flex items-center justify-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white font-medium rounded-lg transition-colors cursor-pointer"
         >
-          <UIcon name="i-heroicons-arrow-right-on-rectangle" class="w-4 h-4 mr-2" />
-          Logout
-        </UButton>
+          <UIcon name="i-heroicons-arrow-right-on-rectangle" class="w-4 h-4" />
+          Đăng xuất
+        </button>
       </div>
     </aside>
 
@@ -59,9 +54,7 @@
     <div class="lg:hidden fixed top-0 left-0 right-0 z-50 bg-gray-900 border-b border-gray-800">
       <div class="flex items-center justify-between p-4">
         <NuxtLink to="/admin" class="flex items-center gap-2">
-          <div class="w-8 h-8 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg flex items-center justify-center">
-            <span class="text-sm font-bold text-gray-900">IC</span>
-          </div>
+          <img src="/IC-Gold-TRC20/logo.png" alt="IC-Gold" class="w-8 h-8 rounded-lg object-cover" />
           <span class="font-bold text-white">Admin</span>
         </NuxtLink>
         <UButton
@@ -105,9 +98,10 @@ const mobileMenuOpen = ref(false)
 const { user, logout } = useAuth()
 
 const navItems = [
-  { to: '/admin', label: 'Dashboard', icon: 'i-heroicons-home' },
-  { to: '/admin/users', label: 'Manage Users', icon: 'i-heroicons-users' },
-  { to: '/admin/transactions', label: 'Transactions', icon: 'i-heroicons-banknotes' },
-  { to: '/admin/settings', label: 'Settings', icon: 'i-heroicons-cog-6-tooth' },
+  { to: '/admin', label: 'Tổng quan', icon: 'i-heroicons-home' },
+  { to: '/admin/users', label: 'Quản lý Users', icon: 'i-heroicons-users' },
+  { to: '/admin/transactions', label: 'Giao dịch', icon: 'i-heroicons-banknotes' },
+  { to: '/admin/wallets', label: 'Ví TRC20', icon: 'i-heroicons-wallet' },
+  { to: '/admin/settings', label: 'Cài đặt', icon: 'i-heroicons-cog-6-tooth' },
 ]
 </script>

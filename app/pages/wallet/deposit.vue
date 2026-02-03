@@ -2,72 +2,124 @@
   <div class="container mx-auto px-4 py-8">
     <div class="max-w-2xl mx-auto">
       <div class="mb-8">
-        <h1 class="text-2xl font-bold text-white mb-2">Deposit</h1>
+        <h1 class="text-3xl font-bold text-white mb-2">Deposit</h1>
         <p class="text-gray-400">Deposit USDT via TRC20 network</p>
       </div>
 
-      <UCard class="bg-gray-900 border-gray-800">
-        <div class="mb-6">
-          <div class="flex items-center gap-2 mb-4">
-            <div class="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center text-sm font-bold text-gray-900">1</div>
-            <h3 class="text-white font-semibold">Send USDT to this address</h3>
+      <!-- Step 1: QR Code & Address -->
+      <div class="bg-gray-900/80 backdrop-blur border border-gray-800 rounded-2xl overflow-hidden mb-6">
+        <div class="px-6 py-4 border-b border-gray-800 bg-gray-800/50">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center text-white font-bold">1</div>
+            <div>
+              <h3 class="text-white font-semibold">Send USDT to this address</h3>
+              <p class="text-gray-500 text-sm">Scan QR code or copy wallet address</p>
+            </div>
           </div>
-
+        </div>
+        
+        <div class="p-6">
           <div v-if="loadingAddress" class="flex items-center justify-center py-8">
             <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 text-gray-500 animate-spin" />
           </div>
 
           <div v-else-if="depositAddress" class="space-y-4">
             <div class="bg-white p-4 rounded-xl w-fit mx-auto">
-              <div class="w-48 h-48 bg-gray-200 rounded flex items-center justify-center">
-                <span class="text-gray-500 text-xs text-center px-4">QR Code for<br/>{{ depositAddress.address.slice(0, 12) }}...</span>
-              </div>
+              <img 
+                :src="`/IC-Gold-TRC20/${depositAddress.address}.jpg`" 
+                :alt="depositAddress.address"
+                class="w-48 h-48 rounded object-contain"
+                @error="handleQrError"
+              />
             </div>
 
-            <div class="bg-gray-800 rounded-lg p-4">
+            <div class="bg-gray-800/50 border border-gray-700 rounded-xl p-4">
               <p class="text-gray-400 text-sm mb-2">TRC20 Wallet Address:</p>
               <div class="flex items-center gap-2">
-                <code class="flex-1 text-amber-500 text-sm break-all">{{ depositAddress.address }}</code>
-                <UButton color="neutral" variant="ghost" icon="i-heroicons-clipboard-document" @click="copyAddress" />
+                <code class="flex-1 text-amber-500 font-medium break-all">{{ depositAddress.address }}</code>
+                <button 
+                  @click="copyAddress" 
+                  class="p-2 hover:bg-gray-700 rounded-lg transition-colors cursor-pointer"
+                  title="Copy address"
+                >
+                  <UIcon name="i-heroicons-clipboard-document" class="w-5 h-5 text-white" />
+                </button>
               </div>
             </div>
 
-            <UAlert color="primary" variant="subtle" icon="i-heroicons-exclamation-triangle" title="Important" description="Only send USDT via TRC20 network. Sending via wrong network may result in permanent loss of funds." />
+            <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4">
+              <div class="flex gap-3">
+                <UIcon name="i-heroicons-exclamation-triangle" class="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p class="text-amber-500 font-semibold mb-1">Important</p>
+                  <p class="text-gray-300 text-sm">Only send USDT via TRC20 network. Sending via wrong network may result in permanent loss of funds.</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
 
-        <USeparator class="my-6" />
-
-        <div>
-          <div class="flex items-center gap-2 mb-4">
-            <div class="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center text-sm font-bold text-gray-900">2</div>
-            <h3 class="text-white font-semibold">Enter transaction details</h3>
+      <!-- Step 2: Transaction Details -->
+      <div class="bg-gray-900/80 backdrop-blur border border-gray-800 rounded-2xl overflow-hidden mb-6">
+        <div class="px-6 py-4 border-b border-gray-800 bg-gray-800/50">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center text-white font-bold">2</div>
+            <div>
+              <h3 class="text-white font-semibold">Enter transaction details</h3>
+              <p class="text-gray-500 text-sm">Fill in the amount and transaction hash</p>
+            </div>
           </div>
+        </div>
+        
+        <div class="p-6">
+          <form @submit.prevent="onSubmit" class="space-y-5">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <label class="text-sm font-medium text-gray-300">Amount (USDT)</label>
+                <span class="text-gray-500 text-sm">Minimum: $10</span>
+              </div>
+              <input 
+                v-model.number="state.amount" 
+                type="number" 
+                placeholder="100" 
+                class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors"
+              />
+            </div>
 
-          <UForm :schema="schema" :state="state" @submit="onSubmit" class="space-y-4">
-            <UFormField label="Amount (USDT)" name="amount">
-              <UInput v-model.number="state.amount" type="number" placeholder="100" icon="i-heroicons-currency-dollar" size="lg">
-                <template #trailing><span class="text-gray-500">USDT</span></template>
-              </UInput>
-              <template #hint><span class="text-gray-500">Minimum: $10</span></template>
-            </UFormField>
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <label class="text-sm font-medium text-gray-300">Transaction Hash (TxID)</label>
+                <span class="text-gray-500 text-sm">Get this from your wallet after successful transfer</span>
+              </div>
+              <input 
+                v-model="state.txHash" 
+                type="text" 
+                placeholder="Enter transaction hash from your wallet" 
+                class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors"
+              />
+            </div>
 
-            <UFormField label="Transaction Hash (TxID)" name="txHash">
-              <UInput v-model="state.txHash" placeholder="Enter transaction hash from your wallet" icon="i-heroicons-hashtag" size="lg" />
-              <template #hint><span class="text-gray-500">Get this from your wallet after successful transfer</span></template>
-            </UFormField>
-
-            <UButton type="submit" color="primary" block size="lg" :loading="submitting">
-              <UIcon name="i-heroicons-arrow-up-tray" class="w-5 h-5 mr-2" />
+            <button 
+              type="submit" 
+              :disabled="submitting || !state.amount || !state.txHash"
+              class="w-full py-4 bg-amber-500 hover:bg-amber-600 disabled:bg-gray-700 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <UIcon v-if="submitting" name="i-heroicons-arrow-path" class="w-5 h-5 animate-spin" />
+              <UIcon v-else name="i-heroicons-arrow-up-tray" class="w-5 h-5" />
               Confirm Deposit
-            </UButton>
-          </UForm>
+            </button>
+          </form>
         </div>
-      </UCard>
+      </div>
 
-      <div class="mt-6 bg-gray-900 border border-gray-800 rounded-xl p-6">
-        <h4 class="text-white font-semibold mb-4">How to Deposit</h4>
-        <ol class="space-y-3 text-gray-400">
+      <!-- How to Deposit -->
+      <div class="bg-gray-900/80 backdrop-blur border border-gray-800 rounded-2xl p-6">
+        <h4 class="text-white font-semibold mb-4 flex items-center gap-2">
+          <UIcon name="i-heroicons-question-mark-circle" class="w-5 h-5 text-amber-500" />
+          How to Deposit
+        </h4>
+        <ol class="space-y-3 text-gray-300">
           <li class="flex gap-3"><span class="text-amber-500 font-bold">1.</span>Copy the TRC20 wallet address above</li>
           <li class="flex gap-3"><span class="text-amber-500 font-bold">2.</span>Open your crypto wallet and select send USDT via TRC20 network</li>
           <li class="flex gap-3"><span class="text-amber-500 font-bold">3.</span>Paste the wallet address and enter the amount</li>
@@ -81,14 +133,12 @@
 </template>
 
 <script setup lang="ts">
-import { z } from 'zod'
 definePageMeta({ middleware: 'auth' })
 const toast = useToastCustom()
 const { getDepositAddress, requestDeposit } = useWallet()
 const loadingAddress = ref(true)
 const submitting = ref(false)
 const depositAddress = ref<{ address: string; network: string } | null>(null)
-const schema = z.object({ amount: z.number().min(10, 'Minimum amount is $10'), txHash: z.string().min(10, 'Invalid transaction hash') })
 const state = reactive({ amount: null as number | null, txHash: '' })
 
 onMounted(async () => {
@@ -101,6 +151,11 @@ async function copyAddress() {
   if (!depositAddress.value) return
   await navigator.clipboard.writeText(depositAddress.value.address)
   toast.success('Address copied')
+}
+
+function handleQrError(event: Event) {
+  const img = event.target as HTMLImageElement
+  img.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" fill="%23ccc"><rect width="192" height="192"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23999" font-size="12">QR Code</text></svg>'
 }
 
 async function onSubmit() {

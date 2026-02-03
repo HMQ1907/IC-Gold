@@ -5,9 +5,7 @@
         <!-- Brand -->
         <div class="col-span-1 md:col-span-2">
           <NuxtLink to="/" class="flex items-center gap-2 mb-4">
-            <div class="w-10 h-10 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg flex items-center justify-center">
-              <span class="text-xl font-bold text-gray-900">IC</span>
-            </div>
+            <img src="/IC-Gold-TRC20/logo.png" alt="IC-Gold" class="w-10 h-10 rounded-lg object-cover" />
             <span class="text-xl font-bold text-white">IC-Gold</span>
           </NuxtLink>
           <p class="text-gray-400 mb-4 max-w-md">
@@ -15,9 +13,9 @@
             high security and attractive returns.
           </p>
           <div class="flex gap-4">
-            <UButton color="neutral" variant="ghost" icon="i-simple-icons-telegram" size="lg" />
-            <UButton color="neutral" variant="ghost" icon="i-simple-icons-twitter" size="lg" />
-            <UButton color="neutral" variant="ghost" icon="i-simple-icons-facebook" size="lg" />
+            <a :href="telegramLink" target="_blank" rel="noopener noreferrer">
+              <UButton color="neutral" variant="ghost" icon="i-simple-icons-telegram" size="lg" />
+            </a>
           </div>
         </div>
 
@@ -63,8 +61,9 @@
               </NuxtLink>
             </li>
             <li>
-              <a href="mailto:support@ic-gold.com" class="text-gray-400 hover:text-amber-500 transition-colors">
-                support@ic-gold.com
+              <a :href="telegramLink" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-amber-500 transition-colors flex items-center gap-2">
+                <UIcon name="i-simple-icons-telegram" class="w-4 h-4" />
+                Contact Support
               </a>
             </li>
           </ul>
@@ -85,5 +84,6 @@
 </template>
 
 <script setup lang="ts">
-// Footer component
+const runtimeConfig = useRuntimeConfig()
+const telegramLink = computed(() => runtimeConfig.public.telegramSupportLink || 'https://t.me/ic_gold_support')
 </script>

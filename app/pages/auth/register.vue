@@ -138,7 +138,7 @@
         <button
           type="submit"
           :disabled="loading || !agreeTerms || !isFormValid"
-          class="w-full py-3 px-4 bg-amber-500 hover:bg-amber-600 disabled:bg-gray-700 disabled:text-gray-500 disabled:cursor-not-allowed text-gray-900 font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 mt-6"
+          class="w-full py-3 px-4 bg-amber-500 hover:bg-amber-600 disabled:bg-gray-700 disabled:text-gray-500 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 mt-6 cursor-pointer"
         >
           <UIcon v-if="loading" name="i-heroicons-arrow-path" class="w-5 h-5 animate-spin" />
           {{ loading ? 'Creating account...' : 'Sign Up' }}

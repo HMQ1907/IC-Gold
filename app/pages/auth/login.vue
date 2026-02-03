@@ -67,7 +67,7 @@
         <button
           type="submit"
           :disabled="loading"
-          class="w-full py-3 px-4 bg-amber-500 hover:bg-amber-600 disabled:bg-amber-500/50 disabled:cursor-not-allowed text-gray-900 font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
+          class="w-full py-3 px-4 bg-amber-500 hover:bg-amber-600 disabled:bg-amber-500/50 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
         >
           <UIcon v-if="loading" name="i-heroicons-arrow-path" class="w-5 h-5 animate-spin" />
           {{ loading ? 'Signing in...' : 'Sign In' }}
