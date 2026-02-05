@@ -1,15 +1,15 @@
 <template>
   <div>
     <div class="text-center mb-8">
-      <h1 class="text-3xl font-bold text-white mb-2">Create Account</h1>
-      <p class="text-gray-400">Start your investment journey</p>
+      <h1 class="text-3xl font-bold text-white mb-2">{{ $t('auth.registerButton') }}</h1>
+      <p class="text-gray-400">{{ locale === 'vi' ? 'Bắt đầu hành trình đầu tư của bạn' : 'Start your investment journey' }}</p>
     </div>
 
     <div class="bg-gray-800/50 border border-gray-700 rounded-2xl p-6 sm:p-8">
       <form @submit.prevent="onSubmit" class="space-y-4">
         <!-- Full Name -->
         <div>
-          <label class="block text-sm font-medium text-gray-300 mb-2">Full Name</label>
+          <label class="block text-sm font-medium text-gray-300 mb-2">{{ $t('auth.fullName') }}</label>
           <div class="relative">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <UIcon name="i-heroicons-user" class="w-5 h-5 text-gray-500" />
@@ -17,7 +17,7 @@
             <input
               v-model="state.fullName"
               type="text"
-              placeholder="John Doe"
+              :placeholder="$t('auth.fullNamePlaceholder')"
               class="w-full pl-10 pr-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors"
             />
           </div>
@@ -25,7 +25,7 @@
 
         <!-- Email -->
         <div>
-          <label class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+          <label class="block text-sm font-medium text-gray-300 mb-2">{{ $t('auth.email') }}</label>
           <div class="relative">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <UIcon name="i-heroicons-envelope" class="w-5 h-5 text-gray-500" />
@@ -33,7 +33,7 @@
             <input
               v-model="state.email"
               type="email"
-              placeholder="email@example.com"
+              :placeholder="$t('auth.emailPlaceholder')"
               class="w-full pl-10 pr-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors"
               required
             />
@@ -42,7 +42,7 @@
 
         <!-- Phone -->
         <div>
-          <label class="block text-sm font-medium text-gray-300 mb-2">Phone (optional)</label>
+          <label class="block text-sm font-medium text-gray-300 mb-2">{{ locale === 'vi' ? 'Số điện thoại (tùy chọn)' : 'Phone (optional)' }}</label>
           <div class="relative">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <UIcon name="i-heroicons-phone" class="w-5 h-5 text-gray-500" />
@@ -59,8 +59,8 @@
         <!-- Password -->
         <div>
           <div class="flex items-center justify-between mb-2">
-            <label class="block text-sm font-medium text-gray-300">Password</label>
-            <span class="text-xs text-gray-500">Min 8 chars, uppercase, lowercase, number</span>
+            <label class="block text-sm font-medium text-gray-300">{{ $t('auth.password') }}</label>
+            <span class="text-xs text-gray-500">{{ locale === 'vi' ? 'Tối thiểu 8 ký tự, chữ hoa, chữ thường, số' : 'Min 8 chars, uppercase, lowercase, number' }}</span>
           </div>
           <div class="relative">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -85,7 +85,7 @@
 
         <!-- Confirm Password -->
         <div>
-          <label class="block text-sm font-medium text-gray-300 mb-2">Confirm Password</label>
+          <label class="block text-sm font-medium text-gray-300 mb-2">{{ $t('auth.confirmPassword') }}</label>
           <div class="relative">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <UIcon name="i-heroicons-lock-closed" class="w-5 h-5 text-gray-500" />
@@ -99,13 +99,13 @@
             />
           </div>
           <p v-if="state.confirmPassword && state.password !== state.confirmPassword" class="mt-1 text-sm text-red-500">
-            Passwords do not match
+            {{ $t('errors.passwordMismatch') }}
           </p>
         </div>
 
         <!-- Referral Code -->
         <div>
-          <label class="block text-sm font-medium text-gray-300 mb-2">Referral Code (optional)</label>
+          <label class="block text-sm font-medium text-gray-300 mb-2">{{ $t('auth.referralCode') }}</label>
           <div class="relative">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <UIcon name="i-heroicons-gift" class="w-5 h-5 text-gray-500" />
@@ -113,7 +113,7 @@
             <input
               v-model="state.referralCode"
               type="text"
-              placeholder="ABCD1234"
+              :placeholder="$t('auth.referralCodePlaceholder')"
               class="w-full pl-10 pr-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors"
             />
           </div>
@@ -127,10 +127,10 @@
             class="mt-1 w-4 h-4 rounded border-gray-600 bg-gray-900 text-amber-500 focus:ring-amber-500 focus:ring-offset-gray-900"
           />
           <span class="text-sm text-gray-400">
-            I agree to the
-            <NuxtLink to="/support/terms" class="text-amber-500 hover:text-amber-400">Terms of Service</NuxtLink>
-            and
-            <NuxtLink to="/support/terms" class="text-amber-500 hover:text-amber-400">Privacy Policy</NuxtLink>
+            {{ locale === 'vi' ? 'Tôi đồng ý với' : 'I agree to the' }}
+            <NuxtLink to="/support/terms" class="text-amber-500 hover:text-amber-400">{{ $t('footer.termsOfService') }}</NuxtLink>
+            {{ locale === 'vi' ? 'và' : 'and' }}
+            <NuxtLink to="/support/terms" class="text-amber-500 hover:text-amber-400">{{ $t('footer.privacyPolicy') }}</NuxtLink>
           </span>
         </label>
 
@@ -141,7 +141,7 @@
           class="w-full py-3 px-4 bg-amber-500 hover:bg-amber-600 disabled:bg-gray-700 disabled:text-gray-500 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 mt-6 cursor-pointer"
         >
           <UIcon v-if="loading" name="i-heroicons-arrow-path" class="w-5 h-5 animate-spin" />
-          {{ loading ? 'Creating account...' : 'Sign Up' }}
+          {{ loading ? $t('common.loading') : $t('nav.signUp') }}
         </button>
       </form>
 
@@ -151,15 +151,15 @@
           <div class="w-full border-t border-gray-700"></div>
         </div>
         <div class="relative flex justify-center text-sm">
-          <span class="px-4 bg-gray-800/50 text-gray-500">or</span>
+          <span class="px-4 bg-gray-800/50 text-gray-500">{{ locale === 'vi' ? 'hoặc' : 'or' }}</span>
         </div>
       </div>
 
       <!-- Login link -->
       <p class="text-center text-gray-400">
-        Already have an account?
+        {{ $t('auth.hasAccount') }}
         <NuxtLink to="/auth/login" class="text-amber-500 hover:text-amber-400 font-medium transition-colors">
-          Sign In
+          {{ $t('nav.signIn') }}
         </NuxtLink>
       </p>
     </div>
@@ -175,6 +175,7 @@ definePageMeta({
 const { register } = useAuth()
 const router = useRouter()
 const route = useRoute()
+const { locale } = useI18n()
 
 const loading = ref(false)
 const showPassword = ref(false)

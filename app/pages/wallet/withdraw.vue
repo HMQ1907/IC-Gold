@@ -2,13 +2,13 @@
   <div class="container mx-auto px-4 py-8">
     <div class="max-w-2xl mx-auto">
       <div class="mb-8">
-        <h1 class="text-3xl font-bold text-white mb-2">Withdraw</h1>
-        <p class="text-gray-400">Withdraw USDT to your TRC20 wallet</p>
+        <h1 class="text-3xl font-bold text-white mb-2">{{ $t('wallet.withdrawTitle') }}</h1>
+        <p class="text-gray-400">{{ $t('wallet.withdrawDesc') }}</p>
       </div>
 
       <!-- Balance Card -->
       <div class="bg-gradient-to-br from-amber-500 to-amber-700 rounded-2xl p-6 mb-6">
-        <p class="text-amber-100 text-sm mb-1">Available Balance</p>
+        <p class="text-amber-100 text-sm mb-1">{{ $t('wallet.availableBalance') }}</p>
         <p class="text-4xl font-bold text-white">${{ formatNumber(user?.balance || 0) }}</p>
       </div>
 
@@ -20,8 +20,8 @@
               <UIcon name="i-heroicons-arrow-up-tray" class="w-5 h-5 text-red-500" />
             </div>
             <div>
-              <h3 class="text-white font-semibold">Withdrawal Details</h3>
-              <p class="text-gray-500 text-sm">Enter amount and wallet address</p>
+              <h3 class="text-white font-semibold">{{ locale === 'vi' ? 'Chi tiết rút tiền' : 'Withdrawal Details' }}</h3>
+              <p class="text-gray-500 text-sm">{{ locale === 'vi' ? 'Nhập số tiền và địa chỉ ví' : 'Enter amount and wallet address' }}</p>
             </div>
           </div>
         </div>
@@ -115,6 +115,7 @@
 definePageMeta({ middleware: 'auth' })
 const { user } = useAuth()
 const { requestWithdraw } = useWallet()
+const { locale } = useI18n()
 const submitting = ref(false)
 const state = reactive({ amount: null as number | null, walletAddress: '' })
 const canWithdraw = computed(() => state.amount && state.amount >= 50 && state.amount <= (user.value?.balance || 0) && state.walletAddress.length > 0)

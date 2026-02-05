@@ -11,14 +11,15 @@
     "seed": "tsx supabase/seed.ts"
   },
   "dependencies": {
-    "bcrypt": "^5.1.1",
     "@iconify-json/heroicons": "^1.2.3",
     "@iconify-json/lucide": "^1.2.87",
     "@iconify-json/simple-icons": "^1.2.68",
     "@nuxt/ui": "^4.4.0",
+    "@nuxtjs/i18n": "^10.2.1",
     "@supabase/supabase-js": "^2.49.1",
     "@vueuse/core": "^14.2.0",
     "@vueuse/nuxt": "^14.2.0",
+    "bcrypt": "^5.1.1",
     "nanoid": "^5.1.6",
     "nuxt": "^4.3.0",
     "resend": "^6.9.1",

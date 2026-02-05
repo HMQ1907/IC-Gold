@@ -23,6 +23,9 @@
 
         <!-- Right side -->
         <div class="flex items-center gap-3">
+          <!-- Language Switcher -->
+          <LayoutLanguageSwitcher />
+
           <!-- Notifications -->
           <button
             v-if="user"
@@ -64,7 +67,7 @@
                     @click="dropdownOpen = false"
                   >
                     <UIcon name="i-heroicons-home" class="w-4 h-4" />
-                    Dashboard
+                    {{ $t('nav.dashboard') }}
                   </NuxtLink>
                   <NuxtLink 
                     to="/settings" 
@@ -72,7 +75,7 @@
                     @click="dropdownOpen = false"
                   >
                     <UIcon name="i-heroicons-cog-6-tooth" class="w-4 h-4" />
-                    Settings
+                    {{ $t('nav.settings') }}
                   </NuxtLink>
                   <NuxtLink 
                     v-if="user?.is_admin"
@@ -81,7 +84,7 @@
                     @click="dropdownOpen = false"
                   >
                     <UIcon name="i-heroicons-shield-check" class="w-4 h-4" />
-                    Admin Panel
+                    {{ $t('nav.adminPanel') }}
                   </NuxtLink>
                   <div class="border-t border-gray-700 my-1"></div>
                   <button 
@@ -89,7 +92,7 @@
                     class="flex items-center gap-2 px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white w-full text-left cursor-pointer"
                   >
                     <UIcon name="i-heroicons-arrow-right-on-rectangle" class="w-4 h-4" />
-                    Logout
+                    {{ $t('nav.logout') }}
                   </button>
                 </div>
               </Transition>
@@ -102,13 +105,13 @@
               to="/auth/login" 
               class="px-4 py-2 rounded-lg text-gray-200 hover:text-white hover:bg-gray-800 transition-colors font-medium"
             >
-              Sign In
+              {{ $t('nav.signIn') }}
             </NuxtLink>
             <NuxtLink 
               to="/auth/register" 
               class="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white font-semibold transition-colors cursor-pointer"
             >
-              Sign Up
+              {{ $t('nav.signUp') }}
             </NuxtLink>
           </template>
         </div>
@@ -119,22 +122,23 @@
 
 <script setup lang="ts">
 const { user, logout } = useAuth()
+const { t } = useI18n()
 
 const navItems = computed(() => {
   if (!user.value) {
     return [
-      { to: '/', label: 'Home' },
-      { to: '/trade', label: 'Trade' },
-      { to: '/support/faq', label: 'FAQ' },
-      { to: '/support/terms', label: 'Terms' },
+      { to: '/', label: t('nav.home') },
+      { to: '/trade', label: t('nav.trade') },
+      { to: '/support/faq', label: t('nav.faq') },
+      { to: '/support/terms', label: t('nav.terms') },
     ]
   }
   return [
-    { to: '/dashboard', label: 'Dashboard' },
-    { to: '/trade', label: 'Trade' },
-    { to: '/wallet/deposit', label: 'Deposit' },
-    { to: '/wallet/withdraw', label: 'Withdraw' },
-    { to: '/referral', label: 'Referral' },
+    { to: '/dashboard', label: t('nav.dashboard') },
+    { to: '/trade', label: t('nav.trade') },
+    { to: '/wallet/deposit', label: t('nav.deposit') },
+    { to: '/wallet/withdraw', label: t('nav.withdraw') },
+    { to: '/referral', label: t('nav.referral') },
   ]
 })
 

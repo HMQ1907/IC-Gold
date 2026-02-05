@@ -17,24 +17,25 @@
 
 <script setup lang="ts">
 const { user } = useAuth()
+const { t } = useI18n()
 
 const navItems = computed(() => {
   if (!user.value) {
     // Menu for guests
     return [
-      { to: '/', label: 'Home', icon: 'i-heroicons-home' },
-      { to: '/trade', label: 'Trade', icon: 'i-heroicons-chart-bar' },
-      { to: '/support/faq', label: 'FAQ', icon: 'i-heroicons-question-mark-circle' },
-      { to: '/auth/login', label: 'Sign In', icon: 'i-heroicons-arrow-right-on-rectangle' },
+      { to: '/', label: t('nav.home'), icon: 'i-heroicons-home' },
+      { to: '/trade', label: t('nav.trade'), icon: 'i-heroicons-chart-bar' },
+      { to: '/support/faq', label: t('nav.faq'), icon: 'i-heroicons-question-mark-circle' },
+      { to: '/auth/login', label: t('nav.signIn'), icon: 'i-heroicons-arrow-right-on-rectangle' },
     ]
   }
   // Menu for logged-in users
   return [
-    { to: '/dashboard', label: 'Home', icon: 'i-heroicons-home' },
-    { to: '/trade', label: 'Trade', icon: 'i-heroicons-chart-bar' },
-    { to: '/wallet/deposit', label: 'Deposit', icon: 'i-heroicons-plus-circle' },
-    { to: '/wallet/withdraw', label: 'Withdraw', icon: 'i-heroicons-minus-circle' },
-    { to: '/settings', label: 'Settings', icon: 'i-heroicons-cog-6-tooth' },
+    { to: '/dashboard', label: t('nav.home'), icon: 'i-heroicons-home' },
+    { to: '/trade', label: t('nav.trade'), icon: 'i-heroicons-chart-bar' },
+    { to: '/wallet/deposit', label: t('nav.deposit'), icon: 'i-heroicons-plus-circle' },
+    { to: '/wallet/withdraw', label: t('nav.withdraw'), icon: 'i-heroicons-minus-circle' },
+    { to: '/settings', label: t('nav.settings'), icon: 'i-heroicons-cog-6-tooth' },
   ]
 })
 </script>

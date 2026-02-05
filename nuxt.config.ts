@@ -10,8 +10,27 @@ export default defineNuxtConfig({
 
   modules: [
     '@nuxt/ui',
-    '@vueuse/nuxt'
+    '@vueuse/nuxt',
+    '@nuxtjs/i18n'
   ],
+
+  // i18n configuration
+  i18n: {
+    locales: [
+      { code: 'en', name: 'English', file: 'en.json' },
+      { code: 'vi', name: 'Tiếng Việt', file: 'vi.json' }
+    ],
+    defaultLocale: 'en',
+    lazy: true,
+    langDir: '../locales',
+    strategy: 'no_prefix',
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      redirectOn: 'root'
+    },
+    vueI18n: '../i18n/i18n.config.ts'
+  },
 
   // Global CSS
   css: ['~/assets/css/main.css'],

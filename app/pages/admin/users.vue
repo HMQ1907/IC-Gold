@@ -8,9 +8,14 @@
     </div>
 
     <!-- Search and Bulk Actions -->
-    <div class="mb-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+    <div
+      class="mb-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between"
+    >
       <div class="relative max-w-md w-full">
-        <UIcon name="i-heroicons-magnifying-glass" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+        <UIcon
+          name="i-heroicons-magnifying-glass"
+          class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+        />
         <input
           v-model="search"
           type="text"
@@ -19,7 +24,7 @@
           @input="debouncedSearch"
         />
       </div>
-      
+
       <!-- Bulk Actions Bar -->
       <Transition
         enter-active-class="transition ease-out duration-200"
@@ -29,8 +34,13 @@
         leave-from-class="opacity-100 translate-y-0"
         leave-to-class="opacity-0 translate-y-1"
       >
-        <div v-if="selectedUsers.length > 0" class="flex items-center gap-3 bg-gray-800 border border-gray-700 rounded-xl px-4 py-2">
-          <span class="text-amber-500 font-medium">{{ selectedUsers.length }} đã chọn</span>
+        <div
+          v-if="selectedUsers.length > 0"
+          class="flex items-center gap-3 bg-gray-800 border border-gray-700 rounded-xl px-4 py-2"
+        >
+          <span class="text-amber-500 font-medium"
+            >{{ selectedUsers.length }} đã chọn</span
+          >
           <div class="w-px h-6 bg-gray-700"></div>
           <button
             @click="openBulkAdjustModal"
@@ -63,8 +73,8 @@
             <tr>
               <th class="px-4 py-3 text-left">
                 <label class="flex items-center gap-2 cursor-pointer">
-                  <input 
-                    type="checkbox" 
+                  <input
+                    type="checkbox"
                     :checked="isAllSelected"
                     :indeterminate="isPartiallySelected"
                     @change="toggleSelectAll"
@@ -104,8 +114,8 @@
             >
               <td class="px-4 py-4">
                 <label class="flex items-center gap-2 cursor-pointer">
-                  <input 
-                    type="checkbox" 
+                  <input
+                    type="checkbox"
                     :checked="isUserSelected(user.id)"
                     @change="toggleUserSelection(user)"
                     class="w-5 h-5 rounded border-gray-600 bg-gray-800 text-amber-500 focus:ring-amber-500 focus:ring-offset-0 cursor-pointer"
@@ -231,7 +241,9 @@
 
     <!-- Bulk Adjust Percentage Modal -->
     <UModal v-model="showBulkAdjustModal">
-      <div class="bg-gray-900 border border-gray-700 rounded-2xl overflow-hidden mt-5">
+      <div
+        class="bg-gray-900 border border-gray-700 rounded-2xl overflow-hidden mt-5"
+      >
         <div class="px-6 py-4 border-b border-gray-800 bg-gray-800/50">
           <h3 class="text-white font-semibold text-lg flex items-center gap-2">
             <UIcon name="i-heroicons-users" class="w-5 h-5 text-amber-500" />
@@ -241,107 +253,161 @@
         <div class="p-6 space-y-5">
           <!-- Selected Users Info -->
           <div class="bg-gray-800/50 border border-gray-700 rounded-xl p-4">
-            <p class="text-gray-400 text-sm mb-2">Đã chọn {{ selectedUsers.length }} người dùng:</p>
+            <p class="text-gray-400 text-sm mb-2">
+              Đã chọn {{ selectedUsers.length }} người dùng:
+            </p>
             <div class="flex flex-wrap gap-2 max-h-24 overflow-y-auto">
-              <span 
-                v-for="user in selectedUsers" 
+              <span
+                v-for="user in selectedUsers"
                 :key="user.id"
                 class="inline-flex items-center gap-1 px-2 py-1 bg-gray-700 rounded-lg text-sm text-white"
               >
                 {{ user.email || user.phone }}
-                <span class="text-amber-500 font-medium">${{ user.balance.toLocaleString() }}</span>
+                <span class="text-amber-500 font-medium"
+                  >${{ user.balance.toLocaleString() }}</span
+                >
               </span>
             </div>
           </div>
-          
+
           <!-- Total Balance Preview -->
-          <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4">
+          <div
+            class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4"
+          >
             <p class="text-gray-300 text-sm mb-1">Tổng số dư hiện tại:</p>
-            <p class="text-amber-500 font-bold text-2xl">${{ totalSelectedBalance.toLocaleString() }}</p>
+            <p class="text-amber-500 font-bold text-2xl">
+              ${{ totalSelectedBalance.toLocaleString() }}
+            </p>
           </div>
-          
+
           <!-- Percentage Input -->
           <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2">Phần trăm điều chỉnh (%)</label>
+            <label class="block text-sm font-medium text-gray-300 mb-2"
+              >Phần trăm điều chỉnh (%)</label
+            >
             <div class="flex gap-3">
               <div class="flex-1 relative">
-                <input 
-                  v-model.number="bulkPercentage" 
-                  type="number" 
+                <input
+                  v-model.number="bulkPercentage"
+                  type="number"
                   step="0.1"
                   placeholder="VD: 10 để tăng 10%, -5 để giảm 5%"
                   class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors"
                 />
-                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 font-medium">%</span>
+                <span
+                  class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 font-medium"
+                  >%</span
+                >
               </div>
             </div>
             <div class="flex gap-2 mt-3">
-              <button 
-                v-for="preset in [-10, -5, 5, 10, 20, 50]" 
+              <button
+                v-for="preset in [-10, -5, 5, 10, 20, 50]"
                 :key="preset"
                 @click="bulkPercentage = preset"
                 class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors cursor-pointer"
-                :class="preset > 0 ? 'bg-green-500/20 text-green-400 hover:bg-green-500/30' : 'bg-red-500/20 text-red-400 hover:bg-red-500/30'"
+                :class="
+                  preset > 0
+                    ? 'bg-green-500/20 text-green-400 hover:bg-green-500/30'
+                    : 'bg-red-500/20 text-red-400 hover:bg-red-500/30'
+                "
               >
-                {{ preset > 0 ? '+' : '' }}{{ preset }}%
+                {{ preset > 0 ? "+" : "" }}{{ preset }}%
               </button>
             </div>
           </div>
-          
+
           <!-- Preview Changes -->
-          <div v-if="bulkPercentage" class="bg-gray-800/50 border border-gray-700 rounded-xl p-4">
+          <div
+            v-if="bulkPercentage"
+            class="bg-gray-800/50 border border-gray-700 rounded-xl p-4"
+          >
             <p class="text-gray-300 text-sm mb-3">Xem trước thay đổi:</p>
             <div class="space-y-2 max-h-32 overflow-y-auto">
-              <div 
-                v-for="user in selectedUsers" 
+              <div
+                v-for="user in selectedUsers"
                 :key="user.id"
                 class="flex items-center justify-between text-sm"
               >
-                <span class="text-gray-400">{{ user.email || user.phone }}</span>
+                <span class="text-gray-400">{{
+                  user.email || user.phone
+                }}</span>
                 <div class="flex items-center gap-2">
-                  <span class="text-gray-400">${{ user.balance.toLocaleString() }}</span>
-                  <UIcon name="i-heroicons-arrow-right" class="w-4 h-4 text-gray-500" />
-                  <span :class="bulkPercentage >= 0 ? 'text-green-400' : 'text-red-400'" class="font-medium">
+                  <span class="text-gray-400"
+                    >${{ user.balance.toLocaleString() }}</span
+                  >
+                  <UIcon
+                    name="i-heroicons-arrow-right"
+                    class="w-4 h-4 text-gray-500"
+                  />
+                  <span
+                    :class="
+                      bulkPercentage >= 0 ? 'text-green-400' : 'text-red-400'
+                    "
+                    class="font-medium"
+                  >
                     ${{ calculateNewBalance(user.balance).toLocaleString() }}
                   </span>
-                  <span :class="bulkPercentage >= 0 ? 'text-green-400/60' : 'text-red-400/60'" class="text-xs">
-                    ({{ bulkPercentage >= 0 ? '+' : '' }}${{ calculateAdjustment(user.balance).toLocaleString() }})
+                  <span
+                    :class="
+                      bulkPercentage >= 0
+                        ? 'text-green-400/60'
+                        : 'text-red-400/60'
+                    "
+                    class="text-xs"
+                  >
+                    ({{ bulkPercentage >= 0 ? "+" : "" }}${{
+                      calculateAdjustment(user.balance).toLocaleString()
+                    }})
                   </span>
                 </div>
               </div>
             </div>
-            <div class="mt-3 pt-3 border-t border-gray-700 flex items-center justify-between font-medium">
+            <div
+              class="mt-3 pt-3 border-t border-gray-700 flex items-center justify-between font-medium"
+            >
               <span class="text-gray-300">Tổng sau điều chỉnh:</span>
-              <span :class="bulkPercentage >= 0 ? 'text-green-400' : 'text-red-400'" class="text-lg">
+              <span
+                :class="bulkPercentage >= 0 ? 'text-green-400' : 'text-red-400'"
+                class="text-lg"
+              >
                 ${{ totalNewBalance.toLocaleString() }}
               </span>
             </div>
           </div>
-          
+
           <!-- Note -->
           <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2">Ghi chú</label>
-            <textarea 
-              v-model="bulkNote" 
+            <label class="block text-sm font-medium text-gray-300 mb-2"
+              >Ghi chú</label
+            >
+            <textarea
+              v-model="bulkNote"
               placeholder="Lý do điều chỉnh..."
               rows="2"
               class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors resize-none"
             ></textarea>
           </div>
         </div>
-        <div class="px-6 py-4 border-t border-gray-800 bg-gray-800/30 flex justify-end gap-3">
-          <button 
+        <div
+          class="px-6 py-4 border-t border-gray-800 bg-gray-800/30 flex justify-end gap-3"
+        >
+          <button
             @click="showBulkAdjustModal = false"
             class="px-5 py-2.5 bg-gray-700 hover:bg-gray-600 text-white font-medium rounded-xl transition-colors cursor-pointer"
           >
             Hủy
           </button>
-          <button 
+          <button
             @click="submitBulkAdjust"
             :disabled="bulkAdjusting || !bulkPercentage"
             class="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 disabled:bg-amber-500/50 disabled:cursor-not-allowed text-white font-medium rounded-xl transition-colors cursor-pointer flex items-center gap-2"
           >
-            <UIcon v-if="bulkAdjusting" name="i-heroicons-arrow-path" class="w-4 h-4 animate-spin" />
+            <UIcon
+              v-if="bulkAdjusting"
+              name="i-heroicons-arrow-path"
+              class="w-4 h-4 animate-spin"
+            />
             <span v-if="bulkAdjusting">Đang xử lý...</span>
             <span v-else>Xác nhận điều chỉnh</span>
           </button>
@@ -377,25 +443,31 @@ const bulkNote = ref("");
 const bulkAdjusting = ref(false);
 
 // Computed properties for selection
-const isAllSelected = computed(() => 
-  users.value.length > 0 && selectedUsers.value.length === users.value.length
+const isAllSelected = computed(
+  () =>
+    users.value.length > 0 && selectedUsers.value.length === users.value.length,
 );
-const isPartiallySelected = computed(() => 
-  selectedUsers.value.length > 0 && selectedUsers.value.length < users.value.length
+const isPartiallySelected = computed(
+  () =>
+    selectedUsers.value.length > 0 &&
+    selectedUsers.value.length < users.value.length,
 );
-const totalSelectedBalance = computed(() => 
-  selectedUsers.value.reduce((sum, user) => sum + (user.balance || 0), 0)
+const totalSelectedBalance = computed(() =>
+  selectedUsers.value.reduce((sum, user) => sum + (user.balance || 0), 0),
 );
-const totalNewBalance = computed(() => 
-  selectedUsers.value.reduce((sum, user) => sum + calculateNewBalance(user.balance), 0)
+const totalNewBalance = computed(() =>
+  selectedUsers.value.reduce(
+    (sum, user) => sum + calculateNewBalance(user.balance),
+    0,
+  ),
 );
 
 function isUserSelected(userId: number) {
-  return selectedUsers.value.some(u => u.id === userId);
+  return selectedUsers.value.some((u) => u.id === userId);
 }
 
 function toggleUserSelection(user: any) {
-  const index = selectedUsers.value.findIndex(u => u.id === user.id);
+  const index = selectedUsers.value.findIndex((u) => u.id === user.id);
   if (index === -1) {
     selectedUsers.value.push(user);
   } else {
@@ -434,7 +506,7 @@ function openBulkAdjustModal() {
 
 async function submitBulkAdjust() {
   if (!bulkPercentage.value || selectedUsers.value.length === 0) return;
-  
+
   bulkAdjusting.value = true;
   let successCount = 0;
   let errorCount = 0;
@@ -446,7 +518,7 @@ async function submitBulkAdjust() {
         await adjustBalance(
           user.id,
           adjustmentAmount,
-          bulkNote.value || `Điều chỉnh ${bulkPercentage.value}% số dư`
+          bulkNote.value || `Điều chỉnh ${bulkPercentage.value}% số dư`,
         );
         successCount++;
       } catch {
@@ -458,14 +530,14 @@ async function submitBulkAdjust() {
       toast.success(`Đã điều chỉnh thành công ${successCount} người dùng`);
     }
     if (errorCount > 0) {
-      toast.error('Lỗi', `${errorCount} người dùng không thể điều chỉnh`);
+      toast.error("Lỗi", `${errorCount} người dùng không thể điều chỉnh`);
     }
 
     showBulkAdjustModal.value = false;
     clearSelection();
     loadUsers();
   } catch {
-    toast.error('Lỗi', 'Đã xảy ra lỗi khi điều chỉnh số dư');
+    toast.error("Lỗi", "Đã xảy ra lỗi khi điều chỉnh số dư");
   } finally {
     bulkAdjusting.value = false;
   }

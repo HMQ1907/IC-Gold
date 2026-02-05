@@ -3,9 +3,9 @@
     <!-- Welcome -->
     <div class="mb-8">
       <h1 class="text-2xl font-bold text-white mb-2">
-        Hello, {{ user?.full_name || "Trader" }}! 👋
+        {{ $t('dashboard.hello') }}, {{ user?.full_name || $t('dashboard.trader') }}! 👋
       </h1>
-      <p class="text-gray-400">Here's your account overview</p>
+      <p class="text-gray-400">{{ $t('dashboard.accountOverview') }}</p>
     </div>
 
     <!-- Balance Card & Quick Actions -->
@@ -16,28 +16,28 @@
 
       <!-- Quick Actions -->
       <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6">
-        <h3 class="text-white font-semibold mb-4">Quick Actions</h3>
+        <h3 class="text-white font-semibold mb-4">{{ $t('dashboard.quickActions') }}</h3>
         <div class="space-y-3">
           <NuxtLink
             to="/trade"
             class="flex items-center gap-3 w-full px-4 py-3 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-white rounded-xl transition-colors cursor-pointer"
           >
             <UIcon name="i-heroicons-chart-bar" class="w-5 h-5 text-amber-500" />
-            <span class="font-medium">Copy Trade</span>
+            <span class="font-medium">{{ $t('dashboard.copyTrade') }}</span>
           </NuxtLink>
           <NuxtLink
             to="/referral"
             class="flex items-center gap-3 w-full px-4 py-3 bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white rounded-xl transition-colors cursor-pointer"
           >
             <UIcon name="i-heroicons-gift" class="w-5 h-5 text-purple-500" />
-            <span class="font-medium">Refer Friends</span>
+            <span class="font-medium">{{ $t('dashboard.referFriends') }}</span>
           </NuxtLink>
           <NuxtLink
             to="/wallet/history"
             class="flex items-center gap-3 w-full px-4 py-3 bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white rounded-xl transition-colors cursor-pointer"
           >
             <UIcon name="i-heroicons-clock" class="w-5 h-5 text-blue-500" />
-            <span class="font-medium">Transaction History</span>
+            <span class="font-medium">{{ $t('dashboard.transactionHistory') }}</span>
           </NuxtLink>
         </div>
       </div>
@@ -63,9 +63,9 @@
       <div
         class="p-4 border-b border-gray-800 flex items-center justify-between"
       >
-        <h3 class="text-white font-semibold">Recent Transactions</h3>
+        <h3 class="text-white font-semibold">{{ $t('dashboard.recentTransactions') }}</h3>
         <UButton to="/wallet/history" color="neutral" variant="ghost" size="sm">
-          View All
+          {{ $t('common.viewAll') }}
         </UButton>
       </div>
 
@@ -80,7 +80,7 @@
         v-else-if="!transactions?.length"
         class="p-8 text-center text-gray-500"
       >
-        No transactions yet
+        {{ $t('dashboard.noTransactions') }}
       </div>
 
       <div v-else class="divide-y divide-gray-800">
@@ -148,10 +148,10 @@
           </p>
           <div class="flex gap-4">
             <NuxtLink to="/trade" class="px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-xl transition-colors cursor-pointer">
-              Start Copy Trade
+              {{ $t('dashboard.copyTrade') }}
             </NuxtLink>
             <NuxtLink to="/referral" class="px-6 py-3 border border-gray-600 hover:border-gray-500 text-white font-medium rounded-xl transition-colors cursor-pointer">
-              Refer Friends
+              {{ $t('dashboard.referFriends') }}
             </NuxtLink>
           </div>
         </div>
@@ -176,6 +176,7 @@ definePageMeta({
 
 const { user } = useAuth();
 const { getTransactions } = useWallet();
+const { t } = useI18n();
 
 const loading = ref(true);
 const transactions = ref<Transaction[]>([]);
@@ -253,11 +254,11 @@ function getTransactionStyle(type: string) {
 
 function getTransactionLabel(type: string) {
   const labels: Record<string, string> = {
-    deposit: "Deposit",
-    withdraw: "Withdrawal",
-    referral_bonus: "Referral Bonus",
-    admin_adjust: "Adjustment",
-    copy_trade: "Copy Trade",
+    deposit: t('wallet.type.deposit'),
+    withdraw: t('wallet.type.withdraw'),
+    referral_bonus: t('wallet.type.referral_bonus'),
+    admin_adjust: 'Adjustment',
+    copy_trade: 'Copy Trade',
   };
   return labels[type] || type;
 }
@@ -276,10 +277,10 @@ function getStatusColor(status: string) {
 function getStatusLabel(status: string) {
   return (
     {
-      pending: "Pending",
-      completed: "Completed",
-      rejected: "Rejected",
-      cancelled: "Cancelled",
+      pending: t('wallet.status.pending'),
+      completed: t('wallet.status.completed'),
+      rejected: t('wallet.status.rejected'),
+      cancelled: 'Cancelled',
     }[status] || status
   );
 }

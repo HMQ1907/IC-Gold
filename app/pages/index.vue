@@ -13,27 +13,26 @@
           <div>
             <div class="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 rounded-full px-4 py-2 mb-6">
               <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-              <span class="text-amber-500 text-sm font-medium">#1 Investment Platform</span>
+              <span class="text-amber-500 text-sm font-medium">{{ $t('home.platformBadge') }}</span>
             </div>
 
             <h1 class="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-              Invest in <span class="text-amber-500">Crypto</span>
+              {{ $t('home.heroTitle1') }} <span class="text-amber-500">{{ $t('home.heroTitle2') }}</span>
               <br />
-              Earn <span class="text-amber-500">Smart</span>
+              {{ $t('home.heroTitle3') }} <span class="text-amber-500">{{ $t('home.heroTitle4') }}</span>
             </h1>
 
             <p class="text-xl text-gray-400 mb-8 max-w-lg">
-              Join IC-Gold to experience the most advanced crypto investment platform. 
-              Copy Trade from experts, track real-time markets, and earn attractive referral rewards.
+              {{ $t('home.heroDescription') }}
             </p>
 
             <div class="flex flex-wrap gap-4">
               <UButton to="/auth/register" color="primary" size="xl" class="font-semibold">
-                Get Started
+                {{ $t('common.getStarted') }}
                 <UIcon name="i-heroicons-arrow-right" class="w-5 h-5 ml-2" />
               </UButton>
               <UButton to="/support/faq" color="neutral" variant="outline" size="xl">
-                Learn More
+                {{ $t('common.learnMore') }}
               </UButton>
             </div>
 
@@ -41,15 +40,15 @@
             <div class="flex flex-wrap gap-8 mt-12">
               <div>
                 <p class="text-3xl font-bold text-white">$10M+</p>
-                <p class="text-gray-500">Trading Volume</p>
+                <p class="text-gray-500">{{ $t('home.tradingVolume') }}</p>
               </div>
               <div>
                 <p class="text-3xl font-bold text-white">50K+</p>
-                <p class="text-gray-500">Users</p>
+                <p class="text-gray-500">{{ $t('home.users') }}</p>
               </div>
               <div>
                 <p class="text-3xl font-bold text-white">99.9%</p>
-                <p class="text-gray-500">Uptime</p>
+                <p class="text-gray-500">{{ $t('home.uptime') }}</p>
               </div>
             </div>
           </div>
@@ -85,11 +84,11 @@
 
               <div class="flex items-center justify-between mt-4">
                 <div>
-                  <p class="text-gray-400 text-sm">Current Price</p>
+                  <p class="text-gray-400 text-sm">{{ $t('home.currentPrice') }}</p>
                   <p class="text-2xl font-bold text-white">$67,432.50</p>
                 </div>
                 <NuxtLink to="/auth/register" class="text-white hover:text-amber-500 text-sm font-medium transition-colors">
-                  Trade Now
+                  {{ $t('common.tradeNow') }}
                 </NuxtLink>
               </div>
             </div>
@@ -111,10 +110,10 @@
       <div class="container mx-auto px-4">
         <div class="text-center mb-16">
           <h2 class="text-3xl lg:text-4xl font-bold text-white mb-4">
-            Why Choose IC-Gold?
+            {{ $t('home.whyChoose') }}
           </h2>
           <p class="text-gray-400 max-w-2xl mx-auto">
-            Comprehensive crypto investment platform with advanced technology and top expert team
+            {{ $t('home.whyChooseDesc') }}
           </p>
         </div>
 
@@ -193,10 +192,10 @@
       <div class="container mx-auto px-4">
         <div class="text-center mb-16">
           <h2 class="text-3xl lg:text-4xl font-bold text-white mb-4">
-            Get Started in 3 Steps
+            {{ $t('home.howItWorks') }}
           </h2>
           <p class="text-gray-400 max-w-2xl mx-auto">
-            Simple, fast, and secure process
+            {{ $t('home.howItWorksDesc') }}
           </p>
         </div>
 
@@ -205,9 +204,9 @@
             <div class="w-20 h-20 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white">
               1
             </div>
-            <h3 class="text-xl font-bold text-white mb-3">Create Account</h3>
+            <h3 class="text-xl font-bold text-white mb-3">{{ $t('home.step1Title') }}</h3>
             <p class="text-gray-400">
-              Create a free account in just 2 minutes with email or phone number
+              {{ $t('home.step1Desc') }}
             </p>
           </div>
 
@@ -215,9 +214,9 @@
             <div class="w-20 h-20 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white">
               2
             </div>
-            <h3 class="text-xl font-bold text-white mb-3">Deposit Funds</h3>
+            <h3 class="text-xl font-bold text-white mb-3">{{ $t('home.step2Title') }}</h3>
             <p class="text-gray-400">
-              Deposit USDT via TRC20 network to start investing
+              {{ $t('home.step2Desc') }}
             </p>
           </div>
 
@@ -225,9 +224,9 @@
             <div class="w-20 h-20 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white">
               3
             </div>
-            <h3 class="text-xl font-bold text-white mb-3">Start Investing</h3>
+            <h3 class="text-xl font-bold text-white mb-3">{{ $t('home.step3Title') }}</h3>
             <p class="text-gray-400">
-              Track the market and use Copy Trade to earn profits
+              {{ $t('home.step3Desc') }}
             </p>
           </div>
         </div>
@@ -238,18 +237,17 @@
     <section class="py-20 bg-gradient-to-r from-amber-600 to-amber-700">
       <div class="container mx-auto px-4 text-center">
         <h2 class="text-3xl lg:text-4xl font-bold text-white mb-4">
-          Ready to Start Investing?
+          {{ $t('home.readyToStart') }}
         </h2>
         <p class="text-amber-100 text-xl mb-8 max-w-2xl mx-auto">
-          Join thousands of investors who trust IC-Gold. 
-          Sign up now and get special offers!
+          {{ $t('home.readyToStartDesc') }}
         </p>
         <div class="flex flex-wrap justify-center gap-4">
           <UButton to="/auth/register" color="primary" size="xl" class="font-semibold">
-            Sign Up Free
+            {{ $t('home.createFreeAccount') }}
           </UButton>
           <UButton to="/auth/login" variant="outline" size="xl" class="!text-white !border-white">
-            Already have an account? Login
+            {{ $t('auth.hasAccount') }} {{ $t('auth.login') }}
           </UButton>
         </div>
       </div>
