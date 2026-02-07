@@ -194,7 +194,10 @@
     "ofTotalAssets": "tổng tài sản",
     "stopping": "Đang dừng...",
     "stopCopyTrade": "Dừng Copy Trade",
-    "copyTradeInfoBox": "Copy Trade sẽ tự động sao chép 5% tài sản của bạn theo giao dịch của chuyên gia. Lợi nhuận được cộng trực tiếp vào tài khoản của bạn."
+    "copyTradeInfoBox": "Copy Trade sẽ tự động sao chép 5% tài sản của bạn theo giao dịch của chuyên gia. Lợi nhuận được cộng trực tiếp vào tài khoản của bạn.",
+    "copyTradeReminderTitle": "🔔 Bật Copy Trade Ngay!",
+    "copyTradeReminderDesc": "Đây là khung giờ vàng giao dịch! Bật Copy Trade để tự động sao chép các chuyên gia và tối đa hóa lợi nhuận của bạn.",
+    "copyTradeReminderHint": "Nhấn nút Copy Trade ở trên để bắt đầu"
   },
   "referral": {
     "title": "Chương trình giới thiệu",

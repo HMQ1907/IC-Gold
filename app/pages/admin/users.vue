@@ -88,7 +88,7 @@
                 Mã giới thiệu
               </th>
               <th class="px-4 py-3 text-left text-gray-200 font-medium text-sm">
-                Chuỗi giới thiệu
+                Đã giới thiệu
               </th>
               <th class="px-4 py-3 text-left text-gray-200 font-medium text-sm">
                 Trạng thái
@@ -151,39 +151,31 @@
               </td>
               <td class="px-4 py-4">
                 <div
-                  v-if="
-                    user.referral_hierarchy?.parent ||
-                    user.referral_hierarchy?.grandparent
-                  "
-                  class="flex flex-col gap-1 text-xs"
+                  v-if="user.referral_children && user.referral_children.length > 0"
+                  class="flex flex-col gap-2 text-xs max-w-[250px]"
                 >
                   <div
-                    v-if="user.referral_hierarchy?.grandparent"
-                    class="flex items-center gap-1"
+                    v-for="(child, idx) in user.referral_children"
+                    :key="idx"
+                    class="flex flex-col gap-0.5"
                   >
-                    <span
-                      class="px-2 py-0.5 bg-purple-500/20 text-purple-400 rounded"
-                      >👴
-                      {{
-                        truncateEmail(user.referral_hierarchy.grandparent)
-                      }}</span
+                    <div class="px-2 py-1 bg-blue-500/20 text-blue-400 rounded">
+                      <div class="font-medium">👤 {{ child.name }}</div>
+                      <div class="text-blue-300/70 text-xs">{{ truncateEmail(child.email) }}</div>
+                    </div>
+                    <div 
+                      v-if="child.grandchildren && child.grandchildren.length > 0"
+                      class="ml-3 flex flex-col gap-0.5"
                     >
-                  </div>
-                  <div
-                    v-if="user.referral_hierarchy?.parent"
-                    class="flex items-center gap-1"
-                  >
-                    <span
-                      class="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded"
-                      >👨
-                      {{ truncateEmail(user.referral_hierarchy.parent) }}</span
-                    >
-                  </div>
-                  <div class="flex items-center gap-1">
-                    <span
-                      class="px-2 py-0.5 bg-green-500/20 text-green-400 rounded"
-                      >👶 {{ truncateEmail(user.email || user.phone) }}</span
-                    >
+                      <div 
+                        v-for="(gc, gcIdx) in child.grandchildren" 
+                        :key="gcIdx"
+                        class="px-2 py-1 bg-green-500/20 text-green-400 rounded"
+                      >
+                        <div class="font-medium">↳ {{ gc.name }}</div>
+                        <div class="text-green-300/70 text-xs">{{ truncateEmail(gc.email) }}</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <span v-else class="text-gray-300 text-xs">Không có</span>

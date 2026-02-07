@@ -32,38 +32,46 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  // Remove password hash and add referral hierarchy
+  // Remove password hash and add referral children (con và cháu)
   const users = []
   for (const { password_hash, ...user } of data || []) {
-    const hierarchy: { parent?: string; grandparent?: string } = {}
+    // Get children (những người được user này giới thiệu)
+    const { data: children } = await supabase
+      .from('users')
+      .select('id, email, phone, full_name')
+      .eq('referred_by', user.id)
     
-    // Get parent (người giới thiệu trực tiếp)
-    if (user.referred_by) {
-      const { data: parent } = await supabase
-        .from('users')
-        .select('id, email, phone, referred_by')
-        .eq('referral_code', user.referred_by)
-        .single()
-      
-      if (parent) {
-        hierarchy.parent = parent.email || parent.phone || `User #${parent.id}`
+    const referralChildren: Array<{
+      name: string
+      email: string
+      grandchildren?: Array<{ name: string; email: string }>
+    }> = []
+    
+    if (children && children.length > 0) {
+      for (const child of children) {
+        const childName = child.full_name || 'N/A'
+        const childEmail = child.email || child.phone || `User #${child.id}`
         
-        // Get grandparent (ông nội)
-        if (parent.referred_by) {
-          const { data: grandparent } = await supabase
-            .from('users')
-            .select('id, email, phone')
-            .eq('referral_code', parent.referred_by)
-            .single()
-          
-          if (grandparent) {
-            hierarchy.grandparent = grandparent.email || grandparent.phone || `User #${grandparent.id}`
-          }
-        }
+        // Get grandchildren (những người được user con giới thiệu)
+        const { data: grandchildren } = await supabase
+          .from('users')
+          .select('id, email, phone, full_name')
+          .eq('referred_by', child.id)
+        
+        const grandchildrenData = grandchildren?.map(gc => ({
+          name: gc.full_name || 'N/A',
+          email: gc.email || gc.phone || `User #${gc.id}`
+        })) || []
+        
+        referralChildren.push({
+          name: childName,
+          email: childEmail,
+          grandchildren: grandchildrenData.length > 0 ? grandchildrenData : undefined
+        })
       }
     }
     
-    users.push({ ...user, referral_hierarchy: hierarchy })
+    users.push({ ...user, referral_children: referralChildren })
   }
 
   return createPaginatedResult(users, count || 0, { page, limit })

@@ -4,7 +4,7 @@
     <aside class="hidden lg:flex lg:flex-col w-64 bg-gray-900 border-r border-gray-800">
       <!-- Logo -->
       <div class="p-6 border-b border-gray-800">
-        <NuxtLink to="/admin" class="flex items-center gap-2">
+        <NuxtLink to="/admin/users" class="flex items-center gap-2">
           <img src="/IC-Gold-TRC20/logo.png" alt="IC-Gold" class="w-10 h-10 rounded-lg object-cover" />
           <div>
             <span class="text-xl font-bold text-white">IC-Gold</span>
@@ -56,7 +56,7 @@
     <!-- Mobile header -->
     <div class="lg:hidden fixed top-0 left-0 right-0 z-50 bg-gray-900 border-b border-gray-800">
       <div class="flex items-center justify-between p-4">
-        <NuxtLink to="/admin" class="flex items-center gap-2">
+        <NuxtLink to="/admin/users" class="flex items-center gap-2">
           <img src="/IC-Gold-TRC20/logo.png" alt="IC-Gold" class="w-8 h-8 rounded-lg object-cover" />
           <span class="font-bold text-white">Admin</span>
         </NuxtLink>
@@ -118,9 +118,8 @@ watch(() => route.path, () => {
 }, { immediate: false })
 
 const navItems = [
-  { to: '/admin', label: 'Tổng quan', icon: 'i-heroicons-home' },
-  { to: '/admin/pending', label: 'Duyệt Nạp/Rút', icon: 'i-heroicons-clock' },
   { to: '/admin/users', label: 'Quản lý Users', icon: 'i-heroicons-users' },
+  { to: '/admin/pending', label: 'Duyệt Nạp/Rút', icon: 'i-heroicons-clock' },
   { to: '/admin/transactions', label: 'Lịch sử GD', icon: 'i-heroicons-banknotes' },
   { to: '/admin/wallets', label: 'Ví TRC20', icon: 'i-heroicons-wallet' },
   { to: '/admin/settings', label: 'Cài đặt', icon: 'i-heroicons-cog-6-tooth' },

@@ -143,6 +143,20 @@ export default defineEventHandler(async (event) => {
       bonus_amount: 10.00,
       bonus_paid: false
     })
+
+    // Update referral_uses count for the referrer
+    const { data: referrer } = await supabase
+      .from('users')
+      .select('referral_uses')
+      .eq('id', referrerId)
+      .single()
+
+    if (referrer) {
+      await supabase
+        .from('users')
+        .update({ referral_uses: referrer.referral_uses + 1 })
+        .eq('id', referrerId)
+    }
   }
 
   // Create session and auto-login

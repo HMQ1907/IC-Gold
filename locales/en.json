@@ -194,7 +194,10 @@
     "ofTotalAssets": "of total assets",
     "stopping": "Stopping...",
     "stopCopyTrade": "Stop Copy Trade",
-    "copyTradeInfoBox": "Copy Trade will automatically copy 5% of your assets following expert trades. Profits are added directly to your account."
+    "copyTradeInfoBox": "Copy Trade will automatically copy 5% of your assets following expert trades. Profits are added directly to your account.",
+    "copyTradeReminderTitle": "🔔 Turn On Copy Trade Now!",
+    "copyTradeReminderDesc": "This is the golden trading time! Enable Copy Trade to automatically copy expert traders and maximize your profits.",
+    "copyTradeReminderHint": "Click the Copy Trade button above to get started"
   },
   "referral": {
     "title": "Referral Program",
