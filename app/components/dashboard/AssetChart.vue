@@ -1,13 +1,7 @@
 <template>
-  <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
-    <div class="p-4 border-b border-gray-800">
-      <div class="flex items-center justify-between">
-        <h3 class="text-white font-semibold">Price Chart</h3>
-        <USelect v-model="selectedSymbol" :options="symbols" placeholder="Select coin" class="w-40" />
-      </div>
-    </div>
+  <!-- <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
     <div ref="chartContainer" style="height: 400px;"></div>
-  </div>
+  </div> -->
 </template>
 
 <script setup lang="ts">

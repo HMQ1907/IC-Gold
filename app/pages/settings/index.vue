@@ -77,22 +77,8 @@
             </div>
           </div>
           <div class="p-6 space-y-6">
-            <!-- 2FA Toggle -->
-            <div class="flex items-center justify-between p-4 bg-gray-800/50 border border-gray-700 rounded-xl">
-              <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
-                  <UIcon name="i-heroicons-device-phone-mobile" class="w-6 h-6 text-blue-500" />
-                </div>
-                <div>
-                  <p class="text-white font-medium">Two-Factor Authentication (2FA)</p>
-                  <p class="text-gray-400 text-sm">Secure your account with OTP via email</p>
-                </div>
-              </div>
-              <USwitch :model-value="user?.is_2fa_enabled || false" @update:model-value="toggle2FA" />
-            </div>
-
             <!-- Change Password -->
-            <div class="border-t border-gray-800 pt-6">
+            <div>
               <h4 class="text-white font-semibold mb-4 flex items-center gap-2">
                 <UIcon name="i-heroicons-key" class="w-5 h-5 text-amber-500" />
                 Change Password
@@ -160,14 +146,6 @@
             <div class="grid gap-3">
               <div class="flex items-center justify-between p-4 bg-gray-800/30 border border-gray-800 rounded-xl hover:bg-gray-800/50 transition-colors">
                 <div class="flex items-center gap-3">
-                  <UIcon name="i-heroicons-hashtag" class="w-5 h-5 text-gray-500" />
-                  <span class="text-gray-400">Account ID</span>
-                </div>
-                <span class="text-white font-mono font-medium">#{{ user?.id }}</span>
-              </div>
-              
-              <div class="flex items-center justify-between p-4 bg-gray-800/30 border border-gray-800 rounded-xl hover:bg-gray-800/50 transition-colors">
-                <div class="flex items-center gap-3">
                   <UIcon name="i-heroicons-gift" class="w-5 h-5 text-gray-500" />
                   <span class="text-gray-400">Referral Code</span>
                 </div>
@@ -201,7 +179,7 @@
 <script setup lang="ts">
 definePageMeta({ middleware: 'auth' })
 const { user, refreshUser } = useAuth()
-const { updateProfile, changePassword, enable2FA, disable2FA } = useUser()
+const { updateProfile, changePassword } = useUser()
 const toast = useToastCustom()
 const savingProfile = ref(false)
 const changingPassword = ref(false)
@@ -215,7 +193,6 @@ async function handleChangePassword() {
   if (password.new !== password.confirm) { toast.error('Error', 'Passwords do not match'); return }
   changingPassword.value = true; try { await changePassword(password.current, password.new); password.current = ''; password.new = ''; password.confirm = '' } catch {} finally { changingPassword.value = false }
 }
-async function toggle2FA(enabled: boolean) { try { if (enabled) { await enable2FA() } else { await disable2FA('') } await refreshUser() } catch {} }
 async function copyReferralCode() { if (user.value?.referral_code) { await navigator.clipboard.writeText(user.value.referral_code); toast.success('Referral code copied') } }
 function formatDate(date: string) { return date ? new Intl.DateTimeFormat('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(new Date(date)) : '' }
 </script>

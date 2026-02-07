@@ -40,13 +40,16 @@
             <p class="text-xs text-gray-400 truncate">{{ user?.email }}</p>
           </div>
         </div>
-        <button
+        <UButton
+          color="neutral"
+          variant="soft"
+          block
+          class="mt-2"
+          icon="i-heroicons-arrow-right-on-rectangle"
           @click="logout"
-          class="mt-2 w-full flex items-center justify-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white font-medium rounded-lg transition-colors cursor-pointer"
         >
-          <UIcon name="i-heroicons-arrow-right-on-rectangle" class="w-4 h-4" />
           Đăng xuất
-        </button>
+        </UButton>
       </div>
     </aside>
 
@@ -66,8 +69,8 @@
       </div>
     </div>
 
-    <!-- Mobile menu -->
-    <UDrawer v-model:open="mobileMenuOpen">
+    <!-- Mobile menu — chỉ hiện trên màn hình nhỏ, tránh menu trùng (phần khoanh đỏ) trên desktop -->
+    <UDrawer v-model:open="mobileMenuOpen" v-if="isMobile">
       <div class="p-4 space-y-2">
         <NuxtLink
           v-for="item in navItems"
@@ -96,11 +99,29 @@
 <script setup lang="ts">
 const mobileMenuOpen = ref(false)
 const { user, logout } = useAuth()
+const route = useRoute()
+
+// Chỉ render drawer trên mobile (tránh menu trùng / phần khoanh đỏ trên desktop)
+const isMobile = ref(false)
+const checkMobile = () => { isMobile.value = window.innerWidth < 1024 }
+onMounted(() => {
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
+})
+onUnmounted(() => {
+  window.removeEventListener('resize', checkMobile)
+})
+
+// Đóng drawer khi chuyển trang
+watch(() => route.path, () => {
+  mobileMenuOpen.value = false
+}, { immediate: false })
 
 const navItems = [
   { to: '/admin', label: 'Tổng quan', icon: 'i-heroicons-home' },
+  { to: '/admin/pending', label: 'Duyệt Nạp/Rút', icon: 'i-heroicons-clock' },
   { to: '/admin/users', label: 'Quản lý Users', icon: 'i-heroicons-users' },
-  { to: '/admin/transactions', label: 'Giao dịch', icon: 'i-heroicons-banknotes' },
+  { to: '/admin/transactions', label: 'Lịch sử GD', icon: 'i-heroicons-banknotes' },
   { to: '/admin/wallets', label: 'Ví TRC20', icon: 'i-heroicons-wallet' },
   { to: '/admin/settings', label: 'Cài đặt', icon: 'i-heroicons-cog-6-tooth' },
 ]

@@ -1,8 +1,8 @@
 <template>
   <div class="container mx-auto px-4 py-8">
     <div class="mb-8">
-      <h1 class="text-2xl font-bold text-white mb-2">Trade</h1>
-      <p class="text-gray-400">Track markets and Copy Trade from experts</p>
+      <h1 class="text-2xl font-bold text-white mb-2">{{ $t('trade.title') }}</h1>
+      <p class="text-gray-400">{{ $t('trade.subtitle') }}</p>
     </div>
 
     <div class="grid lg:grid-cols-3 gap-6">
@@ -19,12 +19,12 @@
           
           <div class="bg-gray-800/50 border border-gray-700 rounded-xl p-6">
             <div class="flex items-center justify-between mb-4">
-              <span class="text-gray-400">Available Balance</span>
+              <span class="text-gray-400">{{ $t('trade.availableBalance') }}</span>
               <span 
                 class="px-2 py-1 rounded-full text-xs font-medium"
                 :class="canCopyTrade ? 'bg-green-500/20 text-green-400' : 'bg-gray-600/50 text-gray-400'"
               >
-                {{ canCopyTrade ? 'Copy Trade Eligible' : 'Need $1,000+' }}
+                {{ canCopyTrade ? $t('trade.eligible') : $t('trade.needMinimum') }}
               </span>
             </div>
             <p class="text-3xl font-bold text-white mb-4">${{ formatNumber(user?.balance || 0) }}</p>
@@ -33,13 +33,13 @@
                 to="/wallet/deposit" 
                 class="flex-1 py-2 px-4 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-lg text-center text-sm transition-colors cursor-pointer"
               >
-                Deposit More
+                {{ $t('trade.depositMore') }}
               </NuxtLink>
               <NuxtLink 
                 to="/wallet/withdraw" 
                 class="flex-1 py-2 px-4 border border-gray-600 hover:border-gray-500 text-gray-300 hover:text-white font-medium rounded-lg text-center text-sm transition-colors"
               >
-                Withdraw
+                {{ $t('wallet.withdraw') }}
               </NuxtLink>
             </div>
           </div>
@@ -50,22 +50,22 @@
           <div class="bg-gray-800/50 border border-gray-700 rounded-xl p-6">
             <div class="text-center">
               <UIcon name="i-heroicons-chart-bar-square" class="w-12 h-12 text-amber-500 mx-auto mb-4" />
-              <h3 class="text-lg font-bold text-white mb-2">Start Trading</h3>
+              <h3 class="text-lg font-bold text-white mb-2">{{ $t('trade.startTrading') }}</h3>
               <p class="text-gray-400 text-sm mb-6">
-                Sign in to access Copy Trade feature and track your portfolio
+                {{ $t('trade.signInToAccess') }}
               </p>
               <div class="space-y-3">
                 <NuxtLink 
                   to="/auth/register" 
                   class="block w-full py-3 px-4 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-xl text-center transition-colors cursor-pointer"
                 >
-                  Create Free Account
+                  {{ $t('trade.createFreeAccount') }}
                 </NuxtLink>
                 <NuxtLink 
                   to="/auth/login" 
                   class="block w-full py-3 px-4 border border-gray-600 hover:border-gray-500 text-gray-300 hover:text-white font-medium rounded-xl text-center transition-colors"
                 >
-                  Sign In
+                  {{ $t('auth.signIn') }}
                 </NuxtLink>
               </div>
             </div>
@@ -75,20 +75,20 @@
           <div class="bg-gray-800/50 border border-gray-700 rounded-xl p-6">
             <h4 class="font-semibold text-white mb-3 flex items-center gap-2">
               <UIcon name="i-heroicons-sparkles" class="w-5 h-5 text-amber-500" />
-              Copy Trade Feature
+              {{ $t('trade.copyTradeFeature') }}
             </h4>
             <ul class="space-y-2 text-sm text-gray-400">
               <li class="flex items-start gap-2">
                 <UIcon name="i-heroicons-check-circle" class="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
-                <span>Automatically copy expert traders</span>
+                <span>{{ $t('trade.copyTradeInfo1') }}</span>
               </li>
               <li class="flex items-start gap-2">
                 <UIcon name="i-heroicons-check-circle" class="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
-                <span>Copy 5% of your total assets</span>
+                <span>{{ $t('trade.copyTradeInfo2') }}</span>
               </li>
               <li class="flex items-start gap-2">
                 <UIcon name="i-heroicons-check-circle" class="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
-                <span>Requires minimum $1,000 balance</span>
+                <span>{{ $t('trade.copyTradeInfo3') }}</span>
               </li>
             </ul>
           </div>

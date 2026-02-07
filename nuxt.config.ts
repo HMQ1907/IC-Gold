@@ -14,6 +14,12 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n'
   ],
 
+  // Color mode: force dark để UButton/UBadge dùng đúng màu trên nền tối
+  colorMode: {
+    preference: 'dark',
+    // fallback: 'dark'
+  },
+
   // i18n configuration
   i18n: {
     locales: [
@@ -21,7 +27,7 @@ export default defineNuxtConfig({
       { code: 'vi', name: 'Tiếng Việt', file: 'vi.json' }
     ],
     defaultLocale: 'en',
-    lazy: true,
+    // lazy: true,
     langDir: '../locales',
     strategy: 'no_prefix',
     detectBrowserLanguage: {

@@ -3,8 +3,8 @@
     <div class="max-w-3xl mx-auto">
       <!-- Header -->
       <div class="text-center mb-12">
-        <h1 class="text-3xl font-bold text-white mb-4">Frequently Asked Questions</h1>
-        <p class="text-gray-400">Find answers to common questions</p>
+        <h1 class="text-3xl font-bold text-white mb-4">{{ $t('support.faq') }}</h1>
+        <p class="text-gray-400">{{ $t('support.faqDesc') }}</p>
       </div>
 
       <!-- FAQ Items -->
@@ -39,24 +39,27 @@
       <!-- Contact Section -->
       <div class="mt-12 bg-gray-800/50 border border-gray-700 rounded-2xl p-8 text-center">
         <UIcon name="i-heroicons-chat-bubble-left-right" class="w-12 h-12 text-amber-500 mx-auto mb-4" />
-        <h3 class="text-xl font-bold text-white mb-2">Still Need Help?</h3>
-        <p class="text-gray-400 mb-6">Our support team is available 24/7 to assist you</p>
+        <h3 class="text-xl font-bold text-white mb-2">{{ $t('support.stillNeedHelp') }}</h3>
+        <p class="text-gray-400 mb-6">{{ $t('support.supportAvailable') }}</p>
         <div class="flex flex-col sm:flex-row justify-center gap-4">
-          <a 
-            href="https://t.me/icgold_support" 
+          <UButton
+            href="https://t.me/icgold_support"
             target="_blank"
-            class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-xl transition-colors cursor-pointer"
+            color="primary"
+            size="lg"
+            icon="i-simple-icons-telegram"
           >
-            <UIcon name="i-simple-icons-telegram" class="w-5 h-5" />
-            Telegram
-          </a>
-          <a 
+            {{ $t('support.telegram') }}
+          </UButton>
+          <UButton
             href="mailto:support@ic-gold.com"
-            class="inline-flex items-center justify-center gap-2 px-6 py-3 border border-gray-600 hover:border-gray-500 text-gray-300 hover:text-white font-medium rounded-xl transition-colors"
+            color="neutral"
+            variant="outline"
+            size="lg"
+            icon="i-heroicons-envelope"
           >
-            <UIcon name="i-heroicons-envelope" class="w-5 h-5" />
-            Email
-          </a>
+            {{ $t('support.email') }}
+          </UButton>
         </div>
       </div>
     </div>
@@ -64,6 +67,7 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
 const openItems = ref<number[]>([])
 
 function toggleItem(index: number) {
@@ -75,46 +79,16 @@ function toggleItem(index: number) {
   }
 }
 
-const faqItems = [
-  { 
-    label: 'What is IC-Gold?', 
-    content: 'IC-Gold is an advanced crypto investment platform that provides market tracking tools, Copy Trade from experts, and attractive referral programs. We are committed to delivering a safe and profitable investment experience.' 
-  },
-  { 
-    label: 'How do I create an account?', 
-    content: 'You can register an account using your email or phone number. After registration, the system will send an OTP code via email for verification. Complete the verification and you can start using immediately.' 
-  },
-  { 
-    label: 'How do I deposit funds?', 
-    content: 'IC-Gold supports deposits via TRC20 network (USDT). Go to Deposit, copy the wallet address, send USDT from your wallet, then enter the Transaction Hash to request deposit. Admin will confirm within 24 hours.' 
-  },
-  { 
-    label: 'How does Copy Trade work?', 
-    content: 'Copy Trade allows you to automatically copy trades from experts. With a balance of $1,000 or more, you can activate Copy Trade and the system will automatically copy 5% of your assets following expert trades.' 
-  },
-  { 
-    label: 'What is the minimum requirement for Copy Trade?', 
-    content: 'To use the Copy Trade feature, your account needs a minimum balance of $1,000. This ensures you have sufficient capital to participate in copy trading.' 
-  },
-  { 
-    label: 'How does the referral program work?', 
-    content: 'Each account has a unique referral code. When friends register with your code and make their first successful deposit, you will receive $10 bonus. Each code can be used up to 10 times.' 
-  },
-  { 
-    label: 'How do I withdraw funds?', 
-    content: 'Go to Withdraw, enter the amount you want to withdraw (minimum $50) and your TRC20 wallet address. Withdrawal requests are processed within 24 business hours.' 
-  },
-  { 
-    label: 'What is 2FA and how do I enable it?', 
-    content: 'Two-factor authentication (2FA) is an additional security feature. When 2FA is enabled, you will need to enter an OTP code sent via email each time you log in. Go to Settings > Security to enable 2FA.' 
-  },
-  { 
-    label: 'I forgot my password, what should I do?', 
-    content: 'On the login page, click "Forgot password" and enter your registered email. The system will send a password reset link to your email.' 
-  },
-  { 
-    label: 'How long does transaction processing take?', 
-    content: 'Deposits: 1-24 hours after admin confirmation. Withdrawals: 1-24 business hours. Actual time may be faster depending on blockchain network.' 
-  }
-]
+const faqItems = computed(() => [
+  { label: t('support.faqItems.q1'), content: t('support.faqItems.a1') },
+  { label: t('support.faqItems.q2'), content: t('support.faqItems.a2') },
+  { label: t('support.faqItems.q3'), content: t('support.faqItems.a3') },
+  { label: t('support.faqItems.q4'), content: t('support.faqItems.a4') },
+  { label: t('support.faqItems.q5'), content: t('support.faqItems.a5') },
+  { label: t('support.faqItems.q6'), content: t('support.faqItems.a6') },
+  { label: t('support.faqItems.q7'), content: t('support.faqItems.a7') },
+  { label: t('support.faqItems.q8'), content: t('support.faqItems.a8') },
+  { label: t('support.faqItems.q9'), content: t('support.faqItems.a9') },
+  { label: t('support.faqItems.q10'), content: t('support.faqItems.a10') }
+])
 </script>

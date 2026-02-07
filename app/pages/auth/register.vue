@@ -217,13 +217,8 @@ async function onSubmit() {
     })
     
     if (result?.success) {
-      await router.push({
-        path: '/auth/verify',
-        query: { 
-          email: result.email,
-          type: 'register'
-        }
-      })
+      // Redirect to dashboard directly after registration
+      await router.push('/dashboard')
     }
   } catch (error) {
     // Error handled by composable

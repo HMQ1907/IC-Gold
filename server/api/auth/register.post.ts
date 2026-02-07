@@ -1,9 +1,7 @@
 import { getSupabaseAdmin, createNotification } from '~~/server/utils/supabase'
-import { sendOtpEmail } from '~~/server/utils/email'
 import { 
   hashPassword, 
-  generateOtp, 
-  getOtpExpiry,
+  generateSessionToken,
   isValidEmail,
   isValidPhone,
   validatePassword 
@@ -123,7 +121,8 @@ export default defineEventHandler(async (event) => {
       phone: phone || null,
       password_hash: passwordHash,
       full_name: fullName || null,
-      referred_by: referrerId
+      referred_by: referrerId,
+      email_verified: true // Auto-verify since no OTP
     })
     .select()
     .single()
@@ -146,35 +145,43 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  // Generate and send OTP
-  const otpCode = generateOtp()
-  const otpExpiry = getOtpExpiry()
+  // Create session and auto-login
+  const token = generateSessionToken()
+  const expiresAt = new Date()
+  expiresAt.setDate(expiresAt.getDate() + 7) // 7 days
 
-  await supabase.from('otp_codes').insert({
+  await supabase.from('sessions').insert({
     user_id: newUser.id,
-    email: email || null,
-    phone: phone || null,
-    code: otpCode,
-    type: 'register',
-    expires_at: otpExpiry.toISOString()
+    token,
+    ip_address: getHeader(event, 'x-forwarded-for') || null,
+    user_agent: getHeader(event, 'user-agent') || null,
+    expires_at: expiresAt.toISOString()
   })
 
-  // Send OTP email
-  if (email) {
-    await sendOtpEmail(email, otpCode, 'register')
-  }
+  // Set auth cookie
+  setCookie(event, 'auth_token', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    expires: expiresAt,
+    path: '/'
+  })
 
   // Create welcome notification
   await createNotification(
     newUser.id,
-    'Welcome to IC-Gold!',
-    'Thank you for registering. Please verify your email to start using the platform.',
+    'Chào mừng đến với IC-Gold!',
+    'Cảm ơn bạn đã đăng ký. Hãy nạp tiền để bắt đầu đầu tư!',
     'success'
   )
 
   return {
-    message: 'Registration successful. Please check your email to verify your account.',
-    email,
-    phone
+    success: true,
+    message: 'Đăng ký thành công!',
+    user: {
+      id: newUser.id,
+      email: newUser.email,
+      full_name: newUser.full_name
+    }
   }
 })

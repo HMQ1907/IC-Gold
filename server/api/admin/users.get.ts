@@ -32,8 +32,39 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  // Remove password hash
-  const users = data?.map(({ password_hash, ...user }) => user) || []
+  // Remove password hash and add referral hierarchy
+  const users = []
+  for (const { password_hash, ...user } of data || []) {
+    const hierarchy: { parent?: string; grandparent?: string } = {}
+    
+    // Get parent (người giới thiệu trực tiếp)
+    if (user.referred_by) {
+      const { data: parent } = await supabase
+        .from('users')
+        .select('id, email, phone, referred_by')
+        .eq('referral_code', user.referred_by)
+        .single()
+      
+      if (parent) {
+        hierarchy.parent = parent.email || parent.phone || `User #${parent.id}`
+        
+        // Get grandparent (ông nội)
+        if (parent.referred_by) {
+          const { data: grandparent } = await supabase
+            .from('users')
+            .select('id, email, phone')
+            .eq('referral_code', parent.referred_by)
+            .single()
+          
+          if (grandparent) {
+            hierarchy.grandparent = grandparent.email || grandparent.phone || `User #${grandparent.id}`
+          }
+        }
+      }
+    }
+    
+    users.push({ ...user, referral_hierarchy: hierarchy })
+  }
 
   return createPaginatedResult(users, count || 0, { page, limit })
 })

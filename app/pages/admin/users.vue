@@ -41,21 +41,14 @@
           <span class="text-amber-500 font-medium"
             >{{ selectedUsers.length }} đã chọn</span
           >
-          <div class="w-px h-6 bg-gray-700"></div>
-          <button
-            @click="openBulkAdjustModal"
-            class="flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg transition-colors cursor-pointer"
-          >
-            <UIcon name="i-heroicons-currency-dollar" class="w-4 h-4" />
-            Điều chỉnh % số dư
-          </button>
-          <button
+          <UButton
+            color="neutral"
+            variant="outline"
+            icon="i-heroicons-x-mark"
             @click="clearSelection"
-            class="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-medium rounded-lg transition-colors cursor-pointer"
           >
-            <UIcon name="i-heroicons-x-mark" class="w-4 h-4" />
             Bỏ chọn
-          </button>
+          </UButton>
         </div>
       </Transition>
     </div>
@@ -82,26 +75,29 @@
                   />
                 </label>
               </th>
-              <th class="px-4 py-3 text-left text-gray-300 font-medium text-sm">
+              <th class="px-4 py-3 text-left text-gray-200 font-medium text-sm">
                 ID
               </th>
-              <th class="px-4 py-3 text-left text-gray-300 font-medium text-sm">
+              <th class="px-4 py-3 text-left text-gray-200 font-medium text-sm">
                 Người dùng
               </th>
-              <th class="px-4 py-3 text-left text-gray-300 font-medium text-sm">
+              <th class="px-4 py-3 text-left text-gray-200 font-medium text-sm">
                 Số dư
               </th>
-              <th class="px-4 py-3 text-left text-gray-300 font-medium text-sm">
+              <th class="px-4 py-3 text-left text-gray-200 font-medium text-sm">
                 Mã giới thiệu
               </th>
-              <th class="px-4 py-3 text-left text-gray-300 font-medium text-sm">
+              <th class="px-4 py-3 text-left text-gray-200 font-medium text-sm">
+                Chuỗi giới thiệu
+              </th>
+              <th class="px-4 py-3 text-left text-gray-200 font-medium text-sm">
                 Trạng thái
               </th>
-              <th class="px-4 py-3 text-left text-gray-300 font-medium text-sm">
-                Ngày tạo
+              <th class="px-4 py-3 text-left text-gray-200 font-medium text-sm">
+                Copy Trade
               </th>
-              <th class="px-4 py-3 text-left text-gray-300 font-medium text-sm">
-                Thao tác
+              <th class="px-4 py-3 text-left text-gray-200 font-medium text-sm">
+                Ngày tạo
               </th>
             </tr>
           </thead>
@@ -122,54 +118,95 @@
                   />
                 </label>
               </td>
-              <td class="px-4 py-4 text-gray-300">#{{ user.id }}</td>
+              <td class="px-4 py-4 text-white">#{{ user.id }}</td>
               <td class="px-4 py-4">
                 <div class="flex items-center gap-3">
-                  <UAvatar
+                  <!-- <UAvatar
                     :alt="user.full_name || user.email || ''"
                     size="sm"
                     class="bg-gray-700"
-                  />
+                  /> -->
                   <div>
                     <p class="text-white font-medium">
                       {{ user.full_name || "N/A" }}
                     </p>
-                    <p class="text-gray-300 text-sm">
+                    <p class="text-gray-200 text-sm">
                       {{ user.email || user.phone }}
                     </p>
                   </div>
                 </div>
               </td>
               <td class="px-4 py-4">
-                <span class="text-amber-500 font-bold"
+                <span class="text-white font-bold"
                   >${{ user.balance.toLocaleString() }}</span
                 >
               </td>
               <td class="px-4 py-4">
-                <code class="text-gray-300 text-sm">{{
+                <code class="text-gray-200 text-sm">{{
                   user.referral_code
                 }}</code>
-                <p class="text-gray-400 text-xs">
+                <p class="text-gray-300 text-xs">
                   {{ user.referral_uses }}/{{ user.max_referral_uses }}
                 </p>
               </td>
               <td class="px-4 py-4">
-                <UBadge
-                  :color="user.is_active ? 'success' : 'error'"
-                  variant="subtle"
-                  >{{ user.is_active ? "Hoạt động" : "Ngừng" }}</UBadge
+                <div
+                  v-if="
+                    user.referral_hierarchy?.parent ||
+                    user.referral_hierarchy?.grandparent
+                  "
+                  class="flex flex-col gap-1 text-xs"
                 >
-              </td>
-              <td class="px-4 py-4 text-gray-300 text-sm">
-                {{ formatDate(user.created_at) }}
+                  <div
+                    v-if="user.referral_hierarchy?.grandparent"
+                    class="flex items-center gap-1"
+                  >
+                    <span
+                      class="px-2 py-0.5 bg-purple-500/20 text-purple-400 rounded"
+                      >👴
+                      {{
+                        truncateEmail(user.referral_hierarchy.grandparent)
+                      }}</span
+                    >
+                  </div>
+                  <div
+                    v-if="user.referral_hierarchy?.parent"
+                    class="flex items-center gap-1"
+                  >
+                    <span
+                      class="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded"
+                      >👨
+                      {{ truncateEmail(user.referral_hierarchy.parent) }}</span
+                    >
+                  </div>
+                  <div class="flex items-center gap-1">
+                    <span
+                      class="px-2 py-0.5 bg-green-500/20 text-green-400 rounded"
+                      >👶 {{ truncateEmail(user.email || user.phone) }}</span
+                    >
+                  </div>
+                </div>
+                <span v-else class="text-gray-300 text-xs">Không có</span>
               </td>
               <td class="px-4 py-4">
-                <UDropdownMenu :items="getUserActions(user)"
-                  ><UButton
-                    color="neutral"
-                    variant="ghost"
-                    icon="i-heroicons-ellipsis-vertical"
-                /></UDropdownMenu>
+                <UBadge
+                  :color="user.is_active ? 'success' : 'error'"
+                  variant="solid"
+                >
+                  {{ user.is_active ? "Hoạt động" : "Ngừng" }}
+                </UBadge>
+              </td>
+              <td class="px-4 py-4">
+                <UBadge
+                  :color="user.copy_trade_active ? 'success' : 'error'"
+                  :variant="user.copy_trade_active ? 'solid' : 'subtle'"
+                  size="md"
+                >
+                  {{ user.copy_trade_active ? "Đang bật" : "Chưa bật" }}
+                </UBadge>
+              </td>
+              <td class="px-4 py-4 text-gray-200 text-sm">
+                {{ formatDate(user.created_at) }}
               </td>
             </tr>
           </tbody>
@@ -183,74 +220,27 @@
       </div>
     </div>
 
-    <!-- Single User Adjust Modal -->
-    <!-- <UModal v-model="showAdjustModal">
-      <div class="bg-gray-900 border border-gray-700 rounded-2xl overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-800 bg-gray-800/50">
-          <h3 class="text-white font-semibold text-lg">Điều chỉnh số dư</h3>
+    <!-- Bulk Adjust (inline) -->
+    <UCard
+      class="mt-6 bg-gray-900 border border-gray-700"
+    >
+      <template #header>
+        <div class="flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2">
+            <UIcon name="i-heroicons-users" class="w-5 h-5 text-primary" />
+            <h3 class="text-white font-semibold text-lg">Điều chỉnh số dư theo %</h3>
+          </div>
+          <UButton
+            color="neutral"
+            variant="ghost"
+            icon="i-heroicons-x-mark"
+            type="button"
+            @click="clearSelection"
+          />
         </div>
-        <div class="p-6 space-y-5">
-          <div class="bg-gray-800/50 border border-gray-700 rounded-xl p-4">
-            <p class="text-gray-400 text-sm mb-1">Người dùng:</p>
-            <p class="text-white font-medium">{{ selectedUser?.email }}</p>
-          </div>
-          
-          <div class="bg-gray-800/50 border border-gray-700 rounded-xl p-4">
-            <p class="text-gray-400 text-sm mb-1">Số dư hiện tại:</p>
-            <p class="text-amber-500 font-bold text-xl">${{ selectedUser?.balance.toLocaleString() }}</p>
-          </div>
-          
-          <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2">Số tiền điều chỉnh</label>
-            <input 
-              v-model.number="adjustAmount" 
-              type="number" 
-              placeholder="Số dương để cộng, số âm để trừ"
-              class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors"
-            />
-          </div>
-          
-          <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2">Ghi chú</label>
-            <textarea 
-              v-model="adjustNote" 
-              placeholder="Lý do điều chỉnh..."
-              rows="3"
-              class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors resize-none"
-            ></textarea>
-          </div>
-        </div>
-        <div class="px-6 py-4 border-t border-gray-800 bg-gray-800/30 flex justify-end gap-3">
-          <button 
-            @click="showAdjustModal = false"
-            class="px-5 py-2.5 bg-gray-700 hover:bg-gray-600 text-white font-medium rounded-xl transition-colors cursor-pointer"
-          >
-            Hủy
-          </button>
-          <button 
-            @click="submitAdjust"
-            :disabled="adjusting"
-            class="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 disabled:bg-amber-500/50 text-white font-medium rounded-xl transition-colors cursor-pointer flex items-center gap-2"
-          >
-            <UIcon v-if="adjusting" name="i-heroicons-arrow-path" class="w-4 h-4 animate-spin" />
-            Xác nhận
-          </button>
-        </div>
-      </div>
-    </UModal> -->
+      </template>
 
-    <!-- Bulk Adjust Percentage Modal -->
-    <UModal v-model="showBulkAdjustModal">
-      <div
-        class="bg-gray-900 border border-gray-700 rounded-2xl overflow-hidden mt-5"
-      >
-        <div class="px-6 py-4 border-b border-gray-800 bg-gray-800/50">
-          <h3 class="text-white font-semibold text-lg flex items-center gap-2">
-            <UIcon name="i-heroicons-users" class="w-5 h-5 text-amber-500" />
-            Điều chỉnh số dư theo %
-          </h3>
-        </div>
-        <div class="p-6 space-y-5">
+      <div class="space-y-5">
           <!-- Selected Users Info -->
           <div class="bg-gray-800/50 border border-gray-700 rounded-xl p-4">
             <p class="text-gray-400 text-sm mb-2">
@@ -301,19 +291,17 @@
               </div>
             </div>
             <div class="flex gap-2 mt-3">
-              <button
+              <UButton
                 v-for="preset in [-10, -5, 5, 10, 20, 50]"
                 :key="preset"
-                @click="bulkPercentage = preset"
-                class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors cursor-pointer"
-                :class="
-                  preset > 0
-                    ? 'bg-green-500/20 text-green-400 hover:bg-green-500/30'
-                    : 'bg-red-500/20 text-red-400 hover:bg-red-500/30'
-                "
+                type="button"
+                size="xs"
+                :color="preset > 0 ? 'success' : 'error'"
+                variant="soft"
+                @click.stop="bulkPercentage = preset"
               >
                 {{ preset > 0 ? "+" : "" }}{{ preset }}%
-              </button>
+              </UButton>
             </div>
           </div>
 
@@ -388,32 +376,33 @@
               class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors resize-none"
             ></textarea>
           </div>
-        </div>
-        <div
-          class="px-6 py-4 border-t border-gray-800 bg-gray-800/30 flex justify-end gap-3"
-        >
-          <button
-            @click="showBulkAdjustModal = false"
-            class="px-5 py-2.5 bg-gray-700 hover:bg-gray-600 text-white font-medium rounded-xl transition-colors cursor-pointer"
+      </div>
+
+      <template #footer>
+        <div class="flex justify-end gap-3">
+          <UButton
+            class="cursor-pointer"
+            color="neutral"
+            variant="outline"
+            type="button"
+            @click="clearSelection"
           >
             Hủy
-          </button>
-          <button
+          </UButton>
+          <UButton
+            class="cursor-pointer"
+            color="primary"
+            variant="outline"
+            :loading="bulkAdjusting"
+            :disabled="!bulkPercentage"
+            type="button"
             @click="submitBulkAdjust"
-            :disabled="bulkAdjusting || !bulkPercentage"
-            class="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 disabled:bg-amber-500/50 disabled:cursor-not-allowed text-white font-medium rounded-xl transition-colors cursor-pointer flex items-center gap-2"
           >
-            <UIcon
-              v-if="bulkAdjusting"
-              name="i-heroicons-arrow-path"
-              class="w-4 h-4 animate-spin"
-            />
-            <span v-if="bulkAdjusting">Đang xử lý...</span>
-            <span v-else>Xác nhận điều chỉnh</span>
-          </button>
+            {{ bulkAdjusting ? "Đang xử lý..." : "Xác nhận điều chỉnh" }}
+          </UButton>
         </div>
-      </div>
-    </UModal>
+      </template>
+    </UCard>
   </div>
 </template>
 
@@ -428,16 +417,10 @@ const currentPage = ref(1);
 const total = ref(0);
 const limit = 20;
 const search = ref("");
-const showAdjustModal = ref(false);
-const selectedUser = ref<any>(null);
-const adjustAmount = ref<number | null>(null);
-const adjustNote = ref("");
-const adjusting = ref(false);
 const totalPages = computed(() => Math.ceil(total.value / limit));
 
 // Bulk selection state
 const selectedUsers = ref<any[]>([]);
-const showBulkAdjustModal = ref(false);
 const bulkPercentage = ref<number | null>(null);
 const bulkNote = ref("");
 const bulkAdjusting = ref(false);
@@ -498,12 +481,6 @@ function calculateAdjustment(currentBalance: number): number {
   return Math.round(currentBalance * (bulkPercentage.value / 100) * 100) / 100;
 }
 
-function openBulkAdjustModal() {
-  bulkPercentage.value = null;
-  bulkNote.value = "";
-  showBulkAdjustModal.value = true;
-}
-
 async function submitBulkAdjust() {
   if (!bulkPercentage.value || selectedUsers.value.length === 0) return;
 
@@ -533,7 +510,6 @@ async function submitBulkAdjust() {
       toast.error("Lỗi", `${errorCount} người dùng không thể điều chỉnh`);
     }
 
-    showBulkAdjustModal.value = false;
     clearSelection();
     loadUsers();
   } catch {
@@ -565,54 +541,25 @@ const debouncedSearch = useDebounceFn(() => {
   loadUsers();
 }, 500);
 onMounted(() => loadUsers());
+
 watch(currentPage, () => loadUsers());
 
-function getUserActions(user: any) {
-  return [
-    [
-      {
-        label: "Điều chỉnh số dư",
-        icon: "i-heroicons-currency-dollar",
-        click: () => {
-          selectedUser.value = user;
-          adjustAmount.value = null;
-          adjustNote.value = "";
-          showAdjustModal.value = true;
-        },
-      },
-    ],
-    [
-      {
-        label: user.is_active ? "Khóa tài khoản" : "Mở khóa tài khoản",
-        icon: user.is_active
-          ? "i-heroicons-lock-closed"
-          : "i-heroicons-lock-open",
-        click: () => {},
-      },
-    ],
-  ];
-}
-async function submitAdjust() {
-  if (!selectedUser.value || !adjustAmount.value) return;
-  adjusting.value = true;
-  try {
-    await adjustBalance(
-      selectedUser.value.id,
-      adjustAmount.value,
-      adjustNote.value,
-    );
-    showAdjustModal.value = false;
-    loadUsers();
-  } catch {
-  } finally {
-    adjusting.value = false;
-  }
-}
 function formatDate(date: string) {
   return new Intl.DateTimeFormat("en-US", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
   }).format(new Date(date));
+}
+function truncateEmail(email: string | undefined): string {
+  if (!email) return "";
+  if (email.length <= 15) return email;
+  if (email.includes("@")) {
+    const [name, domain] = email.split("@");
+    if (name.length > 8) {
+      return name.slice(0, 6) + "..@" + domain;
+    }
+  }
+  return email.slice(0, 12) + "...";
 }
 </script>

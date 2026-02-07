@@ -27,12 +27,7 @@
           <LayoutLanguageSwitcher />
 
           <!-- Notifications -->
-          <button
-            v-if="user"
-            class="p-2 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition-colors relative"
-          >
-            <UIcon name="i-heroicons-bell" class="w-5 h-5" />
-          </button>
+          <LayoutNotificationBell v-if="user" />
 
           <!-- User menu -->
           <template v-if="user">

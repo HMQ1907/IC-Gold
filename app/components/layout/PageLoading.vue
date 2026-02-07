@@ -12,18 +12,13 @@
 </template>
 
 <script setup lang="ts">
-const nuxtApp = useNuxtApp()
+// Tắt full-page overlay (gây mờ toàn trang, page:finish đôi khi không fire).
+// Có thể thay bằng spinner nhỏ góc màn hình nếu cần.
 const isLoading = ref(false)
 
-nuxtApp.hook('page:start', () => {
-  isLoading.value = true
-})
-
-nuxtApp.hook('page:finish', () => {
-  setTimeout(() => {
-    isLoading.value = false
-  }, 200)
-})
+// Giữ hook để sau này bật lại nếu cần, nhưng không set true
+// nuxtApp.hook('page:start', () => { isLoading.value = true })
+// nuxtApp.hook('page:finish', () => { isLoading.value = false })
 </script>
 
 <style scoped>

@@ -77,17 +77,21 @@ export const useAuth = () => {
   }) {
     authState.loading = true
     try {
-      await $fetch<{ message: string }>('/api/auth/register', {
+      const response = await $fetch<{ success: boolean; user: User; message: string }>('/api/auth/register', {
         method: 'POST',
         body: data
       })
 
-      toast.success('Registration successful', 'Please check your email to verify your account')
+      if (response.user) {
+        authState.user = response.user
+      }
 
-      return { success: true, email: data.email, phone: data.phone }
+      toast.success('Đăng ký thành công', 'Chào mừng bạn đến với IC-Gold!')
+
+      return { success: true }
     } catch (error: any) {
       const message = error.data?.message || error.message || 'Registration failed'
-      toast.error('Registration failed', message)
+      toast.error('Đăng ký thất bại', message)
       throw error
     } finally {
       authState.loading = false

@@ -42,6 +42,7 @@ const props = withDefaults(defineProps<Props>(), {
 const chartContainer = ref<HTMLElement | null>(null)
 
 const symbols = [
+  { label: 'Gold/USD', value: 'TVC:GOLD' },
   { label: 'BTC/USDT', value: 'BINANCE:BTCUSDT' },
   { label: 'ETH/USDT', value: 'BINANCE:ETHUSDT' },
   { label: 'BNB/USDT', value: 'BINANCE:BNBUSDT' },
@@ -49,7 +50,6 @@ const symbols = [
   { label: 'SOL/USDT', value: 'BINANCE:SOLUSDT' },
   { label: 'DOGE/USDT', value: 'BINANCE:DOGEUSDT' },
   { label: 'ADA/USDT', value: 'BINANCE:ADAUSDT' },
-  { label: 'Gold/USD', value: 'TVC:GOLD' }
 ]
 
 const intervals = [
@@ -62,7 +62,7 @@ const intervals = [
   { label: '1W', value: 'W' }
 ]
 
-const selectedSymbol = ref('BINANCE:BTCUSDT')
+const selectedSymbol = ref('TVC:GOLD')
 const selectedInterval = ref('D')
 
 function loadWidget() {

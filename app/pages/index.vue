@@ -58,10 +58,14 @@
             <div class="bg-gray-800/50 backdrop-blur border border-gray-700 rounded-2xl p-6 shadow-2xl">
               <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center gap-2">
-                  <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=029" class="w-8 h-8" alt="BTC" />
-                  <span class="text-white font-bold">BTC/USDT</span>
+                  <div class="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center">
+                    <span class="text-white font-bold text-sm">Au</span>
+                  </div>
+                  <span class="text-white font-bold">XAU/USD</span>
                 </div>
-                <span class="text-white text-sm font-medium">+2.34%</span>
+                <span :class="goldPrice.change24h >= 0 ? 'text-green-500' : 'text-red-500'" class="text-sm font-medium">
+                  {{ goldPrice.change24h >= 0 ? '+' : '' }}{{ goldPrice.change24h }}%
+                </span>
               </div>
               
               <!-- Mini chart placeholder -->
@@ -85,7 +89,8 @@
               <div class="flex items-center justify-between mt-4">
                 <div>
                   <p class="text-gray-400 text-sm">{{ $t('home.currentPrice') }}</p>
-                  <p class="text-2xl font-bold text-white">$67,432.50</p>
+                  <p class="text-2xl font-bold text-white">${{ formatPrice(goldPrice.price) }}</p>
+                  <p class="text-gray-500 text-xs">{{ $t('home.perOunce') }}</p>
                 </div>
                 <NuxtLink to="/auth/register" class="text-white hover:text-amber-500 text-sm font-medium transition-colors">
                   {{ $t('common.tradeNow') }}
@@ -122,66 +127,48 @@
             <div class="w-14 h-14 bg-amber-500/20 rounded-xl flex items-center justify-center mb-6">
               <UIcon name="i-heroicons-chart-bar" class="w-7 h-7 text-amber-500" />
             </div>
-            <h3 class="text-xl font-bold text-white mb-3">Real-time Charts</h3>
-            <p class="text-gray-400">
-              Track crypto prices with professional TradingView charts, 
-              updated real-time 24/7
-            </p>
+            <h3 class="text-xl font-bold text-white mb-3">{{ $t('home.featRealtimeTitle') }}</h3>
+            <p class="text-gray-400">{{ $t('home.featRealtimeDesc') }}</p>
           </div>
 
           <div class="bg-gray-900 border border-gray-800 rounded-2xl p-8 hover:border-amber-500/50 transition-colors">
             <div class="w-14 h-14 bg-blue-500/20 rounded-xl flex items-center justify-center mb-6">
               <UIcon name="i-heroicons-document-duplicate" class="w-7 h-7 text-blue-500" />
             </div>
-            <h3 class="text-xl font-bold text-white mb-3">Copy Trade</h3>
-            <p class="text-gray-400">
-              Automatically copy trades from experienced experts, 
-              no deep knowledge required
-            </p>
+            <h3 class="text-xl font-bold text-white mb-3">{{ $t('home.featCopyTradeTitle') }}</h3>
+            <p class="text-gray-400">{{ $t('home.featCopyTradeDesc') }}</p>
           </div>
 
           <div class="bg-gray-900 border border-gray-800 rounded-2xl p-8 hover:border-amber-500/50 transition-colors">
             <div class="w-14 h-14 bg-green-500/20 rounded-xl flex items-center justify-center mb-6">
               <UIcon name="i-heroicons-shield-check" class="w-7 h-7 text-green-500" />
             </div>
-            <h3 class="text-xl font-bold text-white mb-3">High Security</h3>
-            <p class="text-gray-400">
-              Two-factor authentication (2FA), data encryption and 
-              international standard security
-            </p>
+            <h3 class="text-xl font-bold text-white mb-3">{{ $t('home.featSecurityTitle') }}</h3>
+            <p class="text-gray-400">{{ $t('home.featSecurityDesc') }}</p>
           </div>
 
           <div class="bg-gray-900 border border-gray-800 rounded-2xl p-8 hover:border-amber-500/50 transition-colors">
             <div class="w-14 h-14 bg-purple-500/20 rounded-xl flex items-center justify-center mb-6">
               <UIcon name="i-heroicons-gift" class="w-7 h-7 text-purple-500" />
             </div>
-            <h3 class="text-xl font-bold text-white mb-3">Referral Rewards</h3>
-            <p class="text-gray-400">
-              Earn $10 for each successful friend referral. 
-              Unlimited referrals!
-            </p>
+            <h3 class="text-xl font-bold text-white mb-3">{{ $t('home.featReferralTitle') }}</h3>
+            <p class="text-gray-400">{{ $t('home.featReferralDesc') }}</p>
           </div>
 
           <div class="bg-gray-900 border border-gray-800 rounded-2xl p-8 hover:border-amber-500/50 transition-colors">
             <div class="w-14 h-14 bg-red-500/20 rounded-xl flex items-center justify-center mb-6">
               <UIcon name="i-heroicons-bolt" class="w-7 h-7 text-red-500" />
             </div>
-            <h3 class="text-xl font-bold text-white mb-3">Fast Deposits/Withdrawals</h3>
-            <p class="text-gray-400">
-              Deposit and withdraw via TRC20 quickly, 
-              processed within 24h
-            </p>
+            <h3 class="text-xl font-bold text-white mb-3">{{ $t('home.featFastTitle') }}</h3>
+            <p class="text-gray-400">{{ $t('home.featFastDesc') }}</p>
           </div>
 
           <div class="bg-gray-900 border border-gray-800 rounded-2xl p-8 hover:border-amber-500/50 transition-colors">
             <div class="w-14 h-14 bg-cyan-500/20 rounded-xl flex items-center justify-center mb-6">
               <UIcon name="i-heroicons-chat-bubble-left-right" class="w-7 h-7 text-cyan-500" />
             </div>
-            <h3 class="text-xl font-bold text-white mb-3">24/7 Support</h3>
-            <p class="text-gray-400">
-              Professional support team ready to answer 
-              all your questions
-            </p>
+            <h3 class="text-xl font-bold text-white mb-3">{{ $t('home.featSupportTitle') }}</h3>
+            <p class="text-gray-400">{{ $t('home.featSupportDesc') }}</p>
           </div>
         </div>
       </div>
@@ -327,33 +314,31 @@
           </div>
           <div>
             <h2 class="text-3xl lg:text-4xl font-bold text-white mb-6">
-              Digital Gold Investment with IC-Gold
+              {{ $t('home.goldSectionTitle') }}
             </h2>
             <p class="text-gray-400 text-lg mb-6">
-              IC-Gold brings you the opportunity to invest in the crypto market with safety 
-              and high profit potential. With advanced technology and experienced expert team, 
-              we are committed to delivering the best investment experience.
+              {{ $t('home.goldSectionDesc') }}
             </p>
             <ul class="space-y-4 mb-8">
               <li class="flex items-center gap-3 text-gray-300">
                 <UIcon name="i-heroicons-check-circle" class="w-6 h-6 text-green-500" />
-                24/7 trading, no limits
+                {{ $t('home.goldFeature1') }}
               </li>
               <li class="flex items-center gap-3 text-gray-300">
                 <UIcon name="i-heroicons-check-circle" class="w-6 h-6 text-green-500" />
-                Lowest transaction fees in the market
+                {{ $t('home.goldFeature2') }}
               </li>
               <li class="flex items-center gap-3 text-gray-300">
                 <UIcon name="i-heroicons-check-circle" class="w-6 h-6 text-green-500" />
-                Fast withdrawals within 24h
+                {{ $t('home.goldFeature3') }}
               </li>
               <li class="flex items-center gap-3 text-gray-300">
                 <UIcon name="i-heroicons-check-circle" class="w-6 h-6 text-green-500" />
-                Top-tier asset security
+                {{ $t('home.goldFeature4') }}
               </li>
             </ul>
             <UButton to="/auth/register" color="primary" size="lg">
-              Sign Up Now
+              {{ $t('home.signUpNow') }}
               <UIcon name="i-heroicons-arrow-right" class="w-5 h-5 ml-2" />
             </UButton>
           </div>
@@ -365,4 +350,37 @@
 
 <script setup lang="ts">
 // Homepage - landing page for IC-Gold
+
+// Gold price state
+const goldPrice = ref({
+  price: 2650,
+  change24h: 0.75
+})
+
+// Format price with commas
+function formatPrice(price: number) {
+  return new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }).format(price)
+}
+
+// Fetch gold price
+async function fetchGoldPrice() {
+  try {
+    const data = await $fetch('/api/gold/price')
+    goldPrice.value = {
+      price: data.price,
+      change24h: data.change24h
+    }
+  } catch (e) {
+    console.error('Failed to fetch gold price:', e)
+  }
+}
+
+// Fetch on mount and refresh every 60 seconds
+onMounted(() => {
+  fetchGoldPrice()
+  setInterval(fetchGoldPrice, 60000)
+})
 </script>

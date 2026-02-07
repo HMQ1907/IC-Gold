@@ -83,14 +83,27 @@ export default defineEventHandler(async (event) => {
     userAgent: getHeader(event, 'user-agent') || undefined
   })
 
-  // Notify user
-  const actionText = action === 'approve' ? 'approved' : 'rejected'
-  const typeText = tx.type === 'deposit' ? 'Deposit' : 'Withdrawal'
+  // Notify user - Vietnamese
+  const formattedAmount = new Intl.NumberFormat('vi-VN').format(tx.amount)
+  const typeText = tx.type === 'deposit' ? 'Nạp tiền' : 'Rút tiền'
+  
+  let title, message
+  if (action === 'approve') {
+    title = `${typeText} thành công`
+    message = tx.type === 'deposit' 
+      ? `Yêu cầu nạp $${formattedAmount} của bạn đã được duyệt. Số dư đã được cộng vào tài khoản.${note ? ` Ghi chú: ${note}` : ''}`
+      : `Yêu cầu rút $${formattedAmount} của bạn đã được duyệt. Vui lòng kiểm tra ví của bạn.${note ? ` Ghi chú: ${note}` : ''}`
+  } else {
+    title = `${typeText} bị từ chối`
+    message = tx.type === 'deposit'
+      ? `Yêu cầu nạp $${formattedAmount} của bạn đã bị từ chối.${note ? ` Lý do: ${note}` : ''}`
+      : `Yêu cầu rút $${formattedAmount} của bạn đã bị từ chối. Số tiền đã được hoàn lại vào tài khoản.${note ? ` Lý do: ${note}` : ''}`
+  }
   
   await createNotification(
     tx.user_id,
-    `${typeText} ${actionText}`,
-    `Your ${typeText.toLowerCase()} request of $${tx.amount} has been ${actionText}${note ? `. Note: ${note}` : ''}`,
+    title,
+    message,
     action === 'approve' ? 'success' : 'error'
   )
 

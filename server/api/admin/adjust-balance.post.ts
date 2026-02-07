@@ -72,11 +72,17 @@ export default defineEventHandler(async (event) => {
     userAgent: getHeader(event, 'user-agent') || undefined
   })
 
-  // Notify user
+  // Notify user - Vietnamese
+  const formattedAmount = new Intl.NumberFormat('vi-VN').format(Math.abs(amount))
+  const title = amount > 0 ? 'Số dư tăng' : 'Số dư giảm'
+  const message = amount > 0 
+    ? `Tài khoản của bạn đã được cộng +$${formattedAmount}${note ? `. Lý do: ${note}` : ''}`
+    : `Tài khoản của bạn đã bị trừ -$${formattedAmount}${note ? `. Lý do: ${note}` : ''}`
+  
   await createNotification(
     userId,
-    amount > 0 ? 'Balance increased' : 'Balance decreased',
-    `Your account has been ${amount > 0 ? 'credited' : 'debited'} $${Math.abs(amount)}${note ? `. Reason: ${note}` : ''}`,
+    title,
+    message,
     amount > 0 ? 'success' : 'warning'
   )
 

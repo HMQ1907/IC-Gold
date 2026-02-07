@@ -38,20 +38,18 @@
         </div>
 
         <div class="mt-4 flex justify-center">
-          <button
+          <UButton
             v-if="activeWallet !== wallet.address"
+            color="primary"
+            size="sm"
             @click.stop="selectWallet(wallet.address)"
-            class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg transition-colors cursor-pointer"
           >
             Chọn ví này
-          </button>
-          <span
-            v-else
-            class="px-4 py-2 bg-green-500/20 text-green-400 font-medium rounded-lg flex items-center gap-2"
-          >
+          </UButton>
+          <UBadge v-else color="success" variant="subtle" size="sm" class="gap-1">
             <UIcon name="i-heroicons-check" class="w-4 h-4" />
             Đã chọn
-          </span>
+          </UBadge>
         </div>
       </div>
     </div>

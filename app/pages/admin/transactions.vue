@@ -5,7 +5,7 @@
       <p class="text-gray-300">Xem và duyệt yêu cầu nạp/rút tiền</p>
     </div>
 
-    <div class="flex flex-wrap gap-4 mb-6">
+    <!-- <div class="flex flex-wrap gap-4 mb-6">
       <USelect
         v-model="selectedType"
         :options="typeOptions"
@@ -18,7 +18,7 @@
         placeholder="Trạng thái"
         class="w-40"
       />
-    </div>
+    </div> -->
 
     <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
       <div v-if="loading" class="p-8 text-center">
@@ -31,28 +31,28 @@
         <table class="w-full">
           <thead class="bg-gray-800/50">
             <tr>
-              <th class="px-4 py-3 text-left text-gray-400 font-medium text-sm">
+              <th class="px-4 py-3 text-left text-gray-200 font-medium text-sm">
                 ID
               </th>
-              <th class="px-4 py-3 text-left text-gray-400 font-medium text-sm">
+              <th class="px-4 py-3 text-left text-gray-200 font-medium text-sm">
                 Người dùng
               </th>
-              <th class="px-4 py-3 text-left text-gray-400 font-medium text-sm">
+              <th class="px-4 py-3 text-left text-gray-200 font-medium text-sm">
                 Loại
               </th>
-              <th class="px-4 py-3 text-left text-gray-400 font-medium text-sm">
+              <th class="px-4 py-3 text-left text-gray-200 font-medium text-sm">
                 Số tiền
               </th>
-              <th class="px-4 py-3 text-left text-gray-400 font-medium text-sm">
+              <th class="px-4 py-3 text-left text-gray-200 font-medium text-sm">
                 Trạng thái
               </th>
-              <th class="px-4 py-3 text-left text-gray-400 font-medium text-sm">
+              <th class="px-4 py-3 text-left text-gray-200 font-medium text-sm">
                 Chi tiết
               </th>
-              <th class="px-4 py-3 text-left text-gray-400 font-medium text-sm">
+              <th class="px-4 py-3 text-left text-gray-200 font-medium text-sm">
                 Ngày
               </th>
-              <th class="px-4 py-3 text-left text-gray-400 font-medium text-sm">
+              <th class="px-4 py-3 text-left text-gray-200 font-medium text-sm">
                 Thao tác
               </th>
             </tr>
@@ -63,7 +63,7 @@
               :key="tx.id"
               class="hover:bg-gray-800/50"
             >
-              <td class="px-4 py-4 text-gray-300">#{{ tx.id }}</td>
+              <td class="px-4 py-4 text-white">#{{ tx.id }}</td>
               <td class="px-4 py-4">
                 <p class="text-white text-sm">
                   {{ (tx.user as any)?.email || (tx.user as any)?.phone }}
@@ -93,7 +93,7 @@
                 }}</UBadge>
               </td>
               <td
-                class="px-4 py-4 text-gray-300 text-sm max-w-[200px] truncate"
+                class="px-4 py-4 text-gray-200 text-sm max-w-[200px] truncate"
               >
                 <template v-if="tx.tx_hash"
                   >TxHash: {{ tx.tx_hash.slice(0, 12) }}...</template
@@ -103,7 +103,7 @@
                 >
                 <template v-else>-</template>
               </td>
-              <td class="px-4 py-4 text-gray-300 text-sm">
+              <td class="px-4 py-4 text-gray-200 text-sm">
                 {{ formatDate(tx.created_at) }}
               </td>
               <td class="px-4 py-4">
@@ -128,7 +128,7 @@
                     >Từ chối</UButton
                   >
                 </div>
-                <span v-else class="text-gray-400 text-sm">Đã xử lý</span>
+                <span v-else class="text-gray-200 text-sm">Đã xử lý</span>
               </td>
             </tr>
           </tbody>
