@@ -345,6 +345,165 @@
         </div>
       </div>
     </section>
+
+    <!-- IC Markets Partnership Section -->
+    <section class="py-20 bg-gradient-to-b from-gray-950 to-gray-900">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+          <div class="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 rounded-full px-4 py-2 mb-6">
+            <UIcon name="i-heroicons-shield-check" class="w-5 h-5 text-amber-500" />
+            <span class="text-amber-500 text-sm font-medium">{{ $t('home.partnerTitle') }}</span>
+          </div>
+          <h2 class="text-3xl lg:text-4xl font-bold text-white mb-4">
+            {{ $t('home.partnerSubtitle') }}
+          </h2>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-12 items-center mb-16">
+          <!-- IC Markets Logo & Info -->
+          <div class="relative">
+            <div class="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 rounded-2xl p-8 shadow-2xl">
+              <div class="flex items-center gap-4 mb-6">
+                <div class="w-16 h-16 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center">
+                  <span class="text-white font-bold text-2xl">IC</span>
+                </div>
+                <div>
+                  <h3 class="text-2xl font-bold text-white">IC Markets</h3>
+                  <p class="text-gray-400">{{ $t('home.globalPartner') }}</p>
+                </div>
+              </div>
+              
+              <div class="space-y-4">
+                <p class="text-gray-300 leading-relaxed">
+                  {{ $t('home.partnerDesc1') }}
+                </p>
+                <p class="text-gray-300 leading-relaxed">
+                  {{ $t('home.partnerDesc2') }}
+                </p>
+              </div>
+
+              <!-- Stats -->
+              <div class="grid grid-cols-3 gap-4 mt-8 pt-8 border-t border-gray-700">
+                <div class="text-center">
+                  <p class="text-3xl font-bold text-amber-500">10+</p>
+                  <p class="text-gray-400 text-sm">{{ $t('home.yearsExperience') }}</p>
+                </div>
+                <div class="text-center">
+                  <p class="text-3xl font-bold text-amber-500">500K+</p>
+                  <p class="text-gray-400 text-sm">{{ $t('home.globalInvestors') }}</p>
+                </div>
+                <div class="text-center">
+                  <p class="text-3xl font-bold text-amber-500">95%+</p>
+                  <p class="text-gray-400 text-sm">{{ $t('home.accuracy') }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Floating badge -->
+            <div class="absolute -top-4 -right-4 bg-green-500/20 border border-green-500/30 rounded-lg px-4 py-2">
+              <span class="text-green-500 font-medium flex items-center gap-2">
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                {{ $t('home.fsaRegulated') }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div>
+            <div class="bg-gray-800/50 border border-gray-700 rounded-2xl p-8">
+              <div class="flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
+                  <UIcon name="i-heroicons-cpu-chip" class="w-6 h-6 text-blue-500" />
+                </div>
+                <h3 class="text-xl font-bold text-white">{{ $t('home.hftTitle') }}</h3>
+              </div>
+              <p class="text-gray-300 leading-relaxed mb-6">
+                {{ $t('home.partnerDesc3') }}
+              </p>
+              
+              <ul class="space-y-3">
+                <li class="flex items-center gap-3 text-gray-300">
+                  <UIcon name="i-heroicons-check-circle" class="w-5 h-5 text-green-500 shrink-0" />
+                  <span>{{ $t('home.hftFeature1') }}</span>
+                </li>
+                <li class="flex items-center gap-3 text-gray-300">
+                  <UIcon name="i-heroicons-check-circle" class="w-5 h-5 text-green-500 shrink-0" />
+                  <span>{{ $t('home.hftFeature2') }}</span>
+                </li>
+                <li class="flex items-center gap-3 text-gray-300">
+                  <UIcon name="i-heroicons-check-circle" class="w-5 h-5 text-green-500 shrink-0" />
+                  <span>{{ $t('home.hftFeature3') }}</span>
+                </li>
+                <li class="flex items-center gap-3 text-gray-300">
+                  <UIcon name="i-heroicons-check-circle" class="w-5 h-5 text-green-500 shrink-0" />
+                  <span>{{ $t('home.hftFeature4') }}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Legal Disclaimer Section -->
+    <section class="py-16 bg-gray-950 border-t border-gray-800">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+          <div class="flex items-center gap-3 mb-8">
+            <UIcon name="i-heroicons-document-text" class="w-6 h-6 text-gray-400" />
+            <h3 class="text-xl font-bold text-white">{{ $t('home.legalTitle') }}</h3>
+          </div>
+
+          <div class="space-y-6 text-sm text-gray-400 leading-relaxed">
+            <!-- License Info -->
+            <div class="bg-gray-900/50 border border-gray-800 rounded-xl p-6">
+              <div class="flex items-start gap-3">
+                <UIcon name="i-heroicons-building-library" class="w-5 h-5 text-amber-500 mt-0.5 shrink-0" />
+                <p>{{ $t('home.legalLicense') }}</p>
+              </div>
+            </div>
+
+            <!-- Risk Warning -->
+            <div class="bg-red-500/5 border border-red-500/20 rounded-xl p-6">
+              <div class="flex items-start gap-3">
+                <UIcon name="i-heroicons-exclamation-triangle" class="w-5 h-5 text-red-500 mt-0.5 shrink-0" />
+                <div>
+                  <p class="text-red-400 font-semibold mb-2">{{ $t('home.riskWarning') }}</p>
+                  <p class="text-gray-400">{{ $t('home.riskWarningText') }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Restricted Countries -->
+            <div class="bg-gray-900/50 border border-gray-800 rounded-xl p-6">
+              <div class="flex items-start gap-3">
+                <UIcon name="i-heroicons-globe-alt" class="w-5 h-5 text-blue-500 mt-0.5 shrink-0" />
+                <div>
+                  <p class="text-white font-semibold mb-2">{{ $t('home.restrictedCountries') }}</p>
+                  <p class="text-gray-400">{{ $t('home.restrictedCountriesText') }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Age Requirement & Disclaimer -->
+            <div class="grid md:grid-cols-2 gap-4">
+              <div class="bg-gray-900/50 border border-gray-800 rounded-xl p-6">
+                <div class="flex items-start gap-3">
+                  <UIcon name="i-heroicons-user-circle" class="w-5 h-5 text-purple-500 mt-0.5 shrink-0" />
+                  <p>{{ $t('home.ageRequirement') }}</p>
+                </div>
+              </div>
+              <div class="bg-gray-900/50 border border-gray-800 rounded-xl p-6">
+                <div class="flex items-start gap-3">
+                  <UIcon name="i-heroicons-information-circle" class="w-5 h-5 text-cyan-500 mt-0.5 shrink-0" />
+                  <p>{{ $t('home.disclaimer') }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 

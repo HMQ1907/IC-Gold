@@ -85,12 +85,21 @@ export default defineEventHandler(async (event) => {
     }
   }
 
+  // Get max_referral_uses from settings first
+  const { data: maxRefSetting } = await supabase
+    .from('site_settings')
+    .select('value')
+    .eq('key', 'max_referral_uses')
+    .single()
+  
+  const maxReferralUses = maxRefSetting?.value ? parseInt(maxRefSetting.value) : 10
+
   // Check referral code if provided
   let referrerId: number | null = null
   if (referralCode) {
     const { data: referrer } = await supabase
       .from('users')
-      .select('id, referral_uses, max_referral_uses')
+      .select('id, referral_uses')
       .eq('referral_code', referralCode.toUpperCase())
       .single()
 
@@ -101,7 +110,7 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    if (referrer.referral_uses >= referrer.max_referral_uses) {
+    if (referrer.referral_uses >= maxReferralUses) {
       throw createError({
         statusCode: 400,
         message: 'Referral code has reached its usage limit'

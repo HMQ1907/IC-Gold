@@ -71,7 +71,8 @@ export default defineNuxtConfig({
         { name: 'description', content: 'IC-Gold - Leading crypto investment platform' }
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+        { rel: 'icon', type: 'image/png', href: '/logo.png' },
+        { rel: 'apple-touch-icon', href: '/logo.png' }
       ]
     },
     pageTransition: { name: 'page', mode: 'out-in' }

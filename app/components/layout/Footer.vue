@@ -75,7 +75,7 @@
           © 2024 IC-Gold. {{ $t('footer.allRightsReserved') }}
         </p>
         <p class="text-gray-600 text-xs">
-          {{ locale === 'vi' ? 'Đầu tư crypto có rủi ro. Vui lòng cân nhắc kỹ trước khi đầu tư.' : 'Crypto investment carries risks. Please consider carefully before investing.' }}
+          {{ locale === 'vi' ? 'Đầu tư IC-Gold có rủi ro. Vui lòng cân nhắc kỹ trước khi đầu tư.' : 'IC-Gold investment carries risks. Please consider carefully before investing.' }}
         </p>
       </div>
     </div>

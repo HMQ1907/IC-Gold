@@ -116,8 +116,10 @@
                 <div>
                   <ul class="text-gray-300 text-sm space-y-1">
                     <li>• {{ locale === 'vi' ? 'Vui lòng kiểm tra địa chỉ ví trước khi gửi' : 'Please verify wallet address before submitting' }}</li>
+                    <li>• {{ locale === 'vi' ? 'Những giao dịch từ 22h-24h sẽ được xử lý nhanh hơn' : 'Transactions from 10pm-12am will be processed faster' }}</li>
                     <li>• {{ locale === 'vi' ? 'Rút tiền được xử lý trong 24 giờ' : 'Withdrawals are processed within 24 hours' }}</li>
                     <li>• {{ locale === 'vi' ? 'Không thể hủy sau khi gửi' : 'Cannot be cancelled once submitted' }}</li>
+                    
                   </ul>
                 </div>
               </div>

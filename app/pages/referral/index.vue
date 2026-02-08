@@ -1,9 +1,9 @@
 <template>
   <div class="container mx-auto px-4 py-8">
     <div class="mb-8">
-      <h1 class="text-2xl font-bold text-white mb-2">Referral Program</h1>
+      <h1 class="text-2xl font-bold text-white mb-2">{{ $t('referral.title') }}</h1>
       <p class="text-gray-400">
-        Refer friends and earn $10 for each successful registration
+        {{ $t('referral.subtitle') }}
       </p>
     </div>
 
@@ -14,13 +14,12 @@
         class="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
       >
         <div>
-          <p class="text-purple-200 text-sm mb-1">Your Referral Code</p>
+          <p class="text-purple-200 text-sm mb-1">{{ $t('referral.yourReferralCode') }}</p>
           <p class="text-3xl font-bold text-white tracking-wider">
             {{ stats?.referralCode || "..." }}
           </p>
           <p class="text-purple-200 text-sm mt-2">
-            {{ stats?.usesRemaining || 0 }}/{{ stats?.maxUses || 10 }} uses
-            remaining
+            {{ stats?.usesRemaining || 0 }}/{{ stats?.maxUses || 10 }} {{ $t('referral.usesRemaining') }}
           </p>
         </div>
         <div class="flex gap-2">
@@ -28,7 +27,7 @@
             ><UIcon
               name="i-heroicons-clipboard-document"
               class="w-5 h-5 mr-2"
-            />Copy Code</UButton
+            />{{ $t('referral.copyCode') }}</UButton
           >
           <UButton
             color="neutral"
@@ -38,7 +37,7 @@
             ><UIcon
               name="i-heroicons-share"
               class="w-5 h-5 mr-2"
-            />Share</UButton
+            />{{ $t('referral.share') }}</UButton
           >
         </div>
       </div>
@@ -53,7 +52,7 @@
             <UIcon name="i-heroicons-users" class="w-5 h-5 text-blue-500" />
           </div>
           <div>
-            <p class="text-gray-400 text-xs">Total Referrals</p>
+            <p class="text-gray-400 text-xs">{{ $t('referral.totalReferrals') }}</p>
             <p class="text-white font-bold text-xl">
               {{ stats?.totalReferrals || 0 }}
             </p>
@@ -71,7 +70,7 @@
             />
           </div>
           <div>
-            <p class="text-gray-400 text-xs">Bonus Received</p>
+            <p class="text-gray-400 text-xs">{{ $t('referral.bonusReceived') }}</p>
             <p class="text-white font-bold text-xl">
               {{ stats?.paidReferrals || 0 }}
             </p>
@@ -89,7 +88,7 @@
             />
           </div>
           <div>
-            <p class="text-gray-400 text-xs">Total Bonus</p>
+            <p class="text-gray-400 text-xs">{{ $t('referral.totalBonus') }}</p>
             <p class="text-white font-bold text-xl">
               ${{ stats?.totalBonus || 0 }}
             </p>
@@ -104,7 +103,7 @@
             <UIcon name="i-heroicons-clock" class="w-5 h-5 text-yellow-500" />
           </div>
           <div>
-            <p class="text-gray-400 text-xs">Pending</p>
+            <p class="text-gray-400 text-xs">{{ $t('referral.pending') }}</p>
             <p class="text-white font-bold text-xl">
               ${{ stats?.pendingBonus || 0 }}
             </p>
@@ -114,7 +113,7 @@
     </div>
 
     <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 mb-8">
-      <h3 class="text-white font-semibold mb-6">How It Works</h3>
+      <h3 class="text-white font-semibold mb-6">{{ $t('referral.howItWorks') }}</h3>
       <div class="grid md:grid-cols-3 gap-6">
         <div class="text-center">
           <div
@@ -122,9 +121,9 @@
           >
             <UIcon name="i-heroicons-share" class="w-8 h-8 text-purple-500" />
           </div>
-          <h4 class="text-white font-medium mb-2">1. Share Code</h4>
+          <h4 class="text-white font-medium mb-2">{{ $t('referral.step1Title') }}</h4>
           <p class="text-gray-400 text-sm">
-            Send your referral code or link to friends
+            {{ $t('referral.step1Desc') }}
           </p>
         </div>
         <div class="text-center">
@@ -133,9 +132,9 @@
           >
             <UIcon name="i-heroicons-user-plus" class="w-8 h-8 text-blue-500" />
           </div>
-          <h4 class="text-white font-medium mb-2">2. Friends Sign Up</h4>
+          <h4 class="text-white font-medium mb-2">{{ $t('referral.step2Title') }}</h4>
           <p class="text-gray-400 text-sm">
-            Friends register an account using your code
+            {{ $t('referral.step2Desc') }}
           </p>
         </div>
         <div class="text-center">
@@ -144,9 +143,9 @@
           >
             <UIcon name="i-heroicons-gift" class="w-8 h-8 text-green-500" />
           </div>
-          <h4 class="text-white font-medium mb-2">3. Get Rewarded</h4>
+          <h4 class="text-white font-medium mb-2">{{ $t('referral.step3Title') }}</h4>
           <p class="text-gray-400 text-sm">
-            Earn $10 when friends make their first deposit
+            {{ $t('referral.step3Desc') }}
           </p>
         </div>
       </div>
@@ -154,7 +153,7 @@
 
     <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
       <div class="p-4 border-b border-gray-800">
-        <h3 class="text-white font-semibold">Referral History</h3>
+        <h3 class="text-white font-semibold">{{ $t('referral.history') }}</h3>
       </div>
       <div v-if="loading" class="p-8 text-center">
         <UIcon
@@ -167,7 +166,7 @@
           name="i-heroicons-users"
           class="w-12 h-12 text-gray-600 mx-auto mb-3"
         />
-        <p class="text-gray-500">No referrals yet</p>
+        <p class="text-gray-500">{{ $t('referral.noReferrals') }}</p>
       </div>
       <div v-else class="divide-y divide-gray-800">
         <div
@@ -198,7 +197,7 @@
               :color="ref.bonusPaid ? 'success' : 'warning'"
               variant="subtle"
               size="xs"
-              >{{ ref.bonusPaid ? "Received" : "Pending" }}</UBadge
+              >{{ ref.bonusPaid ? $t('referral.received') : $t('referral.pendingStatus') }}</UBadge
             >
           </div>
         </div>
@@ -210,6 +209,7 @@
 <script setup lang="ts">
 definePageMeta({ middleware: "auth" });
 const toast = useToastCustom();
+const { t } = useI18n();
 
 interface ReferralStats {
   referralCode: string;
@@ -253,18 +253,18 @@ onMounted(async () => {
 async function copyCode() {
   if (!stats.value?.referralCode) return;
   await navigator.clipboard.writeText(stats.value.referralCode);
-  toast.success("Referral code copied");
+  toast.success(t('referral.codeCopied'));
 }
 async function copyLink() {
   await navigator.clipboard.writeText(referralLink.value);
-  toast.success("Referral link copied");
+  toast.success(t('referral.linkCopied'));
 }
 async function shareLink() {
   if (navigator.share) {
     try {
       await navigator.share({
-        title: "Join IC-Gold",
-        text: `Sign up for IC-Gold with referral code ${stats.value?.referralCode}!`,
+        title: t('referral.joinTitle'),
+        text: `${t('referral.shareText')} ${stats.value?.referralCode}!`,
         url: referralLink.value,
       });
     } catch {}
@@ -280,7 +280,8 @@ function maskEmail(email: string): string {
     : `${local[0]}${local[1]}***@${domain}`;
 }
 function formatDate(date: string): string {
-  return new Intl.DateTimeFormat("en-US", {
+  const { locale } = useI18n();
+  return new Intl.DateTimeFormat(locale.value === 'vi' ? 'vi-VN' : 'en-US', {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",

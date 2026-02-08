@@ -4,6 +4,15 @@ export default defineEventHandler(async (event) => {
   const user = await requireAuth(event)
   const supabase = getSupabaseAdmin()
 
+  // Get max_referral_uses from site_settings
+  const { data: maxRefSetting } = await supabase
+    .from('site_settings')
+    .select('value')
+    .eq('key', 'max_referral_uses')
+    .single()
+  
+  const maxReferralUses = maxRefSetting?.value ? parseInt(maxRefSetting.value) : 10
+
   // Get referral stats
   const { data: referrals, error } = await supabase
     .from('referrals')
@@ -37,8 +46,8 @@ export default defineEventHandler(async (event) => {
 
   return {
     referralCode: user.referral_code,
-    usesRemaining: user.max_referral_uses - user.referral_uses,
-    maxUses: user.max_referral_uses,
+    usesRemaining: maxReferralUses - user.referral_uses,
+    maxUses: maxReferralUses,
     currentUses: user.referral_uses,
     totalReferrals,
     paidReferrals,
