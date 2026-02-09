@@ -88,7 +88,6 @@ const faqItems = computed(() => [
   { label: t('support.faqItems.q6'), content: t('support.faqItems.a6') },
   { label: t('support.faqItems.q7'), content: t('support.faqItems.a7') },
   { label: t('support.faqItems.q8'), content: t('support.faqItems.a8') },
-  { label: t('support.faqItems.q9'), content: t('support.faqItems.a9') },
-  { label: t('support.faqItems.q10'), content: t('support.faqItems.a10') }
+  { label: t('support.faqItems.q9'), content: t('support.faqItems.a9') }
 ])
 </script>

@@ -139,7 +139,7 @@
               <input
                 v-model="state.txHash"
                 type="text"
-                placeholder="Enter transaction hash from your wallet"
+                placeholder="Điền mail vào để được kiểm tra nhanh"
                 class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors"
               />
             </div>
@@ -170,32 +170,26 @@
             name="i-heroicons-question-mark-circle"
             class="w-5 h-5 text-amber-500"
           />
-          How to Deposit
+          {{ locale === 'vi' ? 'Hướng dẫn nạp tiền' : 'How to Deposit' }}
         </h4>
         <ol class="space-y-3 text-gray-300">
           <li class="flex gap-3">
-            <span class="text-amber-500 font-bold">1.</span>Copy the TRC20
-            wallet address above
+            <span class="text-amber-500 font-bold">1.</span>{{ locale === 'vi' ? 'Sao chép địa chỉ ví TRC20 ở trên' : 'Copy the TRC20 wallet address above' }}
           </li>
           <li class="flex gap-3">
-            <span class="text-amber-500 font-bold">2.</span>Open your crypto
-            wallet and select send USDT via TRC20 network
+            <span class="text-amber-500 font-bold">2.</span>{{ locale === 'vi' ? 'Mở ví của bạn và chọn gửi USDT qua mạng TRC20' : 'Open your wallet and select send USDT via TRC20 network' }}
           </li>
           <li class="flex gap-3">
-            <span class="text-amber-500 font-bold">3.</span>Paste the wallet
-            address and enter the amount
+            <span class="text-amber-500 font-bold">3.</span>{{ locale === 'vi' ? 'Dán địa chỉ ví và nhập số tiền' : 'Paste the wallet address and enter the amount' }}
           </li>
           <li class="flex gap-3">
-            <span class="text-amber-500 font-bold">4.</span>Confirm the
-            transaction and wait for processing (usually 1-5 minutes)
+            <span class="text-amber-500 font-bold">4.</span>{{ locale === 'vi' ? 'Xác nhận giao dịch và đợi xử lý (thường 1-5 phút)' : 'Confirm the transaction and wait for processing (usually 1-5 minutes)' }}
           </li>
           <li class="flex gap-3">
-            <span class="text-amber-500 font-bold">5.</span>Copy the Transaction
-            Hash (TxID) and enter it in the form above
+            <span class="text-amber-500 font-bold">5.</span>{{ locale === 'vi' ? 'Sao chép Transaction Hash (TxID) và nhập vào form ở trên' : 'Copy the Transaction Hash (TxID) and enter it in the form above' }}
           </li>
           <li class="flex gap-3">
-            <span class="text-amber-500 font-bold">6.</span>Admin will verify
-            and credit your account within 24h
+            <span class="text-amber-500 font-bold">6.</span>{{ locale === 'vi' ? 'Admin sẽ xác minh và cộng tiền vào tài khoản trong vòng 24h' : 'Admin will verify and credit your account within 24h' }}
           </li>
         </ol>
       </div>
@@ -205,6 +199,7 @@
 
 <script setup lang="ts">
 definePageMeta({ middleware: "auth" });
+const { locale } = useI18n()
 const toast = useToastCustom();
 const { getDepositAddress, requestDeposit } = useWallet();
 const loadingAddress = ref(true);

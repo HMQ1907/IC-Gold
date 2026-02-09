@@ -240,60 +240,65 @@
       </div>
     </section>
 
-    <!-- Testimonials -->
+    <!-- Next Generation Platform -->
     <section class="py-20 bg-gray-950">
       <div class="container mx-auto px-4">
-        <div class="text-center mb-16">
-          <h2 class="text-3xl lg:text-4xl font-bold text-white mb-4">
-            What Users Say About IC-Gold
-          </h2>
-        </div>
-
-        <div class="grid md:grid-cols-3 gap-8">
-          <div class="bg-gray-900 border border-gray-800 rounded-2xl p-8">
-            <div class="flex items-center gap-1 mb-4">
-              <UIcon v-for="i in 5" :key="i" name="i-heroicons-star-solid" class="w-5 h-5 text-amber-500" />
+        <div class="max-w-5xl mx-auto">
+          <!-- Header -->
+          <div class="text-center mb-12">
+            <div class="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 rounded-full px-4 py-2 mb-6">
+              <UIcon name="i-heroicons-sparkles" class="w-5 h-5 text-amber-500" />
+              <span class="text-amber-400 font-medium text-sm">{{ $t('home.nextGenBadge') }}</span>
             </div>
-            <p class="text-gray-300 mb-6">
-              "IC-Gold's Copy Trade is really effective. I increased my profit by 30% in the first month without doing much."
+            <h2 class="text-3xl lg:text-5xl font-bold text-white mb-6">
+              {{ $t('home.nextGenTitle') }}
+            </h2>
+            <p class="text-gray-400 text-lg lg:text-xl leading-relaxed max-w-4xl mx-auto">
+              {{ $t('home.nextGenDesc') }}
             </p>
-            <div class="flex items-center gap-3">
-              <UAvatar alt="John D" class="bg-amber-500" />
-              <div>
-                <p class="text-white font-medium">John D.</p>
-                <p class="text-gray-500 text-sm">Individual Investor</p>
+          </div>
+
+          <!-- Features Grid -->
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            <div class="bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 rounded-2xl p-6 hover:border-amber-500/50 transition-all duration-300">
+              <div class="w-12 h-12 bg-amber-500/20 rounded-xl flex items-center justify-center mb-4">
+                <UIcon name="i-heroicons-chart-bar" class="w-6 h-6 text-amber-500" />
               </div>
+              <h3 class="text-white font-semibold text-lg mb-2">{{ $t('home.nextGenFeature1Title') }}</h3>
+              <p class="text-gray-400 text-sm">{{ $t('home.nextGenFeature1Desc') }}</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 rounded-2xl p-6 hover:border-amber-500/50 transition-all duration-300">
+              <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center mb-4">
+                <UIcon name="i-heroicons-adjustments-horizontal" class="w-6 h-6 text-blue-500" />
+              </div>
+              <h3 class="text-white font-semibold text-lg mb-2">{{ $t('home.nextGenFeature2Title') }}</h3>
+              <p class="text-gray-400 text-sm">{{ $t('home.nextGenFeature2Desc') }}</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 rounded-2xl p-6 hover:border-amber-500/50 transition-all duration-300">
+              <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center mb-4">
+                <UIcon name="i-heroicons-bolt" class="w-6 h-6 text-green-500" />
+              </div>
+              <h3 class="text-white font-semibold text-lg mb-2">{{ $t('home.nextGenFeature3Title') }}</h3>
+              <p class="text-gray-400 text-sm">{{ $t('home.nextGenFeature3Desc') }}</p>
             </div>
           </div>
 
-          <div class="bg-gray-900 border border-gray-800 rounded-2xl p-8">
-            <div class="flex items-center gap-1 mb-4">
-              <UIcon v-for="i in 5" :key="i" name="i-heroicons-star-solid" class="w-5 h-5 text-amber-500" />
-            </div>
-            <p class="text-gray-300 mb-6">
-              "Easy to use interface, fast deposits and withdrawals. Support team is very responsive and professional."
-            </p>
-            <div class="flex items-center gap-3">
-              <UAvatar alt="Sarah M" class="bg-purple-500" />
-              <div>
-                <p class="text-white font-medium">Sarah M.</p>
-                <p class="text-gray-500 text-sm">Trader</p>
+          <!-- Account Types -->
+          <div class="bg-gradient-to-r from-amber-500/10 via-gray-900 to-amber-500/10 border border-amber-500/20 rounded-2xl p-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+              <div class="text-center md:text-left">
+                <h3 class="text-white font-bold text-xl mb-2">{{ $t('home.nextGenAccountTitle') }}</h3>
+                <p class="text-gray-400">{{ $t('home.nextGenAccountDesc') }}</p>
               </div>
-            </div>
-          </div>
-
-          <div class="bg-gray-900 border border-gray-800 rounded-2xl p-8">
-            <div class="flex items-center gap-1 mb-4">
-              <UIcon v-for="i in 5" :key="i" name="i-heroicons-star-solid" class="w-5 h-5 text-amber-500" />
-            </div>
-            <p class="text-gray-300 mb-6">
-              "IC-Gold's referral program is great. I earned an extra $500 just from referring friends."
-            </p>
-            <div class="flex items-center gap-3">
-              <UAvatar alt="Mike R" class="bg-green-500" />
-              <div>
-                <p class="text-white font-medium">Mike R.</p>
-                <p class="text-gray-500 text-sm">Affiliate Partner</p>
+              <div class="flex items-center gap-4">
+                <div class="bg-amber-500/20 border border-amber-500/30 rounded-xl px-6 py-3 text-center">
+                  <span class="text-amber-400 font-bold">Raw Spread</span>
+                </div>
+                <div class="bg-blue-500/20 border border-blue-500/30 rounded-xl px-6 py-3 text-center">
+                  <span class="text-blue-400 font-bold">{{ $t('home.standardAccount') }}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -459,28 +464,43 @@
             <div class="bg-gray-900/50 border border-gray-800 rounded-xl p-6">
               <div class="flex items-start gap-3">
                 <UIcon name="i-heroicons-building-library" class="w-5 h-5 text-amber-500 mt-0.5 shrink-0" />
-                <p>{{ $t('home.legalLicense') }}</p>
+                <p>
+                  {{ $t('home.legalLicense') }}
+                  <NuxtLink to="/support/legal" class="text-amber-400 hover:text-amber-300 font-medium ml-1">
+                    ({{ $t('support.legalDocuments') }})
+                  </NuxtLink>
+                </p>
               </div>
             </div>
 
-            <!-- Risk Warning -->
-            <div class="bg-red-500/5 border border-red-500/20 rounded-xl p-6">
+            <!-- Long-term Development -->
+            <div class="bg-amber-500/5 border border-amber-500/20 rounded-xl p-6">
               <div class="flex items-start gap-3">
-                <UIcon name="i-heroicons-exclamation-triangle" class="w-5 h-5 text-red-500 mt-0.5 shrink-0" />
+                <UIcon name="i-heroicons-rocket-launch" class="w-5 h-5 text-amber-500 mt-0.5 shrink-0" />
                 <div>
-                  <p class="text-red-400 font-semibold mb-2">{{ $t('home.riskWarning') }}</p>
+                  <p class="text-amber-400 font-semibold mb-2">{{ $t('home.riskWarning') }}</p>
                   <p class="text-gray-400">{{ $t('home.riskWarningText') }}</p>
                 </div>
               </div>
             </div>
 
-            <!-- Restricted Countries -->
-            <div class="bg-gray-900/50 border border-gray-800 rounded-xl p-6">
+            <!-- Trading Rewards Policy -->
+            <div class="bg-green-500/5 border border-green-500/20 rounded-xl p-6">
               <div class="flex items-start gap-3">
-                <UIcon name="i-heroicons-globe-alt" class="w-5 h-5 text-blue-500 mt-0.5 shrink-0" />
+                <UIcon name="i-heroicons-gift" class="w-5 h-5 text-green-500 mt-0.5 shrink-0" />
                 <div>
-                  <p class="text-white font-semibold mb-2">{{ $t('home.restrictedCountries') }}</p>
-                  <p class="text-gray-400">{{ $t('home.restrictedCountriesText') }}</p>
+                  <p class="text-green-400 font-semibold mb-3">{{ $t('home.restrictedCountries') }}</p>
+                  <div class="space-y-3">
+                    <div class="bg-green-500/10 rounded-lg p-3">
+                      <p class="text-gray-300 text-sm">{{ $t('home.restrictedCountriesText') }}</p>
+                    </div>
+                    <div class="bg-green-500/10 rounded-lg p-3">
+                      <p class="text-gray-300 text-sm">{{ $t('home.restrictedCountriesText2') }}</p>
+                    </div>
+                    <div class="bg-green-500/10 rounded-lg p-3">
+                      <p class="text-gray-300 text-sm">{{ $t('home.restrictedCountriesText3') }}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

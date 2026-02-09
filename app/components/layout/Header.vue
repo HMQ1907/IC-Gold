@@ -125,7 +125,7 @@ const navItems = computed(() => {
       { to: '/', label: t('nav.home') },
       { to: '/trade', label: t('nav.trade') },
       { to: '/support/faq', label: t('nav.faq') },
-      { to: '/support/terms', label: t('nav.terms') },
+      { to: '/support/legal', label: t('support.legalDocuments') },
     ]
   }
   return [

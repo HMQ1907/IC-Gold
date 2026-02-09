@@ -56,7 +56,7 @@ export default defineNuxtConfig({
       supabaseUrl: process.env.SUPABASE_URL,
       supabaseKey: process.env.SUPABASE_KEY,
       siteName: 'IC-Gold',
-      siteDescription: 'Leading crypto investment platform',
+      siteDescription: 'Leading Gold investment platform',
       telegramSupportLink: process.env.TELEGRAM_SUPPORT_LINK || 'https://t.me/ic_gold_support'
     }
   },
@@ -64,11 +64,11 @@ export default defineNuxtConfig({
   // App configuration
   app: {
     head: {
-      title: 'IC-Gold - Crypto Investment Platform',
+      title: 'IC-Gold - Gold Investment Platform',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: 'IC-Gold - Leading crypto investment platform' }
+        { name: 'description', content: 'IC-Gold - Leading Gold investment platform' }
       ],
       link: [
         { rel: 'icon', type: 'image/png', href: '/logo.png' },

@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
   const { data: tx, error: txError } = await supabase
     .from('transactions')
     .select('*, user:user_id (*)')
-    .eq('id', transactionId)
+    .eq('id', Number(transactionId))
     .single()
 
   if (txError || !tx) {
@@ -43,16 +43,17 @@ export default defineEventHandler(async (event) => {
     .from('transactions')
     .update({
       status: newStatus,
-      processed_by: admin.id,
+      processed_by: Number(admin.id),
       processed_at: new Date().toISOString(),
-      admin_note: note
+      admin_note: note || null
     })
-    .eq('id', transactionId)
+    .eq('id', Number(transactionId))
 
   if (updateError) {
+    console.error('Transaction update error:', updateError)
     throw createError({
       statusCode: 500,
-      message: 'Failed to update transaction'
+      message: `Failed to update transaction: ${updateError.message}`
     })
   }
 

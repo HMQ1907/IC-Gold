@@ -1,5 +1,5 @@
 -- =============================================
--- IC-Gold Crypto Investment Platform
+-- IC-Gold Investment Platform
 -- Database Schema for Supabase
 -- =============================================
 
@@ -76,7 +76,7 @@ CREATE TABLE transactions (
     amount DECIMAL(18, 2) NOT NULL,
     status transaction_status DEFAULT 'pending',
     
-    -- For crypto deposits
+    -- For deposits
     tx_hash VARCHAR(100),
     wallet_address VARCHAR(100),
     network VARCHAR(20) DEFAULT 'TRC20',
@@ -231,7 +231,7 @@ INSERT INTO site_settings (key, value, description) VALUES
     ('copy_trade_min_balance', '1000', 'Số dư tối thiểu để sử dụng Copy Trade (USD)'),
     ('copy_trade_percentage', '5', 'Phần trăm Copy Trade mặc định'),
     ('site_name', 'IC-Gold', 'Tên website'),
-    ('site_description', 'Nền tảng đầu tư crypto hàng đầu', 'Mô tả website'),
+    ('site_description', 'Nền tảng đầu tư Gold hàng đầu', 'Mô tả website'),
     ('support_email', 'support@ic-gold.com', 'Email hỗ trợ'),
     ('telegram_link', '', 'Link Telegram hỗ trợ');
 
@@ -353,7 +353,7 @@ CREATE TRIGGER trigger_site_settings_updated_at
 CREATE OR REPLACE FUNCTION process_referral_bonus()
 RETURNS TRIGGER AS $$
 DECLARE
-    referrer_id BIGINT;
+    v_referrer_id BIGINT;
     bonus DECIMAL(18, 2);
     current_uses INT;
     max_uses INT;
@@ -361,16 +361,16 @@ BEGIN
     -- Only process for completed deposits (user's first successful transaction)
     IF NEW.type = 'deposit' AND NEW.status = 'completed' AND OLD.status = 'pending' THEN
         -- Get referrer info
-        SELECT u.referred_by, u.id INTO referrer_id
+        SELECT u.referred_by INTO v_referrer_id
         FROM users u
         WHERE u.id = NEW.user_id;
         
-        IF referrer_id IS NOT NULL THEN
+        IF v_referrer_id IS NOT NULL THEN
             -- Check if bonus already paid for this referral
-            IF NOT EXISTS (SELECT 1 FROM referrals WHERE referrer_id = referrer_id AND referred_id = NEW.user_id AND bonus_paid = TRUE) THEN
+            IF NOT EXISTS (SELECT 1 FROM referrals WHERE referrals.referrer_id = v_referrer_id AND referrals.referred_id = NEW.user_id AND bonus_paid = TRUE) THEN
                 -- Get referrer's current referral uses
                 SELECT referral_uses, max_referral_uses INTO current_uses, max_uses
-                FROM users WHERE id = referrer_id;
+                FROM users WHERE id = v_referrer_id;
                 
                 -- Check if referrer can still receive bonuses
                 IF current_uses < max_uses THEN
@@ -382,16 +382,16 @@ BEGIN
                     UPDATE users
                     SET balance = balance + bonus,
                         referral_uses = referral_uses + 1
-                    WHERE id = referrer_id;
+                    WHERE id = v_referrer_id;
                     
                     -- Mark referral as paid
                     UPDATE referrals
                     SET bonus_paid = TRUE
-                    WHERE referrer_id = referrer_id AND referred_id = NEW.user_id;
+                    WHERE referrals.referrer_id = v_referrer_id AND referrals.referred_id = NEW.user_id;
                     
                     -- Create bonus transaction record
                     INSERT INTO transactions (user_id, type, amount, status)
-                    VALUES (referrer_id, 'referral_bonus', bonus, 'completed');
+                    VALUES (v_referrer_id, 'referral_bonus', bonus, 'completed');
                 END IF;
             END IF;
         END IF;

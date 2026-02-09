@@ -20,8 +20,8 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  // Check minimum withdrawal
-  const minWithdraw = parseFloat(await getSiteSetting('min_withdraw') || '50')
+  // Check minimum withdrawal ($20)
+  const minWithdraw = parseFloat(await getSiteSetting('min_withdraw') || '20')
   if (amount < minWithdraw) {
     throw createError({
       statusCode: 400,
@@ -38,37 +38,6 @@ export default defineEventHandler(async (event) => {
   }
 
   const supabase = getSupabaseAdmin()
-
-  // 25-day lock from FIRST approved deposit
-  const { data: firstDeposit } = await supabase
-    .from('transactions')
-    .select('created_at, processed_at')
-    .eq('user_id', user.id)
-    .eq('type', 'deposit')
-    .eq('status', 'completed')
-    .order('processed_at', { ascending: true })
-    .limit(1)
-    .single()
-
-  if (firstDeposit) {
-    const depositDate = new Date(firstDeposit.processed_at || firstDeposit.created_at)
-    const now = new Date()
-    const daysSinceDeposit = Math.floor((now.getTime() - depositDate.getTime()) / (1000 * 60 * 60 * 24))
-    const lockDays = 25
-    if (daysSinceDeposit < lockDays) {
-      const remainingDays = lockDays - daysSinceDeposit
-      throw createError({
-        statusCode: 400,
-        message: `WITHDRAW_LOCKED:${remainingDays}`
-      })
-    }
-  } else {
-    // No completed deposit yet: cannot withdraw until first deposit is completed and 25 days passed
-    throw createError({
-      statusCode: 400,
-      message: 'WITHDRAW_LOCKED:25'
-    })
-  }
 
   // Deduct balance (hold)
   const { error: balanceError } = await supabase

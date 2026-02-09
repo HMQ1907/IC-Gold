@@ -128,9 +128,9 @@
           />
           <span class="text-sm text-gray-400">
             {{ locale === 'vi' ? 'Tôi đồng ý với' : 'I agree to the' }}
-            <NuxtLink to="/support/terms" class="text-amber-500 hover:text-amber-400">{{ $t('footer.termsOfService') }}</NuxtLink>
+            <NuxtLink to="/support/legal" class="text-amber-500 hover:text-amber-400">{{ $t('footer.termsOfService') }}</NuxtLink>
             {{ locale === 'vi' ? 'và' : 'and' }}
-            <NuxtLink to="/support/terms" class="text-amber-500 hover:text-amber-400">{{ $t('footer.privacyPolicy') }}</NuxtLink>
+            <NuxtLink to="/support/legal" class="text-amber-500 hover:text-amber-400">{{ $t('footer.privacyPolicy') }}</NuxtLink>
           </span>
         </label>
 

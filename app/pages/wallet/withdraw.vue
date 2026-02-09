@@ -6,27 +6,17 @@
         <p class="text-gray-400">{{ $t('wallet.withdrawDesc') }}</p>
       </div>
 
-      <!-- 25-day lock (first deposit) -->
-      <div v-if="withdrawLocked" class="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-6 mb-6">
+      <!-- Withdrawal Rules -->
+      <div class="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-6 mb-6">
         <div class="flex items-start gap-4">
           <div class="w-14 h-14 bg-amber-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
-            <UIcon name="i-heroicons-clock" class="w-8 h-8 text-amber-500" />
+            <UIcon name="i-heroicons-information-circle" class="w-8 h-8 text-amber-500" />
           </div>
           <div class="flex-1">
-            <h3 class="text-lg font-bold text-amber-400 mb-2">{{ $t('wallet.firstDepositLockTitle') }}</h3>
-            <p class="text-gray-300 mb-3">{{ $t('wallet.firstDepositLockDesc', { days: remainingDays }) }}</p>
-            <div class="bg-gray-900/50 rounded-xl p-4">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-gray-400">{{ $t('wallet.remainingLockTime') }}</span>
-                <span class="text-amber-400 font-bold">{{ remainingDays }} {{ $t('wallet.days') }}</span>
-              </div>
-              <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
-                <div 
-                  class="h-full bg-gradient-to-r from-amber-500 to-amber-600 transition-all duration-500"
-                  :style="{ width: lockProgress + '%' }"
-                ></div>
-              </div>
-            </div>
+            <ul class="text-gray-300 space-y-2">
+              <li>- {{ locale === 'vi' ? 'Phí Rút tất cả giao dịch là 5%.' : 'Withdrawal fee for all transactions is 5%.' }}</li>
+              <li>- {{ locale === 'vi' ? 'Rút tối thiểu 20$/ Lượt.' : 'Minimum withdrawal $20/ transaction.' }}</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -56,7 +46,7 @@
             <div>
               <div class="flex items-center justify-between mb-2">
                 <label class="text-sm font-medium text-gray-300">{{ locale === 'vi' ? 'Số tiền rút (USDT)' : 'Withdrawal Amount (USDT)' }}</label>
-                <span class="text-gray-500 text-sm">{{ locale === 'vi' ? 'Tối thiểu: $50' : 'Minimum: $50' }}</span>
+                <span class="text-gray-500 text-sm">{{ locale === 'vi' ? 'Tối thiểu: $20' : 'Minimum: $20' }}</span>
               </div>
               <div class="relative">
                 <input 
@@ -98,13 +88,13 @@
                 <span class="text-white font-medium">${{ formatNumber(state.amount || 0) }}</span>
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-gray-400">{{ locale === 'vi' ? 'Phí giao dịch' : 'Transaction Fee' }}</span>
-                <span class="text-white font-medium">$0.00</span>
+                <span class="text-gray-400">{{ locale === 'vi' ? 'Phí giao dịch (5%)' : 'Transaction Fee (5%)' }}</span>
+                <span class="text-white font-medium">-${{ formatNumber(fee) }}</span>
               </div>
               <div class="border-t border-gray-700 pt-3">
                 <div class="flex items-center justify-between">
                   <span class="text-white font-semibold">{{ locale === 'vi' ? 'Bạn nhận được' : "You'll Receive" }}</span>
-                  <span class="text-amber-500 font-bold text-xl">${{ formatNumber(state.amount || 0) }}</span>
+                  <span class="text-amber-500 font-bold text-xl">${{ formatNumber(receiveAmount) }}</span>
                 </div>
               </div>
             </div>
@@ -179,17 +169,16 @@ const toast = useToastCustom()
 const submitting = ref(false)
 const state = reactive({ amount: null as number | null, walletAddress: '' })
 
-// Withdrawal lock state (25 days after first deposit)
-const withdrawLocked = ref(false)
-const remainingDays = ref(0)
 const copyTradeActive = ref(false)
 const showHighProfitModal = ref(false)
-const lockProgress = computed(() => ((25 - remainingDays.value) / 25) * 100)
+
+// Fee calculation (5%)
+const fee = computed(() => (state.amount || 0) * 0.05)
+const receiveAmount = computed(() => (state.amount || 0) - fee.value)
 
 const canWithdraw = computed(() => 
-  !withdrawLocked.value && 
   state.amount && 
-  state.amount >= 50 && 
+  state.amount >= 20 && 
   state.amount <= (user.value?.balance || 0) && 
   state.walletAddress.length > 0
 )
@@ -209,21 +198,14 @@ async function doWithdrawAfterConfirm() {
     toast.success(locale.value === 'vi' ? 'Đã gửi yêu cầu rút tiền' : 'Withdrawal request submitted')
   } catch (error: any) {
     const message = error?.data?.message || error?.message || ''
-    if (message.startsWith('WITHDRAW_LOCKED:')) {
-      const days = parseInt(message.split(':')[1])
-      withdrawLocked.value = true
-      remainingDays.value = days
-      toast.warning(t('wallet.firstDepositLockTitle'), t('wallet.firstDepositLockDesc', { days }))
-    } else {
-      toast.error(locale.value === 'vi' ? 'Lỗi' : 'Error', message)
-    }
+    toast.error(locale.value === 'vi' ? 'Lỗi' : 'Error', message)
   } finally {
     submitting.value = false
   }
 }
 
 async function onSubmit() {
-  if (!state.amount || !state.walletAddress || withdrawLocked.value) return
+  if (!state.amount || !state.walletAddress) return
   if (copyTradeActive.value) {
     showHighProfitModal.value = true
     return
@@ -231,15 +213,11 @@ async function onSubmit() {
   await doWithdrawAfterConfirm()
 }
 
-// Check withdrawal lock status on mount (không mở modal ở đây — chỉ mở khi user bấm Xác nhận rút tiền)
+// Check copy trade status on mount
 onMounted(async () => {
   showHighProfitModal.value = false
   try {
-    const data = await $fetch<{ locked?: boolean; remainingDays?: number; copyTradeActive?: boolean }>('/api/wallet/withdraw-status')
-    if (data?.locked) {
-      withdrawLocked.value = true
-      remainingDays.value = data.remainingDays ?? 25
-    }
+    const data = await $fetch<{ copyTradeActive?: boolean }>('/api/wallet/withdraw-status')
     if (data?.copyTradeActive) {
       copyTradeActive.value = true
     }

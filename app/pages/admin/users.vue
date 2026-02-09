@@ -395,6 +395,190 @@
         </div>
       </template>
     </UCard>
+
+    <!-- Bulk Adjust by Fixed Amount -->
+    <UCard
+      class="mt-6 bg-gray-900 border border-gray-700"
+    >
+      <template #header>
+        <div class="flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2">
+            <UIcon name="i-heroicons-currency-dollar" class="w-5 h-5 text-green-500" />
+            <h3 class="text-white font-semibold text-lg">Điều chỉnh số dư theo số tiền</h3>
+          </div>
+          <UButton
+            color="neutral"
+            variant="ghost"
+            icon="i-heroicons-x-mark"
+            type="button"
+            @click="clearSelection"
+          />
+        </div>
+      </template>
+
+      <div class="space-y-5">
+          <!-- Selected Users Info -->
+          <div class="bg-gray-800/50 border border-gray-700 rounded-xl p-4">
+            <p class="text-gray-400 text-sm mb-2">
+              Đã chọn {{ selectedUsers.length }} người dùng:
+            </p>
+            <div class="flex flex-wrap gap-2 max-h-24 overflow-y-auto">
+              <span
+                v-for="user in selectedUsers"
+                :key="user.id"
+                class="inline-flex items-center gap-1 px-2 py-1 bg-gray-700 rounded-lg text-sm text-white"
+              >
+                {{ user.email || user.phone }}
+                <span class="text-amber-500 font-medium"
+                  >${{ user.balance.toLocaleString() }}</span
+                >
+              </span>
+            </div>
+          </div>
+
+          <!-- Total Balance Preview -->
+          <div
+            class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4"
+          >
+            <p class="text-gray-300 text-sm mb-1">Tổng số dư hiện tại:</p>
+            <p class="text-amber-500 font-bold text-2xl">
+              ${{ totalSelectedBalance.toLocaleString() }}
+            </p>
+          </div>
+
+          <!-- Fixed Amount Input -->
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2"
+              >Số tiền điều chỉnh ($)</label
+            >
+            <div class="flex gap-3">
+              <div class="flex-1 relative">
+                <span
+                  class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-medium"
+                  >$</span
+                >
+                <input
+                  v-model.number="fixedAmount"
+                  type="number"
+                  step="0.01"
+                  placeholder="VD: 100 để cộng $100, -50 để trừ $50"
+                  class="w-full pl-8 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors"
+                />
+              </div>
+            </div>
+            <div class="flex gap-2 mt-3">
+              <UButton
+                v-for="preset in [-100, -50, -10, 10, 50, 100, 500, 1000]"
+                :key="preset"
+                type="button"
+                size="xs"
+                :color="preset > 0 ? 'success' : 'error'"
+                variant="soft"
+                @click.stop="fixedAmount = preset"
+              >
+                {{ preset > 0 ? "+" : "" }}${{ preset }}
+              </UButton>
+            </div>
+          </div>
+
+          <!-- Preview Changes -->
+          <div
+            v-if="fixedAmount"
+            class="bg-gray-800/50 border border-gray-700 rounded-xl p-4"
+          >
+            <p class="text-gray-300 text-sm mb-3">Xem trước thay đổi:</p>
+            <div class="space-y-2 max-h-32 overflow-y-auto">
+              <div
+                v-for="user in selectedUsers"
+                :key="user.id"
+                class="flex items-center justify-between text-sm"
+              >
+                <span class="text-gray-400">{{
+                  user.email || user.phone
+                }}</span>
+                <div class="flex items-center gap-2">
+                  <span class="text-gray-400"
+                    >${{ user.balance.toLocaleString() }}</span
+                  >
+                  <UIcon
+                    name="i-heroicons-arrow-right"
+                    class="w-4 h-4 text-gray-500"
+                  />
+                  <span
+                    :class="
+                      fixedAmount >= 0 ? 'text-green-400' : 'text-red-400'
+                    "
+                    class="font-medium"
+                  >
+                    ${{ calculateNewBalanceFixed(user.balance).toLocaleString() }}
+                  </span>
+                  <span
+                    :class="
+                      fixedAmount >= 0
+                        ? 'text-green-400/60'
+                        : 'text-red-400/60'
+                    "
+                    class="text-xs"
+                  >
+                    ({{ fixedAmount >= 0 ? "+" : "" }}${{
+                      fixedAmount.toLocaleString()
+                    }})
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div
+              class="mt-3 pt-3 border-t border-gray-700 flex items-center justify-between font-medium"
+            >
+              <span class="text-gray-300">Tổng sau điều chỉnh:</span>
+              <span
+                :class="fixedAmount >= 0 ? 'text-green-400' : 'text-red-400'"
+                class="text-lg"
+              >
+                ${{ totalNewBalanceFixed.toLocaleString() }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Note -->
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2"
+              >Ghi chú</label
+            >
+            <textarea
+              v-model="fixedNote"
+              placeholder="Lý do điều chỉnh..."
+              rows="2"
+              class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors resize-none"
+            ></textarea>
+          </div>
+      </div>
+
+      <template #footer>
+        <div class="flex justify-end gap-3">
+          <UButton
+            class="cursor-pointer"
+            color="neutral"
+            variant="outline"
+            type="button"
+            @click="clearSelection"
+          >
+            Hủy
+          </UButton>
+          <UButton
+            class="cursor-pointer"
+            color="success"
+            variant="outline"
+            :loading="fixedAdjusting"
+            :disabled="!fixedAmount"
+            type="button"
+            @click="submitFixedAdjust"
+          >
+            {{ fixedAdjusting ? "Đang xử lý..." : "Xác nhận điều chỉnh" }}
+          </UButton>
+        </div>
+      </template>
+    </UCard>
   </div>
 </template>
 
@@ -417,6 +601,11 @@ const bulkPercentage = ref<number | null>(null);
 const bulkNote = ref("");
 const bulkAdjusting = ref(false);
 
+// Fixed amount state
+const fixedAmount = ref<number | null>(null);
+const fixedNote = ref("");
+const fixedAdjusting = ref(false);
+
 // Computed properties for selection
 const isAllSelected = computed(
   () =>
@@ -433,6 +622,14 @@ const totalSelectedBalance = computed(() =>
 const totalNewBalance = computed(() =>
   selectedUsers.value.reduce(
     (sum, user) => sum + calculateNewBalance(user.balance),
+    0,
+  ),
+);
+
+// Fixed amount computed
+const totalNewBalanceFixed = computed(() =>
+  selectedUsers.value.reduce(
+    (sum, user) => sum + calculateNewBalanceFixed(user.balance),
     0,
   ),
 );
@@ -460,6 +657,10 @@ function toggleSelectAll() {
 
 function clearSelection() {
   selectedUsers.value = [];
+  bulkPercentage.value = null;
+  bulkNote.value = "";
+  fixedAmount.value = null;
+  fixedNote.value = "";
 }
 
 function calculateNewBalance(currentBalance: number): number {
@@ -471,6 +672,12 @@ function calculateNewBalance(currentBalance: number): number {
 function calculateAdjustment(currentBalance: number): number {
   if (!bulkPercentage.value) return 0;
   return Math.round(currentBalance * (bulkPercentage.value / 100) * 100) / 100;
+}
+
+function calculateNewBalanceFixed(currentBalance: number): number {
+  if (!fixedAmount.value) return currentBalance;
+  const newBalance = currentBalance + fixedAmount.value;
+  return Math.round(Math.max(0, newBalance) * 100) / 100;
 }
 
 async function submitBulkAdjust() {
@@ -503,11 +710,50 @@ async function submitBulkAdjust() {
     }
 
     clearSelection();
-    loadUsers();
+    await loadUsers();
   } catch {
     toast.error("Lỗi", "Đã xảy ra lỗi khi điều chỉnh số dư");
   } finally {
     bulkAdjusting.value = false;
+  }
+}
+
+async function submitFixedAdjust() {
+  if (!fixedAmount.value || selectedUsers.value.length === 0) return;
+
+  fixedAdjusting.value = true;
+  let successCount = 0;
+  let errorCount = 0;
+
+  try {
+    for (const user of selectedUsers.value) {
+      try {
+        await adjustBalance(
+          user.id,
+          fixedAmount.value,
+          fixedNote.value || `Điều chỉnh ${fixedAmount.value >= 0 ? '+' : ''}$${fixedAmount.value} vào số dư`,
+        );
+        successCount++;
+      } catch {
+        errorCount++;
+      }
+    }
+
+    if (successCount > 0) {
+      toast.success(`Đã điều chỉnh thành công ${successCount} người dùng`);
+    }
+    if (errorCount > 0) {
+      toast.error("Lỗi", `${errorCount} người dùng không thể điều chỉnh`);
+    }
+
+    clearSelection();
+    fixedAmount.value = null;
+    fixedNote.value = "";
+    await loadUsers();
+  } catch {
+    toast.error("Lỗi", "Đã xảy ra lỗi khi điều chỉnh số dư");
+  } finally {
+    fixedAdjusting.value = false;
   }
 }
 

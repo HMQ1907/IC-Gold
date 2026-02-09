@@ -55,8 +55,8 @@
               </NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/support/terms" class="text-gray-400 hover:text-amber-500 transition-colors">
-                {{ $t('footer.termsOfService') }}
+              <NuxtLink to="/support/legal" class="text-gray-400 hover:text-amber-500 transition-colors">
+                {{ $t('support.legalDocuments') }}
               </NuxtLink>
             </li>
             <li>

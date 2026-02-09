@@ -132,7 +132,7 @@ export async function sendWelcomeEmail(email: string, fullName?: string): Promis
           <p class="text">Thank you for registering. You are ready to start your investment journey.</p>
           
           <div class="features">
-            <div class="feature"><span>✓</span> Track real-time crypto charts</div>
+            <div class="feature"><span>✓</span> Track real-time Gold charts</div>
             <div class="feature"><span>✓</span> Copy Trade from experts</div>
             <div class="feature"><span>✓</span> Fast deposits/withdrawals via TRC20</div>
             <div class="feature"><span>✓</span> Earn $10 for each successful referral</div>

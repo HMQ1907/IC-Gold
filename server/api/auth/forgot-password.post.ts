@@ -87,7 +87,7 @@ export default defineEventHandler(async (event) => {
           <p style="color: #666;">This code will expire in 15 minutes.</p>
           <p style="color: #666;">If you didn't request this, please ignore this email.</p>
           <hr style="border: none; border-top: 1px solid #333; margin: 30px 0;">
-          <p style="color: #888; font-size: 12px;">${siteName} - Secure Crypto Investment Platform</p>
+          <p style="color: #888; font-size: 12px;">${siteName} - Secure Gold Investment Platform</p>
         </div>
       `
     })
