@@ -29,7 +29,7 @@
       </div>
       <div class="flex items-center justify-between mt-2">
         <span class="text-gray-400">{{ $t('trade.minimumRequired') }}</span>
-        <span class="text-amber-500 font-medium">$1,000</span>
+        <span class="text-amber-500 font-medium">$500</span>
       </div>
     </div>
 

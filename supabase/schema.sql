@@ -228,7 +228,7 @@ INSERT INTO site_settings (key, value, description) VALUES
     ('min_withdraw', '50', 'Số tiền rút tối thiểu (USD)'),
     ('referral_bonus', '10', 'Tiền thưởng giới thiệu (USD)'),
     ('max_referral_uses', '10', 'Số lần sử dụng tối đa cho mã giới thiệu'),
-    ('copy_trade_min_balance', '1000', 'Số dư tối thiểu để sử dụng Copy Trade (USD)'),
+    ('copy_trade_min_balance', '500', 'Số dư tối thiểu để sử dụng Copy Trade (USD)'),
     ('copy_trade_percentage', '5', 'Phần trăm Copy Trade mặc định'),
     ('site_name', 'IC-Gold', 'Tên website'),
     ('site_description', 'Nền tảng đầu tư Gold hàng đầu', 'Mô tả website'),

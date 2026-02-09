@@ -14,8 +14,10 @@
           </div>
           <div class="flex-1">
             <ul class="text-gray-300 space-y-2">
-              <li>- {{ locale === 'vi' ? 'Phí Rút tất cả giao dịch là 5%.' : 'Withdrawal fee for all transactions is 5%.' }}</li>
-              <li>- {{ locale === 'vi' ? 'Rút tối thiểu 20$/ Lượt.' : 'Minimum withdrawal $20/ transaction.' }}</li>
+              <li>- {{ locale === 'vi' ? 'Rút gốc trước 30 ngày là mất phí 30%, khấu trừ toàn bộ lợi nhuận.' : 'Withdrawing principal before 30 days incurs 30% fee, all profits will be deducted.' }}</li>
+              <li>- {{ locale === 'vi' ? 'Rút lợi nhuận, phí rút 5%.' : 'Withdrawing profits incurs 5% fee.' }}</li>
+              <li>- {{ locale === 'vi' ? 'Rút tối thiểu 20$/lần.' : 'Minimum withdrawal $20/transaction.' }}</li>
+              <li>- {{ locale === 'vi' ? 'Mỗi ngày thực hiện 1 lệnh rút tiền.' : 'Only 1 withdrawal request per day.' }}</li>
             </ul>
           </div>
         </div>

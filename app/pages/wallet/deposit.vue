@@ -19,10 +19,10 @@
             </div>
             <div>
               <h3 class="text-white font-semibold">
-                Send USDT to this address
+                Gửi USDT đến địa chỉ này
               </h3>
               <p class="text-gray-500 text-sm">
-                Scan QR code or copy wallet address
+                Quét mã QR hoặc sao chép địa chỉ ví
               </p>
             </div>
           </div>
@@ -50,7 +50,7 @@
             </div>
 
             <div class="bg-gray-800/50 border border-gray-700 rounded-xl p-4">
-              <p class="text-gray-400 text-sm mb-2">TRC20 Wallet Address:</p>
+              <p class="text-gray-400 text-sm mb-2">Địa chỉ ví TRC20:</p>
               <div class="flex items-center gap-2">
                 <code class="flex-1 text-amber-500 font-medium break-all">{{
                   depositAddress.address
@@ -101,10 +101,10 @@
             </div>
             <div>
               <h3 class="text-white font-semibold">
-                Enter transaction details
+                Nhập thông tin giao dịch
               </h3>
               <p class="text-gray-500 text-sm">
-                Fill in the amount and transaction hash
+                Điền số tiền và mã hash giao dịch
               </p>
             </div>
           </div>
@@ -115,9 +115,9 @@
             <div>
               <div class="flex items-center justify-between mb-2">
                 <label class="text-sm font-medium text-gray-300"
-                  >Amount (USDT)</label
+                  >Số tiền (USDT)</label
                 >
-                <span class="text-gray-500 text-sm">Minimum: $10</span>
+                <span class="text-gray-500 text-sm">Tối thiểu: $10</span>
               </div>
               <input
                 v-model.number="state.amount"
@@ -130,16 +130,16 @@
             <div>
               <div class="flex items-center justify-between mb-2">
                 <label class="text-sm font-medium text-gray-300"
-                  >Transaction Hash (TxID)</label
+                  >Email</label
                 >
                 <span class="text-gray-500 text-sm"
-                  >Get this from your wallet after successful transfer</span
+                  >Để được xác thực nhanh chóng</span
                 >
               </div>
               <input
                 v-model="state.txHash"
                 type="text"
-                placeholder="Điền mail vào để được kiểm tra nhanh"
+                placeholder="Nhập email để được xác thực nhanh chóng"
                 class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors"
               />
             </div>
@@ -155,7 +155,7 @@
                 class="w-5 h-5 animate-spin"
               />
               <UIcon v-else name="i-heroicons-arrow-up-tray" class="w-5 h-5" />
-              {{ $t('common.confirm') }} {{ $t('wallet.deposit') }}
+              Xác nhận Nạp tiền
             </button>
           </form>
         </div>
@@ -170,26 +170,26 @@
             name="i-heroicons-question-mark-circle"
             class="w-5 h-5 text-amber-500"
           />
-          {{ locale === 'vi' ? 'Hướng dẫn nạp tiền' : 'How to Deposit' }}
+          Hướng dẫn nạp tiền
         </h4>
         <ol class="space-y-3 text-gray-300">
           <li class="flex gap-3">
-            <span class="text-amber-500 font-bold">1.</span>{{ locale === 'vi' ? 'Sao chép địa chỉ ví TRC20 ở trên' : 'Copy the TRC20 wallet address above' }}
+            <span class="text-amber-500 font-bold">1.</span>Sao chép địa chỉ ví TRC20 ở trên
           </li>
           <li class="flex gap-3">
-            <span class="text-amber-500 font-bold">2.</span>{{ locale === 'vi' ? 'Mở ví của bạn và chọn gửi USDT qua mạng TRC20' : 'Open your wallet and select send USDT via TRC20 network' }}
+            <span class="text-amber-500 font-bold">2.</span>Mở ví của bạn và chọn gửi USDT qua mạng TRC20
           </li>
           <li class="flex gap-3">
-            <span class="text-amber-500 font-bold">3.</span>{{ locale === 'vi' ? 'Dán địa chỉ ví và nhập số tiền' : 'Paste the wallet address and enter the amount' }}
+            <span class="text-amber-500 font-bold">3.</span>Dán địa chỉ ví và nhập số tiền
           </li>
           <li class="flex gap-3">
-            <span class="text-amber-500 font-bold">4.</span>{{ locale === 'vi' ? 'Xác nhận giao dịch và đợi xử lý (thường 1-5 phút)' : 'Confirm the transaction and wait for processing (usually 1-5 minutes)' }}
+            <span class="text-amber-500 font-bold">4.</span>Xác nhận giao dịch và đợi xử lý (thường 1-5 phút)
           </li>
           <li class="flex gap-3">
-            <span class="text-amber-500 font-bold">5.</span>{{ locale === 'vi' ? 'Sao chép Transaction Hash (TxID) và nhập vào form ở trên' : 'Copy the Transaction Hash (TxID) and enter it in the form above' }}
+            <span class="text-amber-500 font-bold">5.</span>Sao chép Transaction Hash (TxID) và nhập vào form ở trên
           </li>
           <li class="flex gap-3">
-            <span class="text-amber-500 font-bold">6.</span>{{ locale === 'vi' ? 'Admin sẽ xác minh và cộng tiền vào tài khoản trong vòng 24h' : 'Admin will verify and credit your account within 24h' }}
+            <span class="text-amber-500 font-bold">6.</span>Admin sẽ xác minh và cộng tiền vào tài khoản trong vòng 24h
           </li>
         </ol>
       </div>
@@ -199,7 +199,6 @@
 
 <script setup lang="ts">
 definePageMeta({ middleware: "auth" });
-const { locale } = useI18n()
 const toast = useToastCustom();
 const { getDepositAddress, requestDeposit } = useWallet();
 const loadingAddress = ref(true);
@@ -211,7 +210,7 @@ onMounted(async () => {
   try {
     depositAddress.value = await getDepositAddress();
   } catch {
-    toast.error("Error", "Failed to load deposit address");
+    toast.error("Lỗi", "Không thể tải địa chỉ nạp tiền");
   } finally {
     loadingAddress.value = false;
   }
@@ -220,7 +219,7 @@ onMounted(async () => {
 async function copyAddress() {
   if (!depositAddress.value) return;
   await navigator.clipboard.writeText(depositAddress.value.address);
-  toast.success("Address copied");
+  toast.success("Đã sao chép địa chỉ");
 }
 
 function handleQrError(event: Event) {

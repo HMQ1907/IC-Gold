@@ -9,10 +9,10 @@ export default defineEventHandler(async (event) => {
 
   if (action === 'start') {
     // Check minimum balance
-    if (user.balance < 1000) {
+    if (user.balance < 500) {
       throw createError({
         statusCode: 400,
-        message: 'Minimum balance for Copy Trade is $1,000'
+        message: 'Minimum balance for Copy Trade is $500'
       })
     }
 
