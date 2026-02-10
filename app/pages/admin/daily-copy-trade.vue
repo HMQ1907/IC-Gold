@@ -140,7 +140,7 @@
                 </span>
               </td>
               <td class="px-4 py-3">
-                <span class="text-amber-400 font-bold">+${{ request.amount }}</span>
+                <span class="text-amber-400 font-bold">+1%</span>
               </td>
               <td class="px-4 py-3">
                 <span :class="getStatusClass(request.status)" class="px-2 py-1 rounded text-sm">
@@ -261,7 +261,7 @@ async function processRequest(requestId: number, action: 'approve' | 'reject') {
 
 // Bulk approve
 async function bulkApprove() {
-  if (!confirm(`Bạn có chắc muốn duyệt tất cả ${stats.value.pending} yêu cầu? Tổng cộng sẽ cộng $${stats.value.pending * 10}`)) {
+  if (!confirm(`Bạn có chắc muốn duyệt tất cả ${stats.value.pending} yêu cầu? Tổng cộng sẽ cộng 1% số dư hiện tại của từng user.`)) {
     return
   }
   

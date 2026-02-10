@@ -36,6 +36,22 @@ export default defineEventHandler(async (event) => {
         : 'Yêu cầu hôm nay đã bị từ chối'
     }
   }
+
+  const { data: userData, error: userError } = await client
+    .from('users')
+    .select('balance')
+    .eq('id', userId)
+    .single()
+
+  if (userError) {
+    console.error('Error fetching user balance:', userError)
+    throw createError({
+      statusCode: 500,
+      message: 'Failed to fetch user balance'
+    })
+  }
+
+  const previewAmount = Number(((userData?.balance || 0) * 0.01).toFixed(2))
   
   // Insert new request
   const { data, error } = await client
@@ -45,7 +61,7 @@ export default defineEventHandler(async (event) => {
       request_date: today,
       time_window: timeWindow,
       status: 'pending',
-      amount: 10.00
+      amount: previewAmount
     })
     .select()
     .single()

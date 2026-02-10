@@ -45,8 +45,9 @@ export default defineEventHandler(async (event) => {
   
   // Start transaction-like operations
   if (action === 'approve') {
-    // Update user balance (+$10)
-    const newBalance = (request.users?.balance || 0) + request.amount
+    const currentBalance = request.users?.balance || 0
+    const bonusAmount = Number((currentBalance * 0.01).toFixed(2))
+    const newBalance = currentBalance + bonusAmount
     
     const { error: balanceError } = await client
       .from('users')
@@ -67,12 +68,17 @@ export default defineEventHandler(async (event) => {
       .insert({
         user_id: request.user_id,
         type: 'copy_trade',
-        amount: request.amount,
+        amount: bonusAmount,
         status: 'completed',
         admin_note: `Daily Copy Trade bonus - ${request.time_window}`,
         processed_by: adminId,
         processed_at: new Date().toISOString()
       })
+
+    await client
+      .from('daily_copy_trade_requests')
+      .update({ amount: bonusAmount })
+      .eq('id', requestId)
   }
   
   // Update request status
@@ -97,7 +103,7 @@ export default defineEventHandler(async (event) => {
   return {
     success: true,
     message: action === 'approve' 
-      ? `Đã duyệt và cộng $${request.amount} cho user`
+      ? 'Đã duyệt và cộng 1% số dư hiện tại cho user'
       : 'Đã từ chối yêu cầu'
   }
 })

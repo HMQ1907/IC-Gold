@@ -39,13 +39,15 @@ export default defineEventHandler(async (event) => {
   }
   
   let approvedCount = 0
+  let totalAmount = 0
   const errors: string[] = []
   
   // Process each request
   for (const request of pendingRequests) {
     try {
-      // Update user balance
-      const newBalance = (request.users?.balance || 0) + request.amount
+      const currentBalance = request.users?.balance || 0
+      const bonusAmount = Number((currentBalance * 0.01).toFixed(2))
+      const newBalance = currentBalance + bonusAmount
       
       await client
         .from('users')
@@ -58,7 +60,7 @@ export default defineEventHandler(async (event) => {
         .insert({
           user_id: request.user_id,
           type: 'copy_trade',
-          amount: request.amount,
+          amount: bonusAmount,
           status: 'completed',
           admin_note: `Daily Copy Trade bonus - ${request.time_window}`,
           processed_by: adminId,
@@ -72,11 +74,13 @@ export default defineEventHandler(async (event) => {
           status: 'approved',
           processed_by: adminId,
           processed_at: new Date().toISOString(),
-          admin_note: 'Bulk approved'
+          admin_note: 'Bulk approved',
+          amount: bonusAmount
         })
         .eq('id', request.id)
       
       approvedCount++
+      totalAmount += bonusAmount
     } catch (error: any) {
       errors.push(`User ${request.user_id}: ${error.message}`)
     }
@@ -86,7 +90,7 @@ export default defineEventHandler(async (event) => {
     success: true,
     message: `Đã duyệt ${approvedCount}/${pendingRequests.length} yêu cầu`,
     approvedCount,
-    totalAmount: approvedCount * 10,
+    totalAmount,
     errors: errors.length > 0 ? errors : undefined
   }
 })
