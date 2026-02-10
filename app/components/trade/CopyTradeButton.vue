@@ -137,7 +137,7 @@ const progressPercent = computed(() =>
 
 const loading = ref(false);
 const isCopying = ref(false);
-const copyPercentage = ref(5);
+const copyPercentage = ref(1);
 
 onMounted(() => {
   isCopying.value = user.value?.copy_trade_active || false;
