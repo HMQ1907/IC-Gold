@@ -247,10 +247,10 @@
     "copyTradeReminderTitle": "🔔 Turn On Copy Trade Now!",
     "copyTradeReminderDesc": "This is the golden trading time! Enable Copy Trade to automatically copy expert traders and maximize your profits.",
     "copyTradeReminderHint": "Click the Copy Trade button above to get started",
-    "dailyCopyTradeBtn": "Daily Copy Trade (+$10)",
+    "dailyCopyTradeBtn": "Daily Copy Trade (+1%)",
     "dailyCopyTradeSubmitting": "Submitting...",
     "dailyCopyTradePending": "Submitted - Waiting for Admin approval",
-    "dailyCopyTradeApproved": "Approved +$10 today",
+    "dailyCopyTradeApproved": "Approved +1% today",
     "dailyCopyTradeRejected": "Request rejected",
     "dailyCopyTradeSuccess": "Daily Copy Trade request sent successfully!"
   },

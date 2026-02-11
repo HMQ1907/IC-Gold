@@ -247,10 +247,10 @@
     "copyTradeReminderTitle": "🔔 Bật Copy Trade Ngay!",
     "copyTradeReminderDesc": "Đây là khung giờ vàng giao dịch! Bật Copy Trade để tự động sao chép các chuyên gia và tối đa hóa lợi nhuận của bạn.",
     "copyTradeReminderHint": "Nhấn nút Copy Trade ở trên để bắt đầu",
-    "dailyCopyTradeBtn": "Copy Trade theo ngày (+$10)",
+    "dailyCopyTradeBtn": "Copy Trade theo ngày (+1%)",
     "dailyCopyTradeSubmitting": "Đang gửi...",
     "dailyCopyTradePending": "Đã gửi - Đang chờ Admin duyệt",
-    "dailyCopyTradeApproved": "Đã được duyệt +$10 hôm nay",
+    "dailyCopyTradeApproved": "Đã được duyệt +1% hôm nay",
     "dailyCopyTradeRejected": "Yêu cầu bị từ chối",
     "dailyCopyTradeSuccess": "Yêu cầu Copy Trade theo ngày đã được gửi thành công!"
   },
