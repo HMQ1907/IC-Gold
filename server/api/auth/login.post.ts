@@ -1,11 +1,8 @@
 import { getSupabaseAdmin } from '~~/server/utils/supabase'
-import { sendOtpEmail } from '~~/server/utils/email'
-import { 
-  verifyPassword, 
-  generateOtp, 
+import {
+  verifyPassword,
   generateSessionToken,
-  getOtpExpiry,
-  getSessionExpiry 
+  getSessionExpiry
 } from '~~/server/utils/helpers'
 
 export default defineEventHandler(async (event) => {
@@ -61,55 +58,6 @@ export default defineEventHandler(async (event) => {
       statusCode: 401,
       message: 'Invalid email/phone or password'
     })
-  }
-
-  // Check if email is verified
-  if (email && !user.email_verified) {
-    // Send new OTP
-    const otpCode = generateOtp()
-    const otpExpiry = getOtpExpiry()
-
-    await supabase.from('otp_codes').insert({
-      user_id: user.id,
-      email: email,
-      code: otpCode,
-      type: 'register',
-      expires_at: otpExpiry.toISOString()
-    })
-
-    await sendOtpEmail(email, otpCode, 'register')
-
-    return {
-      requireOtp: true,
-      type: 'verify_email',
-      email,
-      message: 'Please verify your email. OTP code has been sent.'
-    }
-  }
-
-  // Check if 2FA is enabled
-  if (user.is_2fa_enabled) {
-    const otpCode = generateOtp()
-    const otpExpiry = getOtpExpiry()
-
-    await supabase.from('otp_codes').insert({
-      user_id: user.id,
-      email: user.email,
-      code: otpCode,
-      type: 'login',
-      expires_at: otpExpiry.toISOString()
-    })
-
-    if (user.email) {
-      await sendOtpEmail(user.email, otpCode, 'login')
-    }
-
-    return {
-      requireOtp: true,
-      type: '2fa',
-      email: user.email,
-      message: 'Please enter the OTP code from your email'
-    }
   }
 
   // Create session

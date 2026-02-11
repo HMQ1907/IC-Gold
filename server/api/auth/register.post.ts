@@ -130,8 +130,7 @@ export default defineEventHandler(async (event) => {
       phone: phone || null,
       password_hash: passwordHash,
       full_name: fullName || null,
-      referred_by: referrerId,
-      email_verified: true // Auto-verify since no OTP
+      referred_by: referrerId
     })
     .select()
     .single()

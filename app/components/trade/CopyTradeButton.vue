@@ -29,7 +29,7 @@
       </div>
       <div class="flex items-center justify-between mt-2">
         <span class="text-gray-400">{{ $t('trade.minimumRequired') }}</span>
-        <span class="text-amber-500 font-medium">$500</span>
+        <span class="text-amber-500 font-medium">${{ formatNumber(minBalance) }}</span>
       </div>
     </div>
 
@@ -60,7 +60,7 @@
       <div
         class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 border border-gray-700 rounded-lg text-sm text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none"
       >
-        {{ $t('trade.requiresMinBalance') }}
+        {{ $t('trade.requiresMinBalance', { min: formatNumber(minBalance) }) }}
       </div>
     </div>
 
@@ -118,7 +118,7 @@
           class="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5"
         />
         <p class="text-amber-200 text-sm">
-          {{ $t('trade.copyTradeInfoBox') }}
+          {{ $t('trade.copyTradeInfoBox', { percent: copyPercentage }) }}
         </p>
       </div>
     </div>
@@ -130,17 +130,34 @@ const { user, refreshUser } = useAuth();
 const toast = useToastCustom();
 
 const balance = computed(() => user.value?.balance || 0);
-const canCopyTrade = computed(() => balance.value >= 1000);
-const progressPercent = computed(() =>
-  Math.min(100, (balance.value / 1000) * 100).toFixed(0),
-);
+const minBalance = ref(500);
+const canCopyTrade = computed(() => balance.value >= minBalance.value);
+const progressPercent = computed(() => {
+  if (minBalance.value <= 0) return '0';
+  return Math.min(100, (balance.value / minBalance.value) * 100).toFixed(0);
+});
 
 const loading = ref(false);
 const isCopying = ref(false);
 const copyPercentage = ref(1);
 
-onMounted(() => {
+onMounted(async () => {
   isCopying.value = user.value?.copy_trade_active || false;
+  try {
+    const data = await $fetch<{ settings?: Record<string, string> }>(
+      '/api/settings',
+    );
+    const nextMin = Number(data?.settings?.copy_trade_min_balance);
+    const nextPercent = Number(data?.settings?.copy_trade_percentage);
+    if (!Number.isNaN(nextMin) && nextMin > 0) {
+      minBalance.value = nextMin;
+    }
+    if (!Number.isNaN(nextPercent) && nextPercent > 0) {
+      copyPercentage.value = nextPercent;
+    }
+  } catch {
+    // Keep defaults if settings cannot be loaded.
+  }
 });
 
 watch(

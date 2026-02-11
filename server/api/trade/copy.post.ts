@@ -1,4 +1,4 @@
-import { requireAuth, getSupabaseAdmin, createNotification } from '~~/server/utils/supabase'
+import { requireAuth, getSupabaseAdmin, createNotification, getSiteSetting } from '~~/server/utils/supabase'
 
 export default defineEventHandler(async (event) => {
   const user = await requireAuth(event)
@@ -8,11 +8,12 @@ export default defineEventHandler(async (event) => {
   const supabase = getSupabaseAdmin()
 
   if (action === 'start') {
+    const minBalance = parseFloat((await getSiteSetting('copy_trade_min_balance')) || '500')
     // Check minimum balance
-    if (user.balance < 500) {
+    if (user.balance < minBalance) {
       throw createError({
         statusCode: 400,
-        message: 'Minimum balance for Copy Trade is $500'
+        message: `Minimum balance for Copy Trade is $${minBalance}`
       })
     }
 

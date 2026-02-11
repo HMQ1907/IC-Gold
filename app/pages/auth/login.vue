@@ -105,7 +105,6 @@ definePageMeta({
 })
 
 const { login } = useAuth()
-const router = useRouter()
 const { locale } = useI18n()
 
 const loading = ref(false)
@@ -122,17 +121,7 @@ async function onSubmit() {
   
   loading.value = true
   try {
-    const result = await login(state.email, state.password)
-    
-    if (result?.requireOtp) {
-      await router.push({
-        path: '/auth/verify',
-        query: { 
-          email: result.email,
-          type: 'login'
-        }
-      })
-    }
+    await login(state.email, state.password)
   } catch (error: any) {
     // Error toast already handled in useAuth
     console.error('Login error:', error)

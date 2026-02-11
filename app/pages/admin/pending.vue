@@ -19,7 +19,7 @@
             </div>
           </div>
         </div>
-        
+
         <div v-if="loadingDeposits" class="p-8 text-center">
           <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 text-gray-500 animate-spin" />
         </div>
@@ -68,25 +68,14 @@
                 <p class="text-gray-300 text-xs mt-2">{{ formatDate(tx.created_at) }}</p>
               </div>
               <div class="flex flex-col gap-2 min-w-[100px]">
-                <UButton
-                  color="success"
-                  block
-                  :loading="processingId === tx.id && processingAction === 'approve'"
-                  :disabled="processingId === tx.id"
-                  @click="processTransaction(tx.id, 'approve')"
-                  icon="i-heroicons-check"
-                >
+                <UButton color="success" block :loading="processingId === tx.id && processingAction === 'approve'"
+                  :disabled="processingId === tx.id" @click="processTransaction(tx.id, 'approve')"
+                  icon="i-heroicons-check">
                   Duyệt
                 </UButton>
-                <UButton
-                  color="error"
-                  variant="outline"
-                  block
-                  :loading="processingId === tx.id && processingAction === 'reject'"
-                  :disabled="processingId === tx.id"
-                  @click="processTransaction(tx.id, 'reject')"
-                  icon="i-heroicons-x-mark"
-                >
+                <UButton color="error" variant="outline" block
+                  :loading="processingId === tx.id && processingAction === 'reject'" :disabled="processingId === tx.id"
+                  @click="processTransaction(tx.id, 'reject')" icon="i-heroicons-x-mark">
                   Từ chối
                 </UButton>
               </div>
@@ -108,7 +97,7 @@
             </div>
           </div>
         </div>
-        
+
         <div v-if="loadingWithdrawals" class="p-8 text-center">
           <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 text-gray-500 animate-spin" />
         </div>
@@ -131,11 +120,11 @@
                   <span class="text-gray-300">Tên:</span> {{ tx.user.full_name }}
                 </p>
                 <p class="text-gray-200 text-sm mb-1" v-if="tx.user?.balance !== undefined">
-                  <span class="text-gray-300">Số dư hiện tại:</span> 
+                  <span class="text-gray-300">Số dư hiện tại:</span>
                   <span class="text-primary font-semibold">${{ tx.user.balance.toLocaleString() }}</span>
                 </p>
-                <p class="text-gray-300 text-xs mb-2" v-if="tx.withdraw_address">
-                  Đến: {{ tx.withdraw_address.slice(0, 16) }}...{{ tx.withdraw_address.slice(-8) }}
+                <p class="text-gray-300 text-xs mb-2 break-all" v-if="tx.withdraw_address">
+                  Đến: {{ tx.withdraw_address }}
                 </p>
                 <!-- Referral Hierarchy -->
                 <div v-if="tx.user?.referral_hierarchy" class="mt-2 p-2 bg-gray-800/50 rounded-lg">
@@ -161,25 +150,14 @@
                 <p class="text-gray-300 text-xs mt-2">{{ formatDate(tx.created_at) }}</p>
               </div>
               <div class="flex flex-col gap-2 min-w-[100px]">
-                <UButton
-                  color="success"
-                  block
-                  :loading="processingId === tx.id && processingAction === 'approve'"
-                  :disabled="processingId === tx.id"
-                  @click="processTransaction(tx.id, 'approve')"
-                  icon="i-heroicons-check"
-                >
+                <UButton color="success" block :loading="processingId === tx.id && processingAction === 'approve'"
+                  :disabled="processingId === tx.id" @click="processTransaction(tx.id, 'approve')"
+                  icon="i-heroicons-check">
                   Duyệt
                 </UButton>
-                <UButton
-                  color="error"
-                  variant="outline"
-                  block
-                  :loading="processingId === tx.id && processingAction === 'reject'"
-                  :disabled="processingId === tx.id"
-                  @click="processTransaction(tx.id, 'reject')"
-                  icon="i-heroicons-x-mark"
-                >
+                <UButton color="error" variant="outline" block
+                  :loading="processingId === tx.id && processingAction === 'reject'" :disabled="processingId === tx.id"
+                  @click="processTransaction(tx.id, 'reject')" icon="i-heroicons-x-mark">
                   Từ chối
                 </UButton>
               </div>
@@ -205,7 +183,7 @@ const processingAction = ref<string | null>(null)
 async function fetchPendingTransactions() {
   loadingDeposits.value = true
   loadingWithdrawals.value = true
-  
+
   try {
     const data = await $fetch('/api/admin/pending-transactions')
     if (data) {
@@ -223,15 +201,15 @@ async function fetchPendingTransactions() {
 async function processTransaction(txId: number, action: 'approve' | 'reject') {
   processingId.value = txId
   processingAction.value = action
-  
+
   try {
     await $fetch('/api/admin/approve-transaction', {
       method: 'POST',
       body: { transactionId: txId, action }
     })
-    
+
     toast.success(action === 'approve' ? 'Đã duyệt giao dịch' : 'Đã từ chối giao dịch')
-    
+
     // Remove from local list immediately
     pendingDeposits.value = pendingDeposits.value.filter(tx => tx.id !== txId)
     pendingWithdrawals.value = pendingWithdrawals.value.filter(tx => tx.id !== txId)

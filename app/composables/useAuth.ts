@@ -38,14 +38,10 @@ export const useAuth = () => {
   async function login(email: string, password: string) {
     authState.loading = true
     try {
-      const response = await $fetch<{ user?: User; requireOtp?: boolean; email?: string }>('/api/auth/login', {
+      const response = await $fetch<{ user?: User }>('/api/auth/login', {
         method: 'POST',
         body: { email, password }
       })
-
-      if (response.requireOtp) {
-        return { requireOtp: true, email: response.email || email }
-      }
 
       if (response.user) {
         authState.user = response.user
@@ -98,50 +94,6 @@ export const useAuth = () => {
     }
   }
 
-  // Verify OTP
-  async function verifyOtp(code: string, email?: string, phone?: string, type: string = 'register') {
-    authState.loading = true
-    try {
-      const response = await $fetch<{ user: User }>('/api/auth/verify-otp', {
-        method: 'POST',
-        body: { code, email, phone, type }
-      })
-
-      if (response.user) {
-        authState.user = response.user
-        toast.success('Verification successful', 'Your account has been activated')
-        // Admin goes to admin panel, regular user goes to dashboard
-        if (response.user.is_admin) {
-          await router.push('/admin')
-        } else {
-          await router.push('/dashboard')
-        }
-        return { success: true }
-      }
-    } catch (error: any) {
-      const message = error.data?.message || error.message || 'Verification failed'
-      toast.error('Verification failed', message)
-      throw error
-    } finally {
-      authState.loading = false
-    }
-  }
-
-  // Resend OTP
-  async function resendOtp(email?: string, phone?: string, type: string = 'register') {
-    try {
-      await $fetch('/api/auth/resend-otp', {
-        method: 'POST',
-        body: { email, phone, type }
-      })
-
-      toast.success('OTP code sent', 'Please check your email')
-    } catch (error: any) {
-      const message = error.data?.message || error.message || 'Failed to resend code'
-      toast.error('Error', message)
-      throw error
-    }
-  }
 
   // Logout
   async function logout() {
@@ -177,8 +129,6 @@ export const useAuth = () => {
     init,
     login,
     register,
-    verifyOtp,
-    resendOtp,
     logout,
     refreshUser
   }

@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
     .select('value')
     .eq('key', 'max_referral_uses')
     .single()
-  
+
   const maxReferralUses = maxRefSetting?.value ? parseInt(maxRefSetting.value) : 10
 
   // Get referral stats
