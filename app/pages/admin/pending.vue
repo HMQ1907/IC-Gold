@@ -123,9 +123,21 @@
                   <span class="text-gray-300">Số dư hiện tại:</span>
                   <span class="text-primary font-semibold">${{ tx.user.balance.toLocaleString() }}</span>
                 </p>
-                <p class="text-gray-300 text-xs mb-2 break-all" v-if="tx.withdraw_address">
-                  Đến: {{ tx.withdraw_address }}
-                </p>
+                <div v-if="tx.withdraw_address" class="text-gray-300 text-xs mb-2">
+                  <div class="flex items-start gap-2">
+                    <span class="shrink-0">Đến:</span>
+                    <span class="break-all">{{ tx.withdraw_address }}</span>
+                    <UButton
+                      size="xs"
+                      color="primary"
+                      variant="ghost"
+                      class="-mt-0.5"
+                      @click="copyAddress(tx.withdraw_address)"
+                    >
+                      <UIcon name="i-heroicons-clipboard-document" class="w-4 h-4" />
+                    </UButton>
+                  </div>
+                </div>
                 <!-- Referral Hierarchy -->
                 <div v-if="tx.user?.referral_hierarchy" class="mt-2 p-2 bg-gray-800/50 rounded-lg">
                   <p class="text-gray-300 text-xs mb-1">Chuỗi giới thiệu:</p>
@@ -229,6 +241,16 @@ function formatDate(date: string) {
     hour: '2-digit',
     minute: '2-digit'
   }).format(new Date(date))
+}
+
+async function copyAddress(address: string) {
+  try {
+    await navigator.clipboard.writeText(address)
+    toast.success('Đã sao chép địa chỉ')
+  } catch (error) {
+    console.error('Failed to copy address:', error)
+    toast.error('Lỗi', 'Không thể sao chép địa chỉ')
+  }
 }
 
 onMounted(fetchPendingTransactions)
