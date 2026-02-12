@@ -256,7 +256,7 @@
   },
   "referral": {
     "title": "Chương trình giới thiệu",
-    "subtitle": "Giới thiệu bạn bè và nhận $10 cho mỗi lượt đăng ký thành công",
+    "subtitle": "Giới thiệu bạn bè và nhận USDT theo chính sách IC-Gold cho mỗi lượt đăng ký thành công",
     "yourReferralCode": "Mã giới thiệu của bạn",
     "usesRemaining": "lượt còn lại",
     "copyCode": "Sao chép mã",
@@ -274,7 +274,7 @@
     "step2Title": "2. Bạn bè đăng ký",
     "step2Desc": "Bạn bè đăng ký tài khoản sử dụng mã của bạn",
     "step3Title": "3. Nhận thưởng",
-    "step3Desc": "Nhận $10 khi bạn bè nạp tiền lần đầu",
+    "step3Desc": "Nhận USDT theo chính sách IC-Gold khi bạn bè nạp tiền lần đầu",
     "history": "Lịch sử giới thiệu",
     "noReferrals": "Chưa có giới thiệu nào",
     "received": "Đã nhận",

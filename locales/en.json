@@ -256,7 +256,7 @@
   },
   "referral": {
     "title": "Referral Program",
-    "subtitle": "Refer friends and earn $10 for each successful registration",
+    "subtitle": "Refer friends and earn USDT for each successful registration",
     "yourReferralCode": "Your Referral Code",
     "usesRemaining": "uses remaining",
     "copyCode": "Copy Code",
@@ -274,7 +274,7 @@
     "step2Title": "2. Friends Sign Up",
     "step2Desc": "Friends register an account using your code",
     "step3Title": "3. Get Rewarded",
-    "step3Desc": "Earn $10 when friends make their first deposit",
+    "step3Desc": "Earn USDT when friends make their first deposit",
     "history": "Referral History",
     "noReferrals": "No referrals yet",
     "received": "Received",

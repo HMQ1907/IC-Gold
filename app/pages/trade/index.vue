@@ -20,10 +20,7 @@
           <TradeCopyTradeButton />
 
           <!-- Copy Trade Reminder - Only show during specific time windows -->
-          <div
-            v-if="showCopyTradeReminder && !user.copy_trade_active"
-            class="relative"
-          >
+          <div v-if="showCopyTradeReminder" class="relative">
             <!-- Animated background glow -->
             <div
               class="absolute inset-0 bg-gradient-to-r from-amber-500/20 via-orange-500/20 to-amber-500/20 rounded-xl blur-xl animate-pulse"
@@ -133,7 +130,7 @@
           </div>
 
           <!-- Empty state when not in time window or already enabled -->
-          <div v-else-if="!user.copy_trade_active" class="h-4"></div>
+          <div v-else class="h-4"></div>
         </template>
 
         <!-- If NOT logged in: Show CTA to sign up -->
