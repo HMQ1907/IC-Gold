@@ -20,6 +20,7 @@
           v-model="search"
           type="text"
           placeholder="Tìm kiếm theo email, SĐT hoặc tên..."
+          autocomplete="off"
           class="w-full pl-12 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors"
           @input="debouncedSearch"
         />
@@ -98,6 +99,9 @@
               </th>
               <th class="px-4 py-3 text-left text-gray-200 font-medium text-sm">
                 Ngày tạo
+              </th>
+              <th class="px-4 py-3 text-left text-gray-200 font-medium text-sm">
+                Hành động
               </th>
             </tr>
           </thead>
@@ -199,6 +203,17 @@
               </td>
               <td class="px-4 py-4 text-gray-200 text-sm">
                 {{ formatDate(user.created_at) }}
+              </td>
+              <td class="px-4 py-4">
+                <UButton
+                  color="warning"
+                  variant="soft"
+                  size="xs"
+                  icon="i-heroicons-key"
+                  @click="openResetPasswordModal(user)"
+                >
+                  Đổi MK
+                </UButton>
               </td>
             </tr>
           </tbody>
@@ -579,6 +594,95 @@
         </div>
       </template>
     </UCard>
+
+    <!-- Reset Password Modal -->
+    <Teleport to="body">
+      <Transition
+        enter-active-class="transition ease-out duration-200"
+        enter-from-class="opacity-0"
+        enter-to-class="opacity-100"
+        leave-active-class="transition ease-in duration-150"
+        leave-from-class="opacity-100"
+        leave-to-class="opacity-0"
+      >
+        <div
+          v-if="showResetPasswordModal"
+          class="fixed inset-0 z-50 flex items-center justify-center p-4"
+        >
+          <!-- Backdrop -->
+          <div
+            class="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            @click="showResetPasswordModal = false"
+          />
+
+          <!-- Modal Content -->
+          <div class="relative w-full max-w-md bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl">
+            <!-- Header -->
+            <div class="flex items-center justify-between gap-3 p-6 border-b border-gray-700">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-amber-500/20 rounded-xl flex items-center justify-center">
+                  <UIcon name="i-heroicons-key" class="w-5 h-5 text-amber-500" />
+                </div>
+                <div>
+                  <h3 class="text-white font-semibold">Đổi mật khẩu người dùng</h3>
+                  <p class="text-gray-400 text-sm">{{ resetPasswordUser?.email || resetPasswordUser?.phone }}</p>
+                </div>
+              </div>
+              <button
+                @click="showResetPasswordModal = false"
+                class="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+              >
+                <UIcon name="i-heroicons-x-mark" class="w-5 h-5 text-gray-400" />
+              </button>
+            </div>
+
+            <!-- Body -->
+            <div class="p-6 space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Mật khẩu mới</label>
+                <input
+                  v-model="newPasswordInput"
+                  type="password"
+                  placeholder="Nhập mật khẩu mới..."
+                  autocomplete="new-password"
+                  class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors"
+                />
+                <p class="text-gray-500 text-xs mt-1">Tối thiểu 8 ký tự, bao gồm chữ hoa, chữ thường và số</p>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Xác nhận mật khẩu</label>
+                <input
+                  v-model="confirmPasswordInput"
+                  type="password"
+                  placeholder="Nhập lại mật khẩu mới..."
+                  autocomplete="new-password"
+                  class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors"
+                />
+              </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="flex justify-end gap-3 p-6 border-t border-gray-700">
+              <button
+                @click="showResetPasswordModal = false"
+                class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-xl transition-colors"
+              >
+                Hủy
+              </button>
+              <button
+                :disabled="!newPasswordInput || newPasswordInput !== confirmPasswordInput || resettingPassword"
+                @click="submitResetPassword"
+                class="px-4 py-2 bg-amber-500 hover:bg-amber-600 disabled:bg-gray-700 disabled:cursor-not-allowed text-white font-medium rounded-xl transition-colors flex items-center gap-2"
+              >
+                <UIcon v-if="resettingPassword" name="i-heroicons-arrow-path" class="w-4 h-4 animate-spin" />
+                {{ resettingPassword ? 'Đang xử lý...' : 'Đổi mật khẩu' }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
   </div>
 </template>
 
@@ -605,6 +709,13 @@ const bulkAdjusting = ref(false);
 const fixedAmount = ref<number | null>(null);
 const fixedNote = ref("");
 const fixedAdjusting = ref(false);
+
+// Password reset state
+const showResetPasswordModal = ref(false);
+const resetPasswordUser = ref<any>(null);
+const newPasswordInput = ref("");
+const confirmPasswordInput = ref("");
+const resettingPassword = ref(false);
 
 // Computed properties for selection
 const isAllSelected = computed(
@@ -754,6 +865,41 @@ async function submitFixedAdjust() {
     toast.error("Lỗi", "Đã xảy ra lỗi khi điều chỉnh số dư");
   } finally {
     fixedAdjusting.value = false;
+  }
+}
+
+function openResetPasswordModal(user: any) {
+  resetPasswordUser.value = user;
+  newPasswordInput.value = "";
+  confirmPasswordInput.value = "";
+  showResetPasswordModal.value = true;
+}
+
+async function submitResetPassword() {
+  if (!resetPasswordUser.value || !newPasswordInput.value) return;
+  if (newPasswordInput.value !== confirmPasswordInput.value) {
+    toast.error("Lỗi", "Mật khẩu không khớp");
+    return;
+  }
+
+  resettingPassword.value = true;
+  try {
+    await $fetch('/api/admin/reset-password', {
+      method: 'POST',
+      body: {
+        userId: resetPasswordUser.value.id,
+        newPassword: newPasswordInput.value
+      }
+    });
+    toast.success("Đã đổi mật khẩu thành công");
+    showResetPasswordModal.value = false;
+    newPasswordInput.value = "";
+    confirmPasswordInput.value = "";
+    resetPasswordUser.value = null;
+  } catch (err: any) {
+    toast.error("Lỗi", err?.data?.message || "Không thể đổi mật khẩu");
+  } finally {
+    resettingPassword.value = false;
   }
 }
 
