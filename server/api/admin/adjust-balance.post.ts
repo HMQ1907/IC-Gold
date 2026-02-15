@@ -54,7 +54,7 @@ export default defineEventHandler(async (event) => {
   await supabase.from('transactions').insert({
     user_id: userId,
     type: 'admin_adjust',
-    amount: Math.abs(amount),
+    amount: amount,
     status: 'completed',
     admin_note: note,
     processed_by: admin.id,

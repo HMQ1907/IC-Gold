@@ -71,21 +71,27 @@
               </td>
               <td class="px-4 py-4">
                 <UBadge
-                  :color="
-                    tx.type === 'deposit'
-                      ? 'success'
-                      : tx.type === 'withdraw'
-                        ? 'error'
-                        : 'neutral'
-                  "
+                  :color="getTypeColor(tx.type, tx.amount)"
                   variant="subtle"
-                  >{{ getTypeLabel(tx.type) }}</UBadge
+                  >{{ getTypeLabel(tx.type, tx.amount) }}</UBadge
                 >
               </td>
               <td class="px-4 py-4">
-                <span class="text-white font-semibold"
-                  >${{ tx.amount.toLocaleString() }}</span
+                <span
+                  :class="[
+                    'font-semibold',
+                    tx.type === 'admin_adjust'
+                      ? tx.amount >= 0 ? 'text-green-400' : 'text-red-400'
+                      : 'text-white'
+                  ]"
                 >
+                  <template v-if="tx.type === 'admin_adjust'">
+                    {{ tx.amount >= 0 ? '+' : '' }}${{ tx.amount.toLocaleString() }}
+                  </template>
+                  <template v-else>
+                    ${{ tx.amount.toLocaleString() }}
+                  </template>
+                </span>
               </td>
               <td class="px-4 py-4">
                 <UBadge :color="getStatusColor(tx.status)" variant="subtle">{{
@@ -138,7 +144,7 @@
         v-if="totalPages > 1"
         class="p-4 border-t border-gray-800 flex justify-center"
       >
-        <UPagination v-model="currentPage" :total="total" :page-count="limit" />
+        <UPagination v-model:page="currentPage" :total="total" :items-per-page="limit" />
       </div>
     </div>
   </div>
@@ -212,26 +218,42 @@ async function processTransaction(txId: number, action: "approve" | "reject") {
   }
 }
 
-function getTypeLabel(type: string) {
+type BadgeColor = 'success' | 'error' | 'info' | 'neutral' | 'warning' | 'primary' | 'secondary'
+
+function getTypeColor(type: string, amount?: number): BadgeColor {
+  if (type === 'admin_adjust') {
+    return amount !== undefined && amount >= 0 ? 'success' : 'error'
+  }
+  const colors: Record<string, BadgeColor> = {
+    deposit: 'success',
+    withdraw: 'error',
+    referral_bonus: 'info',
+    copy_trade: 'neutral',
+  }
+  return colors[type] || 'neutral'
+}
+
+function getTypeLabel(type: string, amount?: number) {
+  if (type === 'admin_adjust') {
+    return amount !== undefined && amount >= 0 ? 'Cộng tiền' : 'Trừ tiền'
+  }
   return (
     {
       deposit: "Nạp tiền",
       withdraw: "Rút tiền",
       referral_bonus: "Thưởng",
-      admin_adjust: "Điều chỉnh",
       copy_trade: "Copy Trade",
     }[type] || type
   );
 }
-function getStatusColor(status: string) {
-  return (
-    {
-      pending: "warning",
-      completed: "success",
-      rejected: "error",
-      cancelled: "neutral",
-    }[status] || "neutral"
-  );
+function getStatusColor(status: string): BadgeColor {
+  const colors: Record<string, BadgeColor> = {
+    pending: 'warning',
+    completed: 'success',
+    rejected: 'error',
+    cancelled: 'neutral',
+  }
+  return colors[status] || 'neutral'
 }
 function getStatusLabel(status: string) {
   return (

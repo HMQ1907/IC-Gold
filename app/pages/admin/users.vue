@@ -223,7 +223,7 @@
         v-if="totalPages > 1"
         class="p-4 border-t border-gray-800 flex justify-center"
       >
-        <UPagination v-model="currentPage" :total="total" :page-count="limit" />
+        <UPagination v-model:page="currentPage" :total="total" :items-per-page="limit" />
       </div>
     </div>
 
