@@ -245,21 +245,37 @@ const showCopyTradeReminder = computed(() => {
   }
 
   // TEST Window: 21:30 - 22:00 (xóa sau khi test xong)
-  // if (hours === 22 && minutes >= 0 && minutes < 60) {
-  //   currentTimeWindow.value = "22:00 - 23:00 (TEST)";
+  // if (hours === 21 && minutes >= 0 && minutes < 60) {
+  //   currentTimeWindow.value = "21:00 - 23:00 (TEST)";
   //   return true;
   // }
 
   return false;
 });
 
-// Fetch daily copy trade status
+// Fetch daily copy trade status for current time window
 async function fetchDailyCopyStatus() {
   if (!user.value?.id) return;
 
+  // Get base time window
+  const now = new Date();
+  const hours = now.getHours();
+  let baseTimeWindow = '';
+  
+  if (hours >= 10 && hours < 15) {
+    baseTimeWindow = '10:00';
+  } else if (hours >= 15 && hours < 21) {
+    baseTimeWindow = '15:00';
+  } else if (hours >= 21 || hours < 10) {
+    baseTimeWindow = '21:00'; // Test window
+  }
+
   try {
     const data = await $fetch("/api/trade/daily-copy-status", {
-      params: { userId: user.value.id },
+      params: { 
+        userId: user.value.id,
+        timeWindow: baseTimeWindow
+      },
     });
     dailyCopyStatus.value = data;
   } catch (error) {
@@ -317,9 +333,17 @@ async function submitDailyCopyTrade() {
 
 // Update time every second
 let timeInterval: NodeJS.Timeout;
+let lastTimeWindow = '';
+
 onMounted(() => {
   timeInterval = setInterval(() => {
     currentTime.value = new Date();
+    
+    // Re-fetch status when entering a new time window
+    if (currentTimeWindow.value && currentTimeWindow.value !== lastTimeWindow) {
+      lastTimeWindow = currentTimeWindow.value;
+      fetchDailyCopyStatus();
+    }
   }, 1000);
 
   // Fetch daily copy status on mount

@@ -16,13 +16,19 @@ export default defineEventHandler(async (event) => {
   // Get today's date (YYYY-MM-DD format)
   const today = new Date().toISOString().split('T')[0]
   
-  // Check if user already submitted today
+  // Extract base time window (10:00 or 15:00) for checking
+  const baseTimeWindow = timeWindow.includes('10:') ? '10:00' : 
+                         timeWindow.includes('15:') ? '15:00' : 
+                         timeWindow.includes('21:') ? '21:00' : timeWindow
+  
+  // Check if user already submitted today for THIS SPECIFIC time window
   const { data: existing } = await client
     .from('daily_copy_trade_requests')
     .select('id, status')
     .eq('user_id', userId)
     .eq('request_date', today)
-    .single()
+    .ilike('time_window', `${baseTimeWindow}%`)
+    .maybeSingle()
   
   if (existing) {
     return {
@@ -30,10 +36,10 @@ export default defineEventHandler(async (event) => {
       alreadySubmitted: true,
       status: existing.status,
       message: existing.status === 'pending' 
-        ? 'Bạn đã gửi yêu cầu hôm nay, đang chờ Admin duyệt'
+        ? `Bạn đã gửi yêu cầu cho khung giờ ${baseTimeWindow}, đang chờ Admin duyệt`
         : existing.status === 'approved'
-        ? 'Yêu cầu hôm nay đã được duyệt'
-        : 'Yêu cầu hôm nay đã bị từ chối'
+        ? `Yêu cầu khung giờ ${baseTimeWindow} đã được duyệt`
+        : `Yêu cầu khung giờ ${baseTimeWindow} đã bị từ chối`
     }
   }
 
