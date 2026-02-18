@@ -18,8 +18,9 @@ export default defineEventHandler(async (event) => {
   
   // Normalize time window to base format (10:00 or 15:00)
   // This ensures consistent storage regardless of the display format
-  const normalizedTimeWindow = timeWindow.includes('10:') ? '10:00' : 
+  const normalizedTimeWindow = timeWindow.includes('10:') && !timeWindow.includes('20:') ? '10:00' : 
                                timeWindow.includes('15:') ? '15:00' : 
+                               timeWindow.includes('20:') ? '20:00' :
                                timeWindow.includes('21:') ? '21:00' : '10:00'
   
   // Check if user already submitted today for THIS SPECIFIC time window

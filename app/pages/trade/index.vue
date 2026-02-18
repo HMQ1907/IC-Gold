@@ -245,8 +245,8 @@ const showCopyTradeReminder = computed(() => {
   }
 
   // TEST Window: 21:30 - 22:00 (xóa sau khi test xong)
-  // if (hours === 21 && minutes >= 0 && minutes < 60) {
-  //   currentTimeWindow.value = "21:00 - 23:00 (TEST)";
+  // if (hours === 20 && minutes >= 10 && minutes < 25) {
+  //   currentTimeWindow.value = "20:00 - 20:10 (TEST)";
   //   return true;
   // }
 
@@ -264,8 +264,10 @@ async function fetchDailyCopyStatus() {
   
   if (hours >= 10 && hours < 15) {
     normalizedTimeWindow = '10:00';
-  } else if (hours >= 15 && hours < 21) {
+  } else if (hours >= 15 && hours < 20) {
     normalizedTimeWindow = '15:00';
+  } else if (hours === 20) {
+    normalizedTimeWindow = '20:00'; // Test window
   } else {
     normalizedTimeWindow = '21:00'; // Test window
   }

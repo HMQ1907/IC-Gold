@@ -25,15 +25,18 @@ export default defineEventHandler(async (event) => {
     const hours = now.getHours()
     if (hours >= 10 && hours < 15) {
       normalizedWindow = '10:00'
-    } else if (hours >= 15 && hours < 21) {
+    } else if (hours >= 15 && hours < 20) {
       normalizedWindow = '15:00'
+    } else if (hours === 20) {
+      normalizedWindow = '20:00' // Test window
     } else {
       normalizedWindow = '21:00' // Test window
     }
   } else {
     // Normalize input
-    normalizedWindow = timeWindow.includes('10:') ? '10:00' : 
+    normalizedWindow = timeWindow.includes('10:') && !timeWindow.includes('20:') ? '10:00' : 
                        timeWindow.includes('15:') ? '15:00' : 
+                       timeWindow.includes('20:') ? '20:00' :
                        timeWindow.includes('21:') ? '21:00' : timeWindow
   }
   
