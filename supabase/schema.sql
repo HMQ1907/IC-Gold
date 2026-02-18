@@ -179,6 +179,31 @@ CREATE INDEX idx_copy_trade_logs_user_id ON copy_trade_logs(user_id);
 CREATE INDEX idx_copy_trade_logs_created_at ON copy_trade_logs(created_at DESC);
 
 -- =============================================
+-- Daily Copy Trade Requests Table
+-- Cho phép mỗi user gửi 2 request/ngày (1 sáng + 1 chiều)
+-- =============================================
+
+CREATE TABLE daily_copy_trade_requests (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    request_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    time_window VARCHAR(10) NOT NULL, -- '10:00' or '15:00'
+    amount DECIMAL(18, 2) DEFAULT 0,
+    status VARCHAR(20) DEFAULT 'pending', -- pending, approved, rejected
+    processed_by BIGINT REFERENCES users(id) ON DELETE SET NULL,
+    processed_at TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    
+    -- Unique per user, date AND time_window (allows 2 per day)
+    CONSTRAINT daily_copy_trade_requests_user_date_window_key UNIQUE (user_id, request_date, time_window)
+);
+
+-- Indexes for daily_copy_trade_requests
+CREATE INDEX idx_daily_copy_trade_requests_user_id ON daily_copy_trade_requests(user_id);
+CREATE INDEX idx_daily_copy_trade_requests_date ON daily_copy_trade_requests(request_date);
+CREATE INDEX idx_daily_copy_trade_requests_status ON daily_copy_trade_requests(status);
+
+-- =============================================
 -- Admin Logs Table
 -- =============================================
 
@@ -417,6 +442,7 @@ ALTER TABLE transactions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE referrals ENABLE ROW LEVEL SECURITY;
 ALTER TABLE otp_codes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE copy_trade_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE daily_copy_trade_requests ENABLE ROW LEVEL SECURITY;
 ALTER TABLE admin_logs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE sessions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;

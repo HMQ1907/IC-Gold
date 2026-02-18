@@ -257,24 +257,24 @@ const showCopyTradeReminder = computed(() => {
 async function fetchDailyCopyStatus() {
   if (!user.value?.id) return;
 
-  // Get base time window
+  // Get normalized time window based on current hour
   const now = new Date();
   const hours = now.getHours();
-  let baseTimeWindow = '';
+  let normalizedTimeWindow = '';
   
   if (hours >= 10 && hours < 15) {
-    baseTimeWindow = '10:00';
+    normalizedTimeWindow = '10:00';
   } else if (hours >= 15 && hours < 21) {
-    baseTimeWindow = '15:00';
-  } else if (hours >= 21 || hours < 10) {
-    baseTimeWindow = '21:00'; // Test window
+    normalizedTimeWindow = '15:00';
+  } else {
+    normalizedTimeWindow = '21:00'; // Test window
   }
 
   try {
     const data = await $fetch("/api/trade/daily-copy-status", {
       params: { 
         userId: user.value.id,
-        timeWindow: baseTimeWindow
+        timeWindow: normalizedTimeWindow
       },
     });
     dailyCopyStatus.value = data;

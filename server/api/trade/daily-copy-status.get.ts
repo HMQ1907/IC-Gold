@@ -17,37 +17,36 @@ export default defineEventHandler(async (event) => {
   // Get today's date
   const today = new Date().toISOString().split('T')[0]
   
-  // Determine which time window to check
-  // If no timeWindow provided, check current time
-  let windowToCheck = timeWindow
-  if (!windowToCheck) {
+  // Normalize time window to base format
+  let normalizedWindow = timeWindow
+  if (!normalizedWindow) {
+    // Auto-detect based on current hour
     const now = new Date()
     const hours = now.getHours()
     if (hours >= 10 && hours < 15) {
-      windowToCheck = '10:00'
+      normalizedWindow = '10:00'
     } else if (hours >= 15 && hours < 21) {
-      windowToCheck = '15:00'
+      normalizedWindow = '15:00'
     } else {
-      // For test window or outside hours, check any match
-      windowToCheck = ''
+      normalizedWindow = '21:00' // Test window
     }
+  } else {
+    // Normalize input
+    normalizedWindow = timeWindow.includes('10:') ? '10:00' : 
+                       timeWindow.includes('15:') ? '15:00' : 
+                       timeWindow.includes('21:') ? '21:00' : timeWindow
   }
   
   // Check if user has submitted today for this specific time window
-  let queryBuilder = client
+  const { data, error } = await client
     .from('daily_copy_trade_requests')
     .select('id, status, time_window, created_at')
     .eq('user_id', userId)
     .eq('request_date', today)
+    .eq('time_window', normalizedWindow)
+    .maybeSingle()
   
-  // If we have a specific window, filter by it
-  if (windowToCheck) {
-    queryBuilder = queryBuilder.ilike('time_window', `${windowToCheck}%`)
-  }
-  
-  const { data, error } = await queryBuilder.maybeSingle()
-  
-  if (error && error.code !== 'PGRST116') { // PGRST116 = no rows found
+  if (error && error.code !== 'PGRST116') {
     console.error('Error checking daily copy trade status:', error)
   }
   

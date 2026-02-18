@@ -16,19 +16,24 @@ export default defineEventHandler(async (event) => {
   // Get today's date (YYYY-MM-DD format)
   const today = new Date().toISOString().split('T')[0]
   
-  // Extract base time window (10:00 or 15:00) for checking
-  const baseTimeWindow = timeWindow.includes('10:') ? '10:00' : 
-                         timeWindow.includes('15:') ? '15:00' : 
-                         timeWindow.includes('21:') ? '21:00' : timeWindow
+  // Normalize time window to base format (10:00 or 15:00)
+  // This ensures consistent storage regardless of the display format
+  const normalizedTimeWindow = timeWindow.includes('10:') ? '10:00' : 
+                               timeWindow.includes('15:') ? '15:00' : 
+                               timeWindow.includes('21:') ? '21:00' : '10:00'
   
   // Check if user already submitted today for THIS SPECIFIC time window
-  const { data: existing } = await client
+  const { data: existing, error: checkError } = await client
     .from('daily_copy_trade_requests')
     .select('id, status')
     .eq('user_id', userId)
     .eq('request_date', today)
-    .ilike('time_window', `${baseTimeWindow}%`)
+    .eq('time_window', normalizedTimeWindow)
     .maybeSingle()
+  
+  if (checkError) {
+    console.error('Error checking existing request:', checkError)
+  }
   
   if (existing) {
     return {
@@ -36,10 +41,10 @@ export default defineEventHandler(async (event) => {
       alreadySubmitted: true,
       status: existing.status,
       message: existing.status === 'pending' 
-        ? `Bạn đã gửi yêu cầu cho khung giờ ${baseTimeWindow}, đang chờ Admin duyệt`
+        ? `Bạn đã gửi yêu cầu cho khung giờ ${normalizedTimeWindow}, đang chờ Admin duyệt`
         : existing.status === 'approved'
-        ? `Yêu cầu khung giờ ${baseTimeWindow} đã được duyệt`
-        : `Yêu cầu khung giờ ${baseTimeWindow} đã bị từ chối`
+        ? `Yêu cầu khung giờ ${normalizedTimeWindow} đã được duyệt`
+        : `Yêu cầu khung giờ ${normalizedTimeWindow} đã bị từ chối`
     }
   }
 
@@ -59,13 +64,13 @@ export default defineEventHandler(async (event) => {
 
   const previewAmount = Number(((userData?.balance || 0) * 0.01).toFixed(2))
   
-  // Insert new request
+  // Insert new request with normalized time window
   const { data, error } = await client
     .from('daily_copy_trade_requests')
     .insert({
       user_id: userId,
       request_date: today,
-      time_window: timeWindow,
+      time_window: normalizedTimeWindow,
       status: 'pending',
       amount: previewAmount
     })
@@ -76,7 +81,7 @@ export default defineEventHandler(async (event) => {
     console.error('Error creating daily copy trade request:', error)
     throw createError({
       statusCode: 500,
-      message: 'Failed to create request'
+      message: 'Failed to create request: ' + error.message
     })
   }
   
