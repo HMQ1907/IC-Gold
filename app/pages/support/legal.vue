@@ -17,10 +17,10 @@
         <div class="bg-gray-800/50 border border-gray-700 rounded-2xl overflow-hidden hover:border-amber-500/50 transition-colors">
           <div class="overflow-hidden">
             <img 
-              src="/IC-Gold-TRC20 & BEP20/phaply1.jpg" 
+              src="/IC-Gold-TRC20/phaply1.jpg" 
               alt="Legal Document 1"
               class="w-full h-auto hover:scale-105 transition-transform duration-300 cursor-pointer"
-              @click="openImage('/IC-Gold-TRC20 & BEP20/phaply1.jpg')"
+              @click="openImage('/IC-Gold-TRC20/phaply1.jpg')"
             />
           </div>
           <div class="p-6">
@@ -32,11 +32,11 @@
         <!-- Document 2 -->
         <div class="bg-gray-800/50 border border-gray-700 rounded-2xl overflow-hidden hover:border-amber-500/50 transition-colors">
           <div class="overflow-hidden">
-            <img 
-              src="/IC-Gold-TRC20 & BEP20/phaply2.jpg" 
-              alt="Legal Document 2"
-              class="w-full h-auto hover:scale-105 transition-transform duration-300 cursor-pointer"
-              @click="openImage('/IC-Gold-TRC20 & BEP20/phaply2.jpg')"
+              <img 
+                src="/IC-Gold-TRC20/phaply1.jpg" 
+                alt="Legal Document 1"
+                class="w-full h-auto hover:scale-105 transition-transform duration-300 cursor-pointer"
+                @click="openImage('/IC-Gold-TRC20/phaply1.jpg')"
             />
           </div>
           <div class="p-6">
@@ -48,17 +48,11 @@
 
       <!-- Info Section -->
       <div class="bg-amber-500/5 border border-amber-500/20 rounded-2xl p-8">
-        <div class="flex items-start gap-4">
-          <div class="w-12 h-12 bg-amber-500/20 rounded-xl flex items-center justify-center shrink-0">
-            <UIcon name="i-heroicons-shield-check" class="w-6 h-6 text-amber-500" />
-          </div>
-          <div>
-            <h3 class="text-white font-semibold text-lg mb-2">{{ $t('support.legalInfoTitle') }}</h3>
-            <p class="text-gray-400 leading-relaxed">{{ $t('support.legalInfoDesc') }}</p>
-          </div>
+        <div class="p-6">
+          <h3 class="text-white font-semibold text-lg mb-2">{{ $t('support.legalInfoTitle') }}</h3>
+          <p class="text-gray-400 leading-relaxed">{{ $t('support.legalInfoDesc') }}</p>
         </div>
       </div>
-
       <!-- Back Button -->
       <div class="mt-8 text-center">
         <UButton to="/" color="neutral" variant="outline" size="lg">
