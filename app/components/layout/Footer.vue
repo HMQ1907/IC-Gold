@@ -5,7 +5,7 @@
         <!-- Brand -->
         <div class="col-span-1 md:col-span-2">
           <NuxtLink to="/" class="flex items-center gap-2 mb-4">
-            <img src="/IC-Gold-TRC20/logo.png" alt="IC-Gold" class="w-10 h-10 rounded-lg object-cover" />
+            <img src="/IC-Gold-TRC20 & BEP20/logo.png" alt="IC-Gold" class="w-10 h-10 rounded-lg object-cover" />
             <span class="text-xl font-bold text-white">IC-Gold</span>
           </NuxtLink>
           <p class="text-gray-400 mb-4 max-w-md">

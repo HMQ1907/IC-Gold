@@ -1,7 +1,7 @@
 <template>
   <div class="p-6">
     <div class="mb-8">
-      <h1 class="text-2xl font-bold text-white mb-2">Quản lý Ví TRC20</h1>
+      <h1 class="text-2xl font-bold text-white mb-2">Quản lý Ví TRC20 & BEP20</h1>
       <p class="text-gray-400">Chọn ví nhận tiền nạp từ người dùng</p>
     </div>
 
@@ -88,14 +88,16 @@ const wallets = [
   { id: 2, address: 'THKV6EzkiUNz1ekSy5oBKeJgr8GqPddGPQ' },
   { id: 3, address: 'TJNA5L6KCuWxGbnUGoQJWpr6ZEH21xq2Xs' },
   { id: 4, address: 'TJZhJktZMHHTJRt2WQDbdgqp53yUH7BmG8' },
-  { id: 5, address: 'TRxKFuHUsMMVn9tCWVqfXZ3UcFEMFyXWiz' }
+  { id: 5, address: 'TRxKFuHUsMMVn9tCWVqfXZ3UcFEMFyXWiz' },
+  { id: 6, address: '0x1f428DfF592B8B6eA9D23962034eF0E1f6B737c9' },
+  { id: 7, address: '0xa739271429E7aC055a57357eABee9eF664E01860' }
 ]
 
 onMounted(async () => {
   try {
     const { data } = await useFetch<{ settings: Record<string, string> }>('/api/admin/settings')
     if (data.value?.settings) {
-      activeWallet.value = data.value.settings.trc20_wallet_address || wallets[0].address
+      activeWallet.value = data?.value?.settings?.trc20_wallet_address ?? (wallets?.length ? wallets[0].address : '')
     }
   } catch (error) {
     toast.error('Lỗi', 'Không thể tải cài đặt')

@@ -17,10 +17,10 @@
         <div class="bg-gray-800/50 border border-gray-700 rounded-2xl overflow-hidden hover:border-amber-500/50 transition-colors">
           <div class="overflow-hidden">
             <img 
-              src="/IC-Gold-TRC20/phaply1.jpg" 
+              src="/IC-Gold-TRC20 & BEP20/phaply1.jpg" 
               alt="Legal Document 1"
               class="w-full h-auto hover:scale-105 transition-transform duration-300 cursor-pointer"
-              @click="openImage('/IC-Gold-TRC20/phaply1.jpg')"
+              @click="openImage('/IC-Gold-TRC20 & BEP20/phaply1.jpg')"
             />
           </div>
           <div class="p-6">
@@ -33,10 +33,10 @@
         <div class="bg-gray-800/50 border border-gray-700 rounded-2xl overflow-hidden hover:border-amber-500/50 transition-colors">
           <div class="overflow-hidden">
             <img 
-              src="/IC-Gold-TRC20/phaply2.jpg" 
+              src="/IC-Gold-TRC20 & BEP20/phaply2.jpg" 
               alt="Legal Document 2"
               class="w-full h-auto hover:scale-105 transition-transform duration-300 cursor-pointer"
-              @click="openImage('/IC-Gold-TRC20/phaply2.jpg')"
+              @click="openImage('/IC-Gold-TRC20 & BEP20/phaply2.jpg')"
             />
           </div>
           <div class="p-6">
