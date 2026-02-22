@@ -1,7 +1,9 @@
-import { getSupabaseAdmin, createNotification } from '~~/server/utils/supabase'
+import { getSupabaseAdmin } from '~~/server/utils/supabase'
+import { sendOtpEmail } from '~~/server/utils/email'
 import { 
   hashPassword, 
-  generateSessionToken,
+  generateOtp,
+  getOtpExpiry,
   isValidEmail,
   isValidPhone,
   validatePassword 
@@ -11,11 +13,10 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const { email, phone, password, fullName, referralCode } = body
 
-  // Validate input
-  if (!email && !phone) {
+  if (!email) {
     throw createError({
       statusCode: 400,
-      message: 'Email or phone number is required'
+      message: 'Email is required'
     })
   }
 
@@ -26,15 +27,13 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  // Validate email format
-  if (email && !isValidEmail(email)) {
+  if (!isValidEmail(email)) {
     throw createError({
       statusCode: 400,
       message: 'Invalid email format'
     })
   }
 
-  // Validate phone format
   if (phone && !isValidPhone(phone)) {
     throw createError({
       statusCode: 400,
@@ -42,7 +41,6 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  // Validate password strength
   const passwordValidation = validatePassword(password)
   if (!passwordValidation.valid) {
     throw createError({
@@ -54,22 +52,26 @@ export default defineEventHandler(async (event) => {
   const supabase = getSupabaseAdmin()
 
   // Check if email already exists
-  if (email) {
-    const { data: existingEmail } = await supabase
-      .from('users')
-      .select('id')
-      .eq('email', email)
-      .single()
+  const { data: existingEmail } = await supabase
+    .from('users')
+    .select('id, email_verified')
+    .eq('email', email)
+    .single()
 
-    if (existingEmail) {
+  if (existingEmail) {
+    if (existingEmail.email_verified) {
       throw createError({
         statusCode: 400,
         message: 'Email is already in use'
       })
     }
+    // Unverified account exists — delete it so user can re-register
+    await supabase.from('otp_codes').delete().eq('user_id', existingEmail.id)
+    await supabase.from('sessions').delete().eq('user_id', existingEmail.id)
+    await supabase.from('referrals').delete().eq('referred_id', existingEmail.id)
+    await supabase.from('users').delete().eq('id', existingEmail.id)
   }
 
-  // Check if phone already exists
   if (phone) {
     const { data: existingPhone } = await supabase
       .from('users')
@@ -85,7 +87,6 @@ export default defineEventHandler(async (event) => {
     }
   }
 
-  // Get max_referral_uses from settings first
   const { data: maxRefSetting } = await supabase
     .from('site_settings')
     .select('value')
@@ -94,7 +95,6 @@ export default defineEventHandler(async (event) => {
   
   const maxReferralUses = maxRefSetting?.value ? parseInt(maxRefSetting.value) : 10
 
-  // Check referral code if provided
   let referrerId: number | null = null
   if (referralCode) {
     const { data: referrer } = await supabase
@@ -120,17 +120,17 @@ export default defineEventHandler(async (event) => {
     referrerId = referrer.id
   }
 
-  // Create user
   const passwordHash = await hashPassword(password)
 
   const { data: newUser, error: userError } = await supabase
     .from('users')
     .insert({
-      email: email || null,
+      email: email.toLowerCase().trim(),
       phone: phone || null,
       password_hash: passwordHash,
       full_name: fullName || null,
-      referred_by: referrerId
+      referred_by: referrerId,
+      email_verified: false
     })
     .select()
     .single()
@@ -152,7 +152,6 @@ export default defineEventHandler(async (event) => {
       bonus_paid: false
     })
 
-    // Update referral_uses count for the referrer
     const { data: referrer } = await supabase
       .from('users')
       .select('referral_uses')
@@ -167,43 +166,24 @@ export default defineEventHandler(async (event) => {
     }
   }
 
-  // Create session and auto-login
-  const token = generateSessionToken()
-  const expiresAt = new Date()
-  expiresAt.setDate(expiresAt.getDate() + 7) // 7 days
+  // Generate OTP and send verification email
+  const otp = generateOtp()
+  const expiresAt = getOtpExpiry()
 
-  await supabase.from('sessions').insert({
+  await supabase.from('otp_codes').insert({
     user_id: newUser.id,
-    token,
-    ip_address: getHeader(event, 'x-forwarded-for') || null,
-    user_agent: getHeader(event, 'user-agent') || null,
+    email: newUser.email,
+    code: otp,
+    type: 'register',
     expires_at: expiresAt.toISOString()
   })
 
-  // Set auth cookie
-  setCookie(event, 'auth_token', token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    expires: expiresAt,
-    path: '/'
-  })
-
-  // Create welcome notification
-  await createNotification(
-    newUser.id,
-    'Chào mừng đến với IC-Gold!',
-    'Cảm ơn bạn đã đăng ký. Hãy nạp tiền để bắt đầu đầu tư!',
-    'success'
-  )
+  await sendOtpEmail(newUser.email!, otp, 'register')
 
   return {
     success: true,
-    message: 'Đăng ký thành công!',
-    user: {
-      id: newUser.id,
-      email: newUser.email,
-      full_name: newUser.full_name
-    }
+    needsVerification: true,
+    message: 'Registration successful. Please verify your email.',
+    email: newUser.email
   }
 })

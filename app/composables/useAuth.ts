@@ -63,7 +63,7 @@ export const useAuth = () => {
     }
   }
 
-  // Register
+  // Register (step 1: create account + send OTP)
   async function register(data: {
     email?: string
     phone?: string
@@ -73,24 +73,58 @@ export const useAuth = () => {
   }) {
     authState.loading = true
     try {
-      const response = await $fetch<{ success: boolean; user: User; message: string }>('/api/auth/register', {
+      const response = await $fetch<{ success: boolean; needsVerification: boolean; email: string; message: string }>('/api/auth/register', {
         method: 'POST',
         body: data
       })
 
-      if (response.user) {
-        authState.user = response.user
-      }
-
-      toast.success('Đăng ký thành công', 'Chào mừng bạn đến với IC-Gold!')
-
-      return { success: true }
+      return { success: true, needsVerification: response.needsVerification, email: response.email }
     } catch (error: any) {
       const message = error.data?.message || error.message || 'Registration failed'
       toast.error('Đăng ký thất bại', message)
       throw error
     } finally {
       authState.loading = false
+    }
+  }
+
+  // Verify registration OTP (step 2: verify email + auto-login)
+  async function verifyRegistration(email: string, code: string) {
+    authState.loading = true
+    try {
+      const response = await $fetch<{ success: boolean; user: User; message: string }>('/api/auth/verify-registration', {
+        method: 'POST',
+        body: { email, code }
+      })
+
+      if (response.user) {
+        authState.user = response.user
+      }
+
+      toast.success('Xác minh thành công', 'Chào mừng bạn đến với IC-Gold!')
+      return { success: true }
+    } catch (error: any) {
+      const message = error.data?.message || error.message || 'Verification failed'
+      toast.error('Xác minh thất bại', message)
+      throw error
+    } finally {
+      authState.loading = false
+    }
+  }
+
+  // Resend OTP
+  async function resendOtp(email: string, type: string) {
+    try {
+      await $fetch('/api/auth/resend-otp', {
+        method: 'POST',
+        body: { email, type }
+      })
+      toast.success('Đã gửi OTP', 'Vui lòng kiểm tra email của bạn')
+      return { success: true }
+    } catch (error: any) {
+      const message = error.data?.message || error.message || 'Failed to resend OTP'
+      toast.error('Lỗi', message)
+      throw error
     }
   }
 
@@ -129,6 +163,8 @@ export const useAuth = () => {
     init,
     login,
     register,
+    verifyRegistration,
+    resendOtp,
     logout,
     refreshUser
   }

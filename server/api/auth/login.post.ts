@@ -35,7 +35,6 @@ export default defineEventHandler(async (event) => {
   }
 
   const { data: user, error } = await query.single()
-  console.log(user);
   if (error || !user) {
     throw createError({
       statusCode: 401,
@@ -43,11 +42,18 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  // Check if user is active
   if (!user.is_active) {
     throw createError({
       statusCode: 403,
       message: 'Account has been deactivated'
+    })
+  }
+
+  if (!user.email_verified && !user.is_admin) {
+    throw createError({
+      statusCode: 403,
+      statusMessage: 'email_not_verified',
+      message: 'Please verify your email before logging in'
     })
   }
 
