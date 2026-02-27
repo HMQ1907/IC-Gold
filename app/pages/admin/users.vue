@@ -110,7 +110,12 @@
               v-for="user in users"
               :key="user.id"
               class="hover:bg-gray-800/50"
-              :class="{ 'bg-amber-500/10': isUserSelected(user.id) }"
+              :class="{
+                'bg-amber-500/10': isUserSelected(user.id),
+                'bg-purple-500/10 border-l-2 border-l-purple-500': user._relation === 'parent',
+                'bg-cyan-500/10 border-l-2 border-l-cyan-500': user._relation === 'child',
+                'bg-amber-500/5 border-l-2 border-l-amber-500': user._relation === 'matched'
+              }"
             >
               <td class="px-4 py-4">
                 <label class="flex items-center gap-2 cursor-pointer">
@@ -122,14 +127,16 @@
                   />
                 </label>
               </td>
-              <td class="px-4 py-4 text-white">#{{ user.id }}</td>
+              <td class="px-4 py-4">
+                <div class="flex items-center gap-2">
+                  <span class="text-white">#{{ user.id }}</span>
+                  <UBadge v-if="user._relation === 'parent'" color="secondary" variant="subtle" size="xs">Cha</UBadge>
+                  <UBadge v-else-if="user._relation === 'child'" color="info" variant="subtle" size="xs">Con</UBadge>
+                  <UBadge v-else-if="user._relation === 'matched'" color="warning" variant="subtle" size="xs">Tìm thấy</UBadge>
+                </div>
+              </td>
               <td class="px-4 py-4">
                 <div class="flex items-center gap-3">
-                  <!-- <UAvatar
-                    :alt="user.full_name || user.email || ''"
-                    size="sm"
-                    class="bg-gray-700"
-                  /> -->
                   <div>
                     <p class="text-white font-medium">
                       {{ user.full_name || "N/A" }}
@@ -165,7 +172,7 @@
                   >
                     <div class="px-2 py-1 bg-blue-500/20 text-blue-400 rounded">
                       <div class="font-medium">👤 {{ child.name }}</div>
-                      <div class="text-blue-300/70 text-xs">{{ truncateEmail(child.email) }}</div>
+                      <div class="text-blue-300/70 text-xs">{{ child.email }}</div>
                     </div>
                     <div 
                       v-if="child.grandchildren && child.grandchildren.length > 0"
@@ -177,7 +184,7 @@
                         class="px-2 py-1 bg-green-500/20 text-green-400 rounded"
                       >
                         <div class="font-medium">↳ {{ gc.name }}</div>
-                        <div class="text-green-300/70 text-xs">{{ truncateEmail(gc.email) }}</div>
+                        <div class="text-green-300/70 text-xs">{{ gc.email }}</div>
                       </div>
                     </div>
                   </div>
@@ -934,16 +941,5 @@ function formatDate(date: string) {
     month: "2-digit",
     year: "numeric",
   }).format(new Date(date));
-}
-function truncateEmail(email: string | undefined): string {
-  if (!email) return "";
-  if (email.length <= 15) return email;
-  if (email.includes("@")) {
-    const [name, domain] = email.split("@");
-    if (name.length > 8) {
-      return name.slice(0, 6) + "..@" + domain;
-    }
-  }
-  return email.slice(0, 12) + "...";
 }
 </script>

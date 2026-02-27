@@ -83,15 +83,25 @@
         
         <div class="flex-1"></div>
         
-        <UButton
-          v-if="stats.pending > 0"
-          color="primary"
-          :loading="bulkApproving"
-          @click="bulkApprove"
-        >
-          <UIcon name="i-heroicons-check" class="w-4 h-4 mr-1" />
-          Duyệt tất cả ({{ stats.pending }})
-        </UButton>
+        <div v-if="stats.pending > 0" class="flex items-center gap-2">
+          <UButton
+            color="error"
+            variant="outline"
+            :loading="bulkRejecting"
+            @click="bulkReject"
+          >
+            <UIcon name="i-heroicons-x-mark" class="w-4 h-4 mr-1" />
+            Từ chối tất cả ({{ stats.pending }})
+          </UButton>
+          <UButton
+            color="primary"
+            :loading="bulkApproving"
+            @click="bulkApprove"
+          >
+            <UIcon name="i-heroicons-check" class="w-4 h-4 mr-1" />
+            Duyệt tất cả ({{ stats.pending }})
+          </UButton>
+        </div>
       </div>
     </div>
 
@@ -202,6 +212,7 @@ const selectedDate = ref(new Date().toISOString().split('T')[0])
 const selectedStatus = ref('all')
 const processing = ref<number | null>(null)
 const bulkApproving = ref(false)
+const bulkRejecting = ref(false)
 
 // Fetch data
 async function fetchData() {
@@ -291,6 +302,40 @@ async function bulkApprove() {
     })
   } finally {
     bulkApproving.value = false
+  }
+}
+
+// Bulk reject
+async function bulkReject() {
+  if (!confirm(`Bạn có chắc muốn TỪ CHỐI tất cả ${stats.value.pending} yêu cầu?`)) {
+    return
+  }
+
+  bulkRejecting.value = true
+  try {
+    const response = await $fetch('/api/admin/daily-copy-trade-bulk-reject', {
+      method: 'POST',
+      body: {
+        adminId: user.value?.id,
+        date: selectedDate.value
+      }
+    })
+
+    toast.add({
+      title: 'Thành công',
+      description: response.message,
+      color: 'success'
+    })
+
+    await fetchData()
+  } catch (error: any) {
+    toast.add({
+      title: 'Lỗi',
+      description: error.message || 'Không thể từ chối hàng loạt',
+      color: 'error'
+    })
+  } finally {
+    bulkRejecting.value = false
   }
 }
 
