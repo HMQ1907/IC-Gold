@@ -64,6 +64,41 @@ export default defineEventHandler(async (event) => {
       .from('users')
       .update({ balance: (tx.user as any).balance + tx.amount })
       .eq('id', tx.user_id)
+
+    // Referral bonus: 5% of deposit amount to the referrer
+    const referrerId = (tx.user as any).referred_by
+    if (referrerId) {
+      const bonusAmount = Number((tx.amount * 0.05).toFixed(2))
+      if (bonusAmount > 0) {
+        const { data: referrer } = await supabase
+          .from('users')
+          .select('id, balance, full_name')
+          .eq('id', referrerId)
+          .single()
+
+        if (referrer) {
+          await supabase
+            .from('users')
+            .update({ balance: referrer.balance + bonusAmount })
+            .eq('id', referrer.id)
+
+          await supabase.from('transactions').insert({
+            user_id: referrer.id,
+            type: 'referral_bonus',
+            amount: bonusAmount,
+            status: 'completed',
+            admin_note: `5% referral bonus from ${(tx.user as any).email || (tx.user as any).phone} deposit $${tx.amount}`
+          })
+
+          await createNotification(
+            referrer.id,
+            'Thưởng giới thiệu',
+            `Bạn nhận được $${bonusAmount.toLocaleString()} (5%) từ giao dịch nạp tiền $${tx.amount.toLocaleString()} của người bạn giới thiệu.`,
+            'success'
+          )
+        }
+      }
+    }
   } else if (tx.type === 'withdraw' && action === 'reject') {
     // Refund balance for rejected withdrawal
     await supabase

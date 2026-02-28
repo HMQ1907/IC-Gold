@@ -72,8 +72,8 @@
 
             <div>
               <div class="flex items-center justify-between mb-2">
-                <label class="text-sm font-medium text-gray-300">{{ locale === 'vi' ? 'Địa chỉ ví TRC20 & BEP20' : 'TRC20 & BEP20 Wallet Address' }}</label>
-                <span class="text-gray-500 text-sm">{{ locale === 'vi' ? 'Địa chỉ ví TRC20 & BEP20 nhận USDT' : 'TRC20 & BEP20 wallet address to receive USDT' }}</span>
+                <label class="text-sm font-medium text-gray-300">{{ locale === 'vi' ? 'Địa chỉ ví TRC20 ' : 'TRC20  Wallet Address' }}</label>
+                <span class="text-gray-500 text-sm">{{ locale === 'vi' ? 'Địa chỉ ví TRC20  nhận USDT' : 'TRC20  wallet address to receive USDT' }}</span>
               </div>
               <input 
                 v-model="state.walletAddress" 

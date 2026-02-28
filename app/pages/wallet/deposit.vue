@@ -50,7 +50,7 @@
             </div>
 
             <div class="bg-gray-800/50 border border-gray-700 rounded-xl p-4">
-              <p class="text-gray-400 text-sm mb-2">Địa chỉ ví TRC20 & BEP20:</p>
+              <p class="text-gray-400 text-sm mb-2">Địa chỉ ví TRC20 :</p>
               <div class="flex items-center gap-2">
                 <code class="flex-1 text-amber-500 font-medium break-all">{{
                   depositAddress.address
@@ -174,10 +174,10 @@
         </h4>
         <ol class="space-y-3 text-gray-300">
           <li class="flex gap-3">
-            <span class="text-amber-500 font-bold">1.</span>Sao chép địa chỉ ví TRC20 & BEP20 ở trên
+            <span class="text-amber-500 font-bold">1.</span>Sao chép địa chỉ ví TRC20  ở trên
           </li>
           <li class="flex gap-3">
-            <span class="text-amber-500 font-bold">2.</span>Mở ví của bạn và chọn gửi USDT qua mạng TRC20 & BEP20
+            <span class="text-amber-500 font-bold">2.</span>Mở ví của bạn và chọn gửi USDT qua mạng TRC20 
           </li>
           <li class="flex gap-3">
             <span class="text-amber-500 font-bold">3.</span>Dán địa chỉ ví và nhập số tiền

@@ -1,7 +1,7 @@
 <template>
   <div class="p-6">
     <div class="mb-8">
-      <h1 class="text-2xl font-bold text-white mb-2">Quản lý Ví TRC20 & BEP20</h1>
+      <h1 class="text-2xl font-bold text-white mb-2">Quản lý Ví TRC20 </h1>
       <p class="text-gray-400">Chọn ví nhận tiền nạp từ người dùng</p>
     </div>
 

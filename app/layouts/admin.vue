@@ -122,7 +122,7 @@ const navItems = [
   { to: '/admin/pending', label: 'Duyệt Nạp/Rút', icon: 'i-heroicons-clock' },
   { to: '/admin/daily-copy-trade', label: 'Copy Trade/ngày', icon: 'i-heroicons-currency-dollar' },
   { to: '/admin/transactions', label: 'Lịch sử GD', icon: 'i-heroicons-banknotes' },
-  { to: '/admin/wallets', label: 'Ví TRC20 & BEP20', icon: 'i-heroicons-wallet' },
+  { to: '/admin/wallets', label: 'Ví TRC20 ', icon: 'i-heroicons-wallet' },
   { to: '/admin/settings', label: 'Cài đặt', icon: 'i-heroicons-cog-6-tooth' },
 ]
 </script>
