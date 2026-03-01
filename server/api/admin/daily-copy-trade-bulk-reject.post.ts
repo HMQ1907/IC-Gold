@@ -2,7 +2,7 @@ import { getSupabaseAdmin } from '~~/server/utils/supabase'
 
 export default defineEventHandler(async (event) => {
   const client = getSupabaseAdmin()
-  const body = await readBody(event)
+  const body = await readBody(event) || {}
 
   const { adminId, date } = body
 

@@ -2,7 +2,7 @@ import { requireAdmin, getSupabaseAdmin, logAdminAction, createNotification } fr
 
 export default defineEventHandler(async (event) => {
   const admin = await requireAdmin(event)
-  const body = await readBody(event)
+  const body = await readBody(event) || {}
   const { userId, amount, note } = body
 
   if (!userId || amount === undefined || amount === 0) {

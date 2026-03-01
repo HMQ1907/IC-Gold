@@ -2,7 +2,7 @@ import { getSupabaseAdmin, createNotification } from '~~/server/utils/supabase'
 import { generateSessionToken, getSessionExpiry } from '~~/server/utils/helpers'
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody(event)
+  const body = await readBody(event) || {}
   const { email, code } = body
 
   if (!email || !code) {

@@ -3,7 +3,7 @@ import { sendTransactionEmail } from '~~/server/utils/email'
 
 export default defineEventHandler(async (event) => {
   const admin = await requireAdmin(event)
-  const body = await readBody(event)
+  const body = await readBody(event) || {}
   const { transactionId, action, note } = body
 
   if (!transactionId || !['approve', 'reject'].includes(action)) {

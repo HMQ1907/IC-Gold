@@ -3,7 +3,7 @@ import { sendOtpEmail } from '~~/server/utils/email'
 import { generateOtp, getOtpExpiry } from '~~/server/utils/helpers'
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody(event)
+  const body = await readBody(event) || {}
   const { email, type } = body
 
   if (!email || !type) {

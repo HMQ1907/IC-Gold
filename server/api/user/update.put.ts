@@ -2,7 +2,7 @@ import { requireAuth, getSupabaseAdmin } from '~~/server/utils/supabase'
 
 export default defineEventHandler(async (event) => {
   const user = await requireAuth(event)
-  const body = await readBody(event)
+  const body = await readBody(event) || {}
   const { fullName, phone } = body
 
   const supabase = getSupabaseAdmin()

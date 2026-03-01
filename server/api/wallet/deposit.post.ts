@@ -2,7 +2,7 @@ import { requireAuth, getSupabaseAdmin, createNotification, getSiteSetting } fro
 
 export default defineEventHandler(async (event) => {
   const user = await requireAuth(event)
-  const body = await readBody(event)
+  const body = await readBody(event) || {}
   const { amount, txHash } = body
 
   // Validate input

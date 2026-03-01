@@ -6,7 +6,7 @@ import {
 } from '~~/server/utils/helpers'
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody(event)
+  const body = await readBody(event) || {}
   const { email, phone, password } = body
 
   if (!email && !phone) {

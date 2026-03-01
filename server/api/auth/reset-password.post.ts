@@ -2,7 +2,7 @@ import { getSupabaseAdmin } from '~~/server/utils/supabase'
 import { hashPassword } from '~~/server/utils/helpers'
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody(event)
+  const body = await readBody(event) || {}
   const { email, code, password } = body
 
   if (!email || !code || !password) {

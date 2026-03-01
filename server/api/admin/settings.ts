@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
   }
 
   if (method === 'PUT') {
-    const body = await readBody(event)
+    const body = await readBody(event) || {}
     const { settings } = body
 
     if (!settings || typeof settings !== 'object') {
