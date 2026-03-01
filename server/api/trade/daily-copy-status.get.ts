@@ -3,56 +3,50 @@ import { getSupabaseAdmin } from '~~/server/utils/supabase'
 export default defineEventHandler(async (event) => {
   const client = getSupabaseAdmin()
   const query = getQuery(event)
-  
+
   const userId = query.userId as string
   const timeWindow = query.timeWindow as string
-  
+
   if (!userId) {
     throw createError({
       statusCode: 400,
       message: 'Missing userId'
     })
   }
-  
-  // Get today's date
-  const today = new Date().toISOString().split('T')[0]
-  
-  // Normalize time window to base format
+
+  // Use Vietnam timezone for date consistency
+  const vnNow = new Date(Date.now() + 7 * 60 * 60 * 1000)
+  const today = vnNow.toISOString().split('T')[0]
+
   let normalizedWindow = timeWindow
   if (!normalizedWindow) {
-    // Auto-detect based on current hour
-    const now = new Date()
-    const hours = now.getHours()
+    const hours = vnNow.getUTCHours()
     if (hours >= 10 && hours < 15) {
       normalizedWindow = '10:00'
     } else if (hours >= 15 && hours < 20) {
       normalizedWindow = '15:00'
     } else if (hours === 20) {
-      normalizedWindow = '20:00' // Test window
+      normalizedWindow = '20:00'
     } else {
-      normalizedWindow = '21:00' // Test window
+      normalizedWindow = '21:00'
     }
   } else {
-    // Normalize input
-    normalizedWindow = timeWindow.includes('10:') && !timeWindow.includes('20:') ? '10:00' : 
-                       timeWindow.includes('15:') ? '15:00' : 
+    normalizedWindow = timeWindow.includes('10:') && !timeWindow.includes('20:') ? '10:00' :
+                       timeWindow.includes('15:') ? '15:00' :
                        timeWindow.includes('20:') ? '20:00' :
                        timeWindow.includes('21:') ? '21:00' : timeWindow
   }
-  
-  // Check if user has submitted today for this specific time window
-  const { data, error } = await client
+
+  const { data: rows } = await client
     .from('daily_copy_trade_requests')
     .select('id, status, time_window, created_at')
     .eq('user_id', userId)
     .eq('request_date', today)
     .eq('time_window', normalizedWindow)
-    .maybeSingle()
-  
-  if (error && error.code !== 'PGRST116') {
-    console.error('Error checking daily copy trade status:', error)
-  }
-  
+    .limit(1)
+
+  const data = rows?.[0] || null
+
   return {
     hasSubmittedToday: !!data,
     status: data?.status || null,

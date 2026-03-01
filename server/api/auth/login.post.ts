@@ -49,10 +49,9 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  if (!user.email_verified && !user.is_admin) {
+  if (user.email_verified === false && !user.is_admin) {
     throw createError({
       statusCode: 403,
-      statusMessage: 'email_not_verified',
       message: 'Please verify your email before logging in'
     })
   }
